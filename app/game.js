@@ -578,7 +578,10 @@
     if (bottom <= top || right <= left) return;
     // disegna solo la parte visibile: gli oggetti vicinissimi non pesano sul processore
     var kx = img.width / dw, ky = img.height / dh;
-    cx.drawImage(img, (left - dx) * kx, (top - dy) * ky, (right - left) * kx, (bottom - top) * ky, left, top, right - left, bottom - top);
+    var sx0 = Math.max(0, (left - dx) * kx), sy0 = Math.max(0, (top - dy) * ky);
+    var sw = Math.min(img.width - sx0, (right - left) * kx), sh = Math.min(img.height - sy0, (bottom - top) * ky);
+    if (sw < 0.5 || sh < 0.5) return;
+    cx.drawImage(img, sx0, sy0, sw, sh, left, top, right - left, bottom - top);
   }
 
   function renderWorld() {
@@ -923,12 +926,15 @@
   }
 
   /* ================= CICLO PRINCIPALE ================= */
-  var last = 0;
+  var last = 0, errN = 0, lastErr = '';
+  function noteErr(e) { errN++; lastErr = String(e && e.message || e).slice(0, 80); try { if (errN < 5 && window.console) console.error(e); } catch (x) { } }
   function loop(ts) {
-    var dt = last ? Math.min(0.05, (ts - last) / 1000) : 1 / 60; last = ts;
-    update(dt);
-    render();
     requestAnimationFrame(loop);
+    var dt = last ? Math.min(0.05, (ts - last) / 1000) : 1 / 60; last = ts;
+    // un errore in un fotogramma non deve mai fermare il gioco
+    try { update(dt); } catch (e) { noteErr(e); }
+    try { render(); } catch (e) { noteErr(e); try { cx.restore(); } catch (e2) { } }
+    if (errN) try { txt('E' + errN + ' ' + lastErr, 20, UH - 12, 18, '#ffffff', 'left', false, 0); } catch (e) { }
   }
   startDemo();
   try { A.init(); } catch (e) { }
