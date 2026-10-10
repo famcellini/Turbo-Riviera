@@ -259,10 +259,11 @@ var TR = window.TR = window.TR || {};
     };
   }
   // pubblicità di attività del Fermano e dintorni (di giorno 'bill', di notte insegne al neon)
-  var ADS = [['COCHETTI SHOP', '#1e64d0', '#ffe14a', '', '#ffe14a'], ['GELATERIA PELACANI', '#ff7ab0', '#ffffff', 'GELATI', '#ff8ad0'],
-    ['OBI', '#ff7a00', '#ffffff', 'CIVITANOVA MARCHE', '#ff9a3a'], ['LIDL', '#0050aa', '#ffe600', 'CAMPIGLIONE', '#ffe600'],
-    ['SAPORE DI MARE', '#1aa0c8', '#ffffff', '', '#4af0ff'], ['BAR ITALIA', '#ffffff', '#1a8a3a', 'CAFFÈ', '#4aff7a'],
-    ['BAR RAGNO', '#c81818', '#ffffff', 'CAFFÈ', '#ff4ae0'], ['PIZZERIA PINCIO', '#1a8a3a', '#ffffff', 'PIZZA', '#4af0ff']];
+  var ADS = [['COCHETTI SHOP', '#1e64d0', '#ffe14a', '', '#ffe14a'], ['GELATERIA PELLACANI', '#ff7ab0', '#ffffff', 'GELATI', '#ff8ad0'],
+    ['OBBI', '#ff7a00', '#ffffff', 'CIVITANOVA MARCHE', '#ff9a3a'], ['LIDOL', '#d02a2a', '#ffffff', 'CAMPIGLIONE', '#ff5a5a'],
+    ['SAPOR DI MAR', '#1aa0c8', '#ffffff', '', '#4af0ff'], ['BAR ITALIA', '#ffffff', '#1a8a3a', 'CAFFÈ', '#4aff7a'],
+    ['BAR RAGNO', '#c81818', '#ffffff', 'CAFFÈ', '#ff4ae0'], ['PIZZERIA IL PIMCIO', '#1a8a3a', '#ffffff', 'PIZZA', '#4af0ff'],
+    ['LOASI FM', '#5a2a9a', '#ffe14a', '', '#ffe14a']];
   ADS.forEach(function (a, i) {
     def('bill' + i, 120, 76, 2400, billboard(a[0], a[1], a[2], a[3]));
     def('neon' + i, 120, 76, 2400, billboard(a[0], '#14102a', a[4], a[3], true));
@@ -422,6 +423,6 @@ var TR = window.TR = window.TR || {};
 
   TR.gfx = {
     S: S, playerCar: playerCar, trafficCar: trafficCar, CARCOL: CARCOL, gate: gate, forkSign: forkSign,
-    townSign: townSign, dirSign: dirSign, TOWNS: TOWNS, PROVINCE: PROVINCE, background: background, sunStripes: sunStripes, icon: icon, R: R, P: P, E: E
+    townSign: townSign, dirSign: dirSign, TOWNS: TOWNS, PROVINCE: PROVINCE, NADS: ADS.length, background: background, sunStripes: sunStripes, icon: icon, R: R, P: P, E: E
   };
 })();

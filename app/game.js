@@ -87,7 +87,7 @@
     for (n = 0; n < leave; n++) addSeg(easeInOut(curve, 0, n / leave), easeInOut(sy, ey, (enter + hold + n) / tot));
   }
   var adN = 0;
-  function adName(nm) { return nm === 'ad' ? 'bill' + (adN++ % 8) : nm === 'nad' ? 'neon' + (adN++ % 8) : nm; }
+  function adName(nm) { return nm === 'ad' ? 'bill' + (adN++ % G.NADS) : nm === 'nad' ? 'neon' + (adN++ % G.NADS) : nm; }
   function addSpr(i, name, off) { var s = B.segs[i]; if (s) s.spr.push({ s: typeof name === 'string' ? S[name] : name, off: off }); }
   function lamps(from, to, night) {
     for (var i = from; i < to; i += 8) { var s = B.segs[i]; if (!s) continue; var c = s.f1 * FORKC; addSpr(i, night ? 'nlamp' : 'lamp', -(c + 1.6)); addSpr(i, night ? 'nlamp' : 'lamp', c + 1.6); }
