@@ -1,0 +1,16 @@
+{
+  "id": "com.cristian.turboriviera",
+  "version": "1.0.4",
+  "vendor": "Cristian",
+  "type": "web",
+  "main": "index.html",
+  "title": "Turbo Riviera",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "bgColor": "#1a0f4a",
+  "iconColor": "#e8327a",
+  "resolution": "1920x1080",
+  "disableBackHistoryAPI": true,
+  "transparent": false,
+  "requiredACG": []
+}
