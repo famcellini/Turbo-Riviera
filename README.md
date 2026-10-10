@@ -20,7 +20,7 @@ provinces and local businesses of the Fermo area (Marche, Italy).
 | Back | pause |
 
 ## Install
-Download the `.ipk` from the latest release and install it with webOS Dev Manager or `ares-install`.
+Download the `.ipk` from the [dist](dist) folder and install it with webOS Dev Manager or `ares-install`.
 To build it yourself: `ares-package app`.
 
 ## AI disclosure
