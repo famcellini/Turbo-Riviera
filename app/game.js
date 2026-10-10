@@ -30,35 +30,35 @@
   /* ================= TAPPE (15, a piramide come i bivi) ================= */
   var TH = [
     { n: 'Riviera Azzurra', sky: ['#1f7fe8', '#a8dcff'], fog: '#b8e2ff', sun: [0.78, 0.16, 16, '#fff8d0'], far: 'sea', farC: ['#1a66c8', '#5ab0ff', '#5a8aa0'], clouds: 1,
-      grass: ['#ecd592', '#e2c982'], road: ['#727272', '#6b6b6b'], rumble: ['#ffffff', '#e02020'], lane: '#ffffff', spr: [['palm', 6], ['umbrella', 3], ['bill0', 0.6], ['bill1', 0.6], ['bill4', 0.6], ['lighthouse', 0.4]], dens: 0.55 },
+      grass: ['#ecd592', '#e2c982'], road: ['#727272', '#6b6b6b'], rumble: ['#ffffff', '#e02020'], lane: '#ffffff', spr: [['ad', 0.9], ['palm', 6], ['umbrella', 3], ['lighthouse', 0.4]], dens: 0.55 },
     { n: 'Colline Toscane', sky: ['#3a8ef0', '#d8eeff'], fog: '#d8eeff', sun: [0.25, 0.14, 14, '#fff8d0'], far: 'mount', farC: ['#8aa8c8', '#7aa070'], near: 'trees', nearC: ['#5a8a3a', '#3a6a2a'], clouds: 1,
-      grass: ['#a8c048', '#9ab43e'], road: ['#727272', '#6b6b6b'], rumble: ['#ffffff', '#c02020'], lane: '#ffffff', spr: [['cypress', 6], ['haybale', 2], ['oak', 2], ['bill2', 0.6]], dens: 0.5 },
+      grass: ['#a8c048', '#9ab43e'], road: ['#727272', '#6b6b6b'], rumble: ['#ffffff', '#c02020'], lane: '#ffffff', spr: [['ad', 0.9], ['cypress', 6], ['haybale', 2], ['oak', 2]], dens: 0.5 },
     { n: 'Canyon Rosso', sky: ['#ff8a3a', '#ffd9a0'], fog: '#ffd0a0', sun: [0.7, 0.3, 24, '#fff0a0'], far: 'mesa', farC: ['#b04a2a', '#d0683a'],
-      grass: ['#d07a48', '#c46e3e'], road: ['#7a6a60', '#746458'], rumble: ['#ffffff', '#303030'], lane: '#ffffff', spr: [['redrock', 3], ['cactus', 3], ['drybush', 2], ['rock', 2]], dens: 0.45 },
+      grass: ['#d07a48', '#c46e3e'], road: ['#7a6a60', '#746458'], rumble: ['#ffffff', '#303030'], lane: '#ffffff', spr: [['ad', 0.9], ['redrock', 3], ['cactus', 3], ['drybush', 2], ['rock', 2]], dens: 0.45 },
     { n: 'Lago Alpino', sky: ['#2a7ae0', '#cfe6ff'], fog: '#d8ecff', sun: [0.6, 0.12, 14, '#ffffff'], far: 'snow', farC: ['#6a7fa8', '#4a6a8a'], near: 'trees', nearC: ['#2a5a3a', '#1d4a2a'], clouds: 1,
-      grass: ['#4aa04a', '#3f923f'], road: ['#6e6e74', '#68686e'], rumble: ['#ffffff', '#2050c0'], lane: '#ffffff', spr: [['pine', 6], ['rock', 2], ['bush', 1]], dens: 0.55 },
+      grass: ['#4aa04a', '#3f923f'], road: ['#6e6e74', '#68686e'], rumble: ['#ffffff', '#2050c0'], lane: '#ffffff', spr: [['ad', 0.9], ['pine', 6], ['rock', 2], ['bush', 1]], dens: 0.55 },
     { n: 'Città di Notte', night: 1, sky: ['#05061a', '#2a1a50'], fog: '#241848', moon: [0.2, 0.15, 10, '#f0f0ff'], far: 'city', farC: ['#1a1838', '#24204a'],
-      grass: ['#2a2a3a', '#262636'], road: ['#3c3c46', '#383840'], rumble: ['#c0c0c0', '#c02020'], lane: '#e0e0e0', spr: [['nbld0', 2], ['nbld1', 2], ['nbld2', 2], ['nlamp', 4], ['neon0', 1], ['neon1', 1]], dens: 0.65 },
+      grass: ['#2a2a3a', '#262636'], road: ['#3c3c46', '#383840'], rumble: ['#c0c0c0', '#c02020'], lane: '#e0e0e0', spr: [['nad', 1.6], ['nbld0', 2], ['nbld1', 2], ['nbld2', 2], ['nlamp', 4]], dens: 0.65 },
     { n: "Deserto d'Oro", sky: ['#3a9af0', '#f8e8b0'], fog: '#f8e8b0', sun: [0.5, 0.1, 18, '#ffffff'], far: 'dunes', farC: ['#e0b060', '#d09a50'],
-      grass: ['#eac47a', '#e0b86c'], road: ['#7a7470', '#74706a'], rumble: ['#ffffff', '#d06020'], lane: '#ffffff', spr: [['cactus', 3], ['dune', 2], ['drybush', 2], ['rock', 1]], dens: 0.4 },
+      grass: ['#eac47a', '#e0b86c'], road: ['#7a7470', '#74706a'], rumble: ['#ffffff', '#d06020'], lane: '#ffffff', spr: [['ad', 0.9], ['cactus', 3], ['dune', 2], ['drybush', 2], ['rock', 1]], dens: 0.4 },
     { n: "Foresta d'Autunno", sky: ['#5a90d0', '#f0d8b0'], fog: '#f0dcc0', sun: [0.3, 0.2, 16, '#fff0c0'], far: 'mount', farC: ['#8a7aa0', '#a06a40'], near: 'trees', nearC: ['#a04a20', '#c0602a'], clouds: 1,
-      grass: ['#8a8a30', '#7e7e2a'], road: ['#6e6a66', '#686460'], rumble: ['#ffffff', '#d07020'], lane: '#ffffff', spr: [['autumn', 6], ['oak', 1], ['bush', 1], ['bill3', 0.5]], dens: 0.55 },
+      grass: ['#8a8a30', '#7e7e2a'], road: ['#6e6a66', '#686460'], rumble: ['#ffffff', '#d07020'], lane: '#ffffff', spr: [['ad', 0.9], ['autumn', 6], ['oak', 1], ['bush', 1]], dens: 0.55 },
     { n: 'Valle dei Templi', sky: ['#3a2a7a', '#ff9a5a'], fog: '#ffa070', sun: [0.65, 0.34, 26, '#ffd060'], far: 'mount', farC: ['#6a4a6a', '#8a5a5a'],
-      grass: ['#c0a050', '#b49648'], road: ['#7a6e66', '#746860'], rumble: ['#ffffff', '#a03020'], lane: '#ffffff', spr: [['column', 4], ['ruins', 2], ['cypress', 2], ['drybush', 1]], dens: 0.5 },
+      grass: ['#c0a050', '#b49648'], road: ['#7a6e66', '#746860'], rumble: ['#ffffff', '#a03020'], lane: '#ffffff', spr: [['ad', 0.9], ['column', 4], ['ruins', 2], ['cypress', 2], ['drybush', 1]], dens: 0.5 },
     { n: 'Costa Tropicale', sky: ['#ff5a9a', '#ffd0a0'], fog: '#ffd0b0', sun: [0.35, 0.3, 22, '#fff0b0'], far: 'sea', farC: ['#2a6ad0', '#ff9ac0', '#7a4a8a'], clouds: 1, cloudC: 'rgba(255,220,240,0.8)',
-      grass: ['#f4dca0', '#eacf90'], road: ['#747070', '#6e6a6a'], rumble: ['#ffffff', '#ff4a90'], lane: '#ffffff', spr: [['palm', 7], ['umbrella', 2], ['bill1', 0.5], ['bill4', 0.5]], dens: 0.6 },
+      grass: ['#f4dca0', '#eacf90'], road: ['#747070', '#6e6a6a'], rumble: ['#ffffff', '#ff4a90'], lane: '#ffffff', spr: [['ad', 0.9], ['palm', 7], ['umbrella', 2]], dens: 0.6 },
     { n: 'Altopiano Ventoso', sky: ['#7a8aa8', '#d0d8e0'], fog: '#d0d8e0', far: 'mount', farC: ['#7a8a9a', '#6a7a6a'], near: 'hills', nearC: ['#6a8a4a', '#5a7a3a'], clouds: 1, cloudC: 'rgba(230,234,240,0.9)',
-      grass: ['#7aa048', '#6e9440'], road: ['#6a6a6a', '#646464'], rumble: ['#ffffff', '#404040'], lane: '#ffffff', spr: [['rock', 3], ['bush', 3], ['drybush', 2]], dens: 0.45 },
+      grass: ['#7aa048', '#6e9440'], road: ['#6a6a6a', '#646464'], rumble: ['#ffffff', '#404040'], lane: '#ffffff', spr: [['ad', 0.9], ['rock', 3], ['bush', 3], ['drybush', 2]], dens: 0.45 },
     { n: 'Passo del Ghiacciaio', sky: ['#3a6ad0', '#e8f4ff'], fog: '#eef6ff', sun: [0.8, 0.12, 13, '#ffffff'], far: 'snow', farC: ['#9ab0d0', '#c0d0e8'], near: 'hills', nearC: ['#e8f0ff', '#c8d8f0'],
-      grass: ['#f4f8ff', '#e2eaf6'], road: ['#6a6e78', '#646872'], rumble: ['#d02020', '#ffffff'], lane: '#ffffff', spr: [['snowpine', 5], ['ice', 2], ['snowman', 0.5]], dens: 0.55 },
+      grass: ['#f4f8ff', '#e2eaf6'], road: ['#6a6e78', '#646872'], rumble: ['#d02020', '#ffffff'], lane: '#ffffff', spr: [['ad', 0.9], ['snowpine', 5], ['ice', 2], ['snowman', 0.5]], dens: 0.55 },
     { n: 'Vulcano', sky: ['#2a0a0a', '#c03a1a'], fog: '#a0401a', far: 'volcano', farC: ['#2a1a1a', '#3a2222'],
-      grass: ['#3a3030', '#342a2a'], road: ['#4a4446', '#444042'], rumble: ['#ffcc00', '#202020'], lane: '#ffcc00', spr: [['lavarock', 5], ['rock', 1]], dens: 0.45 },
+      grass: ['#3a3030', '#342a2a'], road: ['#4a4446', '#444042'], rumble: ['#ffcc00', '#202020'], lane: '#ffcc00', spr: [['ad', 0.9], ['lavarock', 5], ['rock', 1]], dens: 0.45 },
     { n: 'Metropoli', night: 1, sky: ['#0a0420', '#5a1a6a'], fog: '#4a1658', moon: [0.82, 0.12, 9, '#ffe0ff'], far: 'city', farC: ['#1a1030', '#2a1440'],
-      grass: ['#26203a', '#221c34'], road: ['#3a3644', '#36323f'], rumble: ['#ff4ae0', '#4af0ff'], lane: '#ffffff', spr: [['nbld0', 3], ['nbld1', 3], ['nbld2', 3], ['nlamp', 3], ['neon0', 2], ['neon1', 2]], dens: 0.7 },
+      grass: ['#26203a', '#221c34'], road: ['#3a3644', '#36323f'], rumble: ['#ff4ae0', '#4af0ff'], lane: '#ffffff', spr: [['nad', 1.6], ['nbld0', 3], ['nbld1', 3], ['nbld2', 3], ['nlamp', 3]], dens: 0.7 },
     { n: 'Oasi Lontana', sky: ['#4aa0f0', '#fff0c0'], fog: '#fff0c8', sun: [0.2, 0.12, 18, '#ffffff'], far: 'dunes', farC: ['#e8b868', '#d8a458'],
-      grass: ['#ecc880', '#e2bc72'], road: ['#7a7470', '#74706a'], rumble: ['#ffffff', '#20a060'], lane: '#ffffff', spr: [['palm', 4], ['dune', 2], ['cactus', 1], ['drybush', 1]], dens: 0.45 },
+      grass: ['#ecc880', '#e2bc72'], road: ['#7a7470', '#74706a'], rumble: ['#ffffff', '#20a060'], lane: '#ffffff', spr: [['ad', 0.9], ['palm', 4], ['dune', 2], ['cactus', 1], ['drybush', 1]], dens: 0.45 },
     { n: 'Porto al Tramonto', sky: ['#4a2a8a', '#ffb070'], fog: '#ffb88a', sun: [0.5, 0.33, 28, '#ffd060'], far: 'sea', farC: ['#3a4aa0', '#ffb080', '#4a3a6a'],
-      grass: ['#a8a4a0', '#9e9a96'], road: ['#6a6670', '#64606a'], rumble: ['#ffffff', '#2050c0'], lane: '#ffffff', spr: [['lamp', 4], ['lighthouse', 1], ['palm', 2], ['bill0', 0.6], ['bill5', 0.6], ['umbrella', 1]], dens: 0.55 }
+      grass: ['#a8a4a0', '#9e9a96'], road: ['#6a6670', '#64606a'], rumble: ['#ffffff', '#2050c0'], lane: '#ffffff', spr: [['ad', 0.9], ['lamp', 4], ['lighthouse', 1], ['palm', 2], ['umbrella', 1]], dens: 0.55 }
   ];
   TH.forEach(function (t, i) { t.seed = i * 31 + 5; t.rgb = {}; ['fog', 'lane'].forEach(function (k) { t.rgb[k] = rgb(t[k]); }); ['sky', 'grass', 'road', 'rumble'].forEach(function (k) { t.rgb[k] = [rgb(t[k][0]), rgb(t[k][1])]; }); });
   function rgb(h) { var n = parseInt(h.slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; }
@@ -86,6 +86,8 @@
     for (n = 0; n < hold; n++) addSeg(curve, easeInOut(sy, ey, (enter + n) / tot));
     for (n = 0; n < leave; n++) addSeg(easeInOut(curve, 0, n / leave), easeInOut(sy, ey, (enter + hold + n) / tot));
   }
+  var adN = 0;
+  function adName(nm) { return nm === 'ad' ? 'bill' + (adN++ % 8) : nm === 'nad' ? 'neon' + (adN++ % 8) : nm; }
   function addSpr(i, name, off) { var s = B.segs[i]; if (s) s.spr.push({ s: typeof name === 'string' ? S[name] : name, off: off }); }
   function lamps(from, to, night) {
     for (var i = from; i < to; i += 8) { var s = B.segs[i]; if (!s) continue; var c = s.f1 * FORKC; addSpr(i, night ? 'nlamp' : 'lamp', -(c + 1.6)); addSpr(i, night ? 'nlamp' : 'lamp', c + 1.6); }
@@ -118,10 +120,10 @@
     for (i = bodyStart + 6; i < bodyEnd; i += 3) {
       var sgm = B.segs[i];
       if (r() < th.dens) {
-        var nm = pick(th.spr, r), sp = S[nm], side = r() < 0.5 ? -1 : 1;
+        var nm = adName(pick(th.spr, r)), sp = S[nm], side = r() < 0.5 ? -1 : 1;
         addSpr(i, nm, side * ((nm.indexOf('bld') >= 0 ? 2.2 : 1.2) + sp.ww / ROADW / 2 + r() * (nm.indexOf('bld') >= 0 ? 1.5 : 0.9)));
       }
-      if (r() < 0.12 && th.spr.length) { var nm2 = pick(th.spr, r), sp2 = S[nm2]; addSpr(i + 1, nm2, (r() < 0.5 ? -1 : 1) * (2.6 + sp2.ww / ROADW / 2 + r() * 2)); }
+      if (r() < 0.12 && th.spr.length) { var nm2 = adName(pick(th.spr, r)), sp2 = S[nm2]; addSpr(i + 1, nm2, (r() < 0.5 ? -1 : 1) * (2.6 + sp2.ww / ROADW / 2 + r() * 2)); }
     }
     for (i = bodyStart + 1; i < bodyEnd; i++) {
       var a = B.segs[i - 1].curve, b = B.segs[i].curve;
@@ -164,7 +166,7 @@
     var gc = {};
     gates.forEach(function (gd) { var key = gd[1] + gd[2]; gc[key] = gc[key] || G.gate(gd[1], gd[2]); B.segs[gd[0]].spr = []; addSpr(gd[0], gc[key], gd[3]); });
     if (first) for (i = 0; i < 40; i++) B.segs[i].spr = B.segs[i].spr.filter(function (x) { return x.s.nc; });
-    if (first) for (i = 16; i < 46; i += 10) { addSpr(i, 'bill0', -2.6); addSpr(i + 5, 'bill3', 2.6); }
+    if (first) for (i = 16; i < 46; i += 10) { addSpr(i, adName('ad'), -2.6); addSpr(i + 5, adName('ad'), 2.6); }
     B.len = B.segs.length * SEG;
     return B;
   }
