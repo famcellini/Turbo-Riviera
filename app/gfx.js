@@ -66,10 +66,10 @@ var TR = window.TR = window.TR || {};
         for (k = -2; k <= 1; k++) {
           var ax = hx + k * 1.7 + d * 0.4, ay = hy - 3.4 - (k === -1 || k === 0 ? 1.4 : 0.4);
           P(g, [hx + k * 1.1 - 0.5, hy - 1.5, hx + k * 1.1 + 0.5, hy - 1.5, ax + 0.45, ay, ax - 0.45, ay], '#f0c09a');
-          E(g, ax, ay - 0.2, 0.75, 0.95, '#d4143a');
+          E(g, ax, ay - 0.1, 0.4, 0.5, '#d4143a');
         }
         P(g, [hx - d * 2.4, hy + 0.4, hx - d * 3.8, hy - 1.6, hx - d * 3.1, hy - 2.1, hx - d * 1.5, hy - 0.4], '#f0c09a');
-        E(g, hx - d * 3.5, hy - 2.0, 0.7, 0.9, '#d4143a');
+        E(g, hx - d * 3.5, hy - 2.0, 0.4, 0.5, '#d4143a');
       });
     } else if (turned) {
       // lei si gira verso di lui e protesta: viso di profilo e braccio alzato
