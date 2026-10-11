@@ -94,6 +94,7 @@
   function easeIn(a, b, p) { return a + (b - a) * p * p; }
   function easeInOut(a, b, p) { return a + (b - a) * ((-Math.cos(p * Math.PI) / 2) + 0.5); }
   function addRoad(enter, hold, leave, curve, dy) {
+    curve *= 1.1;
     var sy = lastY(), ey = sy + dy * SEG, tot = enter + hold + leave, n;
     for (n = 0; n < enter; n++) addSeg(easeIn(0, curve, n / enter), easeInOut(sy, ey, n / tot));
     for (n = 0; n < hold; n++) addSeg(curve, easeInOut(sy, ey, (enter + n) / tot));
@@ -164,7 +165,7 @@
     }
     // pozzanghere (dal secondo livello): 2 per tratta nel livello 2, 3 nel livello 3
     B.puddles = [];
-    var npud = round >= 3 ? 3 : round === 2 ? 2 : 0;
+    var npud = round >= 4 ? 4 : round === 3 ? 3 : round === 2 ? 2 : 0;
     for (n = 0; n < npud; n++) {
       var span = bodyEnd - bodyStart - 500, pidx = bodyStart + 250 + Math.floor(((n + 0.15 + Math.random() * 0.7) / npud) * span), poff = (Math.random() * 2 - 1) * 0.72;
       addSpr(pidx, 'puddle', poff, false);
@@ -541,7 +542,7 @@
         A.engine(true, Math.max(0.1, spd), false, false, spd);
         if (stateT > 1 && endBonus > 0) { var step = Math.min(endBonus, 50000 * dt * 8); endBonus -= step; score += step; }
         if (stateT > 6 || (stateT > 2 && pressed.ok)) {
-          if (round < 3) nextRound();
+          if (round < 4) nextRound();
           else {
             score += endBonus; endBonus = 0; state = 'clip'; stateT = 0; speed = 0; clipSmoke = [];
             var BC = ['#ff4a4a', '#ffd21f', '#3a9af0', '#2fd06a', '#ff7ab0', '#ff9a1f', '#a45cff'];

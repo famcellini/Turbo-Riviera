@@ -57,9 +57,20 @@ var TR = window.TR = window.TR || {};
     RR(g, 82 + sh, -7, 7, 3, 1, '#ff5aa0');
     if (turned === 'cheer') {
       // lei felice: tutte e due le braccia in alto
-      P(g, [74 + sh, 12, 66 + sh, -10, 69 + sh, -11, 78 + sh, 11], '#e8b088'); E(g, 67 + sh, -12, 2.6, 2.6, '#f0c09a');
-      P(g, [95 + sh, 12, 103 + sh, -10, 100 + sh, -11, 91 + sh, 11], '#e8b088'); E(g, 102 + sh, -12, 2.6, 2.6, '#f0c09a');
+      P(g, [74 + sh, 12, 66 + sh, -2, 69 + sh, -3, 78 + sh, 11], '#e8b088'); E(g, 67 + sh, -4, 2.6, 2.6, '#f0c09a');
+      P(g, [95 + sh, 12, 103 + sh, -2, 100 + sh, -3, 91 + sh, 11], '#e8b088'); E(g, 102 + sh, -4, 2.6, 2.6, '#f0c09a');
       R(g, 74 + sh, 10, 4, 3, '#ff5aa0'); R(g, 91 + sh, 10, 4, 3, '#ff5aa0');
+      // mani aperte: quattro dita + pollice, unghie rosse
+      [[67, -4, -1], [102, -4, 1]].forEach(function (h) {
+        var hx = h[0] + sh, hy = h[1], d = h[2], k;
+        for (k = -2; k <= 1; k++) {
+          var ax = hx + k * 1.7 + d * 0.4, ay = hy - 3.4 - (k === -1 || k === 0 ? 1.4 : 0.4);
+          P(g, [hx + k * 1.1 - 0.5, hy - 1.5, hx + k * 1.1 + 0.5, hy - 1.5, ax + 0.45, ay, ax - 0.45, ay], '#f0c09a');
+          E(g, ax, ay - 0.2, 0.75, 0.95, '#d4143a');
+        }
+        P(g, [hx - d * 2.4, hy + 0.4, hx - d * 3.8, hy - 1.6, hx - d * 3.1, hy - 2.1, hx - d * 1.5, hy - 0.4], '#f0c09a');
+        E(g, hx - d * 3.5, hy - 2.0, 0.7, 0.9, '#d4143a');
+      });
     } else if (turned) {
       // lei si gira verso di lui e protesta: viso di profilo e braccio alzato
       E(g, 80 + sh, 2, 4.5, 6, '#f0c09a'); P(g, [76 + sh, 1, 73.5 + sh, 3, 76 + sh, 4], '#f0c09a');
