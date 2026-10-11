@@ -305,8 +305,8 @@ var TR = window.TR = window.TR || {};
       R(g, 2, 2, w - 4, 50, neon ? '#14102a' : '#ffffff'); R(g, 5, 5, w - 10, 44, bg);
       g.textAlign = 'center'; g.textBaseline = 'middle';
       if (neon) { g.shadowColor = fg; g.shadowBlur = 6; }
-      g.fillStyle = fg; fitText(g, txt, w - 16, 17, 'bold italic'); g.fillText(txt, w / 2, sub ? 21 : 27);
-      if (sub) { g.font = 'bold 10px Arial'; g.fillText(sub, w / 2, 38); }
+      g.fillStyle = fg; tallText(g, txt, w - 16, sub ? 26 : 34, 'bold italic', w / 2, sub ? 19 : 27);
+      if (sub) tallText(g, sub, w - 16, 15, 'bold', w / 2, 41);
       g.shadowBlur = 0;
     };
   }
@@ -357,6 +357,12 @@ var TR = window.TR = window.TR || {};
 
   // cartelli stradali con i paesi del Fermano
   var signCache = {};
+  // testo alto 'size' px: se è più largo di maxw viene compresso in orizzontale (caratteri più alti, non più larghi)
+  function tallText(g, s, maxw, size, weight, x, y) {
+    g.font = (weight || 'bold') + ' ' + size + 'px Arial';
+    var tw = g.measureText(s).width, k = tw > maxw ? maxw / tw : 1;
+    g.save(); g.translate(x, y); g.scale(k, 1); g.fillText(s, 0, 0); g.restore();
+  }
   function fitText(g, s, maxw, size, weight) {
     var sz = size; do { g.font = (weight || 'bold') + ' ' + sz + 'px Arial'; sz--; } while (g.measureText(s).width > maxw && sz > 7); return sz;
   }
@@ -366,7 +372,7 @@ var TR = window.TR = window.TR || {};
     R(g, 36, 40, 4, 34, '#8a8f98'); R(g, 110, 40, 4, 34, '#8a8f98');
     R(g, 0, 0, 150, 44, '#ffffff'); R(g, 3, 3, 144, 38, '#111111'); R(g, 5, 5, 140, 34, '#ffffff');
     g.fillStyle = '#111'; g.textAlign = 'center'; g.textBaseline = 'middle';
-    fitText(g, name.toUpperCase(), 130, 16); g.fillText(name.toUpperCase(), 75, 23);
+    tallText(g, name.toUpperCase(), 136, 30, 'bold', 75, 22);
     return (signCache[k] = { img: c, ww: 2300, nc: false });
   }
   function dirSign(a, ka, b, kb) {

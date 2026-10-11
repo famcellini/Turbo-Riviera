@@ -27,7 +27,7 @@
 
   /* ================= COSTANTI ================= */
   var SEG = 200, ROADW = 1800, LANES = 4, RUMBLE = 3, CAMH = 1500, DEPTH = 1 / Math.tan(50 * Math.PI / 180);
-  var DRAW = 180, PZ = CAMH * DEPTH, MAXS = SEG * 60, FORKC = 1.85, PW = 0.33, CENT = 0.3, FOGD = 1.2, STUB = 20;
+  var DRAW = 162, PZ = CAMH * DEPTH, MAXS = SEG * 60, FORKC = 1.85, PW = 0.33, CENT = 0.3, FOGD = 1.56, STUB = 20;
   var LANEX = [-0.75, -0.25, 0.25, 0.75];
 
   /* ================= TAPPE (15, a piramide come i bivi) ================= */
@@ -649,7 +649,7 @@
     var fogR = pal.fogRGB, nStart = -1, yStart = 0;
     for (n = 0; n < DRAW; n++) {
       seg = T.segs[base.i + n]; if (!seg) break;
-      var d = n / DRAW; seg.fog = Math.max(0.7, 1 / Math.pow(Math.E, d * d * FOGD)); seg.clip = maxy;
+      var d = n / DRAW; seg.fog = Math.max(0.61, 1 / Math.pow(Math.E, d * d * FOGD)); seg.clip = maxy;
       project(seg.p1, playerX * ROADW - x, pY + CAMH, position);
       project(seg.p2, playerX * ROADW - x - dx, pY + CAMH, position);
       x += dx; dx += seg.curve;
