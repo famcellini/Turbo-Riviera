@@ -654,7 +654,7 @@
       cx.fillStyle = light ? pal.grass0 : pal.grass1; cx.fillRect(-10, p2.sy, W + 20, p1.sy - p2.sy + 1);
       var c1 = seg.f1 * FORKC, c2 = seg.f2 * FORKC;
       // strada lontana: più scura, così non si confonde con la sabbia
-      var rp = seg.fog < 0.99 ? farPal(pal, Math.min(0.6, (1 - seg.fog) * 1.6)) : pal;
+      var rp = seg.fog < 0.99 ? farPal(pal, Math.min(0.85, (1 - seg.fog) * 2.6)) : pal;
       if (c1 === 0 && c2 === 0) roadPoly(p1.sx, p1.sy, p1.sw, p2.sx, p2.sy, p2.sw, light, rp);
       else {
         roadPoly(p1.sx - c1 * p1.sw, p1.sy, p1.sw, p2.sx - c2 * p2.sw, p2.sy, p2.sw, light, rp);

@@ -1,14 +1,14 @@
 {
   "id": "com.cristian.turboriviera",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "type": "web",
   "title": "Turbo Riviera",
   "appDescription": "90s-style arcade road racer",
   "iconUri": "https://raw.githubusercontent.com/famcellini/Turbo-Riviera/main/app/largeIcon.png",
   "sourceUrl": "https://github.com/famcellini/Turbo-Riviera",
   "rootRequired": false,
-  "ipkUrl": "https://raw.githubusercontent.com/famcellini/Turbo-Riviera/main/dist/com.cristian.turboriviera_2.0.2_all.ipk",
+  "ipkUrl": "https://raw.githubusercontent.com/famcellini/Turbo-Riviera/main/dist/com.cristian.turboriviera_2.0.3_all.ipk",
   "ipkHash": {
-    "sha256": "743651735e1fbdd7629d0568dfe7c7a858af3b869ebe50ec9f6d0ea013e96969"
+    "sha256": "3a1374165860cc7e89ca9248eb3215359f0a999455e6fb66888f6ab5d745e9d7"
   }
 }
