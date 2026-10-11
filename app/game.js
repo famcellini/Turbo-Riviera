@@ -286,8 +286,10 @@
     var left = false, right = false, gas = false, brk = false;
     if (ctrl === 'player' && crashT <= 0) {
       left = keys.left; right = keys.right; brk = keys.down;
-      gas = !brk && (autoGas ? true : (keys.up || keys.ok));
+      gas = !brk && (autoGas ? true : keys.up);
       if (autoGas && keys.up) gas = true;
+      // cambio manuale: OK alterna LO / HI
+      if (!autoGas && pressed.ok) { gearHi = !gearHi; A.sfx.shift(); if (gearHi) flameT = 0.45; }
     } else if (ctrl === 'auto' || ctrl === 'stop') {
       var target = cNow > 1.1 ? (playerX < 0 ? -cNow : cNow) : 0;
       var look = findSeg(position + PZ + 12 * SEG), want = target - look.curve * 0.12;
@@ -305,9 +307,16 @@
       if (crashT <= 0) { crashT = 0; crashAng = 0; }
       else crashAng += dt * 14 * Math.min(1, crashT);
     } else {
-      if (gas) { var acc = gearHi ? MAXS * 0.2 * (1.15 - spd) : MAXS * 0.42 * (1.1 - spd); speed += Math.max(acc, MAXS * 0.03) * dt; }
+      var manual = ctrl === 'player' && !autoGas;
+      if (gas) {
+        var acc = gearHi ? MAXS * 0.2 * (1.15 - spd) : MAXS * 0.42 * (1.1 - spd);
+        if (manual && gearHi && spd < 0.4) acc *= 0.35 + spd;   // in HI da fermi si parte piano
+        speed += Math.max(acc, MAXS * 0.03) * dt;
+        if (manual && !gearHi && speed > MAXS * 0.56) speed = MAXS * 0.56;   // in LO la velocità ha un limite
+      }
       else if (brk) speed -= MAXS * 0.9 * dt;
-      else speed -= MAXS * 0.18 * dt;
+      else if (!manual) speed -= MAXS * 0.18 * dt;   // in manuale, rilasciando i tasti la velocità resta costante
+      if (manual && !gearHi && speed > MAXS * 0.56) speed -= MAXS * 0.25 * dt;   // freno motore se si scala in LO
     }
     offroad = !onRoadAt(pSeg, pPct, playerX);
     if (offroad && speed > MAXS / 4) speed -= MAXS * 0.6 * dt;
@@ -316,8 +325,10 @@
     brakeOn = brk && speed > 1;
     // marce automatiche
     spd = speed / MAXS;
-    if (!gearHi && spd > 0.52) { gearHi = true; if (ctrl === 'player') { A.sfx.shift(); flameT = 0.45; } }
-    else if (gearHi && spd < 0.4) gearHi = false;
+    if (!(ctrl === 'player' && !autoGas)) {
+      if (!gearHi && spd > 0.52) { gearHi = true; if (ctrl === 'player') { A.sfx.shift(); flameT = 0.45; } }
+      else if (gearHi && spd < 0.4) gearHi = false;
+    }
     skid = crashT <= 0 && ((steerDir !== 0 && spd > 0.75 && Math.abs(pSeg.curve) > 2.5) || (brk && spd > 0.6));
     // collisioni con gli oggetti
     if (crashT <= 0 && ctrl === 'player') {
@@ -439,7 +450,7 @@
         if (pressed.back) { state = 'pause'; pauseSel = 0; A.sfx.pause(); }
         if (pressed.red) nextStation(1);
         if (pressed.green) A.setMute(!A.isMuted());
-        if (pressed.yellow) { autoGas = !autoGas; store.set('tr_auto', autoGas); showMsg(autoGas ? 'AUTO THROTTLE' : 'THROTTLE: HOLD OK', '#ffffff', 2, 'small'); }
+        if (pressed.yellow) { autoGas = !autoGas; store.set('tr_auto', autoGas); showMsg(autoGas ? 'AUTO THROTTLE' : 'MANUAL: ▲ GAS  ▼ BRAKE  OK GEAR', '#ffffff', 2, 'small'); }
         break;
       case 'pause':
         A.engine(false, 0, false, false, 0);
@@ -819,7 +830,7 @@
       if (sel) { ux.fillStyle = 'rgba(255,74,224,0.35)'; ux.fillRect(UW / 2 - 560, y - 70, 1120, 90); }
       txt(it, UW / 2, y, sel ? 64 : 54, sel ? '#ffe14a' : '#ffffff', 'center', true);
     });
-    txt('◀ ▶ steer   ▼ brake   ' + (autoGas ? 'auto throttle (no need for ▲ or OK)' : '▲ / OK accelerate') + '   YELLOW toggles throttle', UW / 2, UH - 50, 30, '#ffffff', 'center', false);
+    txt('◀ ▶ steer   ▼ brake   ' + (autoGas ? 'auto throttle (no need for ▲ or OK)' : '▲ accelerate   OK gear LO/HI') + '   YELLOW toggles throttle', UW / 2, UH - 50, 30, '#ffffff', 'center', false);
   }
   var CLIP_BURN = 1.4, CLIP_LEN = 7, clipSmoke = [], clipCar = null;
   function clipPos(t) {

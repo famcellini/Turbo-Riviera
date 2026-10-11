@@ -13,7 +13,8 @@ provinces and local businesses of the Fermo area (Marche, Italy).
 |---|---|
 | ◀ ▶ | steer |
 | ▼ | brake |
-| ▲ / OK | throttle (manual mode only; auto-throttle is the default) |
+| ▲ | accelerate (manual mode; speed holds when released) |
+| OK | gear LO / HI (manual mode) |
 | Red | change radio station |
 | Green | audio on/off |
 | Yellow | auto / manual throttle |
