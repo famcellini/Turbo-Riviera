@@ -322,8 +322,8 @@ var TR = window.TR = window.TR || {};
     ['BAR RAGNO', '#c81818', '#ffffff', 'COFFEE', '#ff4ae0'], ['PIZZERIA IL PIMCIO', '#1a8a3a', '#ffffff', 'PIZZA', '#4af0ff'],
     ['LOASI FM', '#5a2a9a', '#ffe14a', '', '#ffe14a']];
   ADS.forEach(function (a, i) {
-    def('bill' + i, 120, 76, 1200, billboard(a[0], a[1], a[2], a[3]));
-    def('neon' + i, 120, 76, 1200, billboard(a[0], '#14102a', a[4], a[3], true));
+    def('bill' + i, 120, 76, 600, billboard(a[0], a[1], a[2], a[3]));
+    def('neon' + i, 120, 76, 600, billboard(a[0], '#14102a', a[4], a[3], true));
   });
   function chevron(left) {
     return function (g, w, h) {
@@ -354,8 +354,8 @@ var TR = window.TR = window.TR || {};
     R(g, 0, 0, 270, 58, '#ffffff'); R(g, 3, 3, 264, 52, '#1a7a3a');
     g.fillStyle = '#ffffff'; g.textBaseline = 'middle';
     P(g, [10, 29, 24, 17, 24, 41], '#ffffff'); P(g, [260, 29, 246, 17, 246, 41], '#ffffff');
-    g.textAlign = 'left'; fitText(g, l.toUpperCase(), 100, 15); g.fillText(l.toUpperCase(), 28, 20);
-    g.textAlign = 'right'; fitText(g, r.toUpperCase(), 100, 15); g.fillText(r.toUpperCase(), 242, 40);
+    g.textAlign = 'left'; tallText(g, l.toUpperCase(), 100, 18, 'bold', 28, 20);
+    g.textAlign = 'right'; tallText(g, r.toUpperCase(), 100, 18, 'bold', 242, 40);
     R(g, 133, 8, 4, 42, '#ffffff');
     return { img: c, ww: 3200, nc: false };
   }
@@ -382,8 +382,8 @@ var TR = window.TR = window.TR || {};
   }
   function dirSign(a, ka, b, kb) {
     var k = 'D' + a + b; if (signCache[k]) return signCache[k];
-    var c = mk(300, 168), g = c.getContext('2d');
-    g.scale(2, 2);
+    var c = mk(450, 252), g = c.getContext('2d');
+    g.scale(3, 3);
     R(g, 72, 52, 6, 32, '#8a8f98');
     R(g, 0, 0, 150, 54, '#ffffff'); R(g, 2, 2, 146, 50, '#1d4fb8');
     g.fillStyle = '#ffffff'; g.textBaseline = 'middle';
@@ -393,7 +393,7 @@ var TR = window.TR = window.TR || {};
       if (j === 0) P(g, [6, r[2], 14, r[2] - 6, 14, r[2] + 6], '#ffffff'); else P(g, [16, r[2], 8, r[2] - 6, 8, r[2] + 6], '#ffffff');
     });
     R(g, 4, 27, 142, 1, '#ffffff');
-    return (signCache[k] = { img: c, ww: 2300, nc: false });
+    return (signCache[k] = { img: c, ww: 2990, nc: false });
   }
   var PROVINCE = ['Fermo', 'Macerata', 'Ascoli Piceno', 'Pesaro Urbino'];
   var TOWNS = ['Fermo', 'Porto San Giorgio', "Porto Sant'Elpidio", 'Pedaso', "Sant'Elpidio a Mare", 'Montegranaro', 'Monte Urano',
