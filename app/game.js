@@ -7,7 +7,10 @@
   var FONT = '"Arial Black","Arial",Helvetica,sans-serif';
   var cv = document.getElementById('game'), cx = cv.getContext('2d');
   var uv = document.getElementById('ui'), ux = uv.getContext('2d');
-  cv.width = W; cv.height = H; uv.width = UW; uv.height = UH;
+  // risoluzione di disegno del mondo (strada, sfondo, sprite): più bassa = più veloce; le coordinate restano 640x360
+  var RS = 0.8;
+  cv.width = Math.round(W * RS); cv.height = Math.round(H * RS); uv.width = UW; uv.height = UH;
+  cx.setTransform(RS, 0, 0, RS, 0, 0);
   cx.imageSmoothingEnabled = false;
   function fit() {
     var s = Math.min(window.innerWidth / W, window.innerHeight / H), w = Math.floor(W * s), h = Math.floor(H * s);
@@ -353,7 +356,8 @@
       }
       for (i = 0; i < cars.length; i++) {
         var c = cars[i], dz = c.z - (position + PZ);
-        if (dz > -SEG * 0.4 && dz < SEG * 0.8 && speed > c.spd) {
+        // controllo "a tratto": a velocità alta l'auto può saltare la finestra di collisione in un solo frame
+        if (speed > c.spd && dz < SEG * 0.8 && dz + (speed - c.spd) * dt > -SEG * 0.4) {
           var cs = findSeg(c.z), cc = ((cs.f1 + cs.f2) / 2) * FORKC, co = c.off + (c.off < 0 ? -cc : cc);
           if (Math.abs(playerX - co) < (PW + c.v.ww / ROADW) / 2 * 0.85) {
             speed = c.spd * 0.6; position = c.z - PZ - SEG; shake = 0.35; A.sfx.bump(); score = Math.max(0, score - 5000);
