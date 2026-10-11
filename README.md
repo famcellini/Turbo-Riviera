@@ -24,8 +24,12 @@ Download the `.ipk` from the [dist](dist) folder and install it with webOS Dev M
 To build it yourself: `ares-package app`.
 
 ## AI disclosure
-The code, graphics and music were written with an AI assistant (Claude) following the author's requests;
-the author tested every version on an LG webOS monitor (27TQ615S) and directed the fixes.
+Turbo Riviera was designed by the author: concept, game rules, route forks and the 15 stages,
+the Fermo-area setting with local towns and businesses, and the remote-control layout.
+The code was developed with the help of an AI assistant (Claude): the author wrote and modified
+parts of the code by hand and reviewed all of the AI-generated code. Graphics and music were
+generated with the AI assistant following the author's direction.
+The author tested every version on an LG webOS monitor (27TQ615S), found the bugs and directed the fixes.
 
 ## License
 MIT, see [LICENSE](LICENSE).
