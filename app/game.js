@@ -568,8 +568,7 @@
     var dark = [38, 42, 50];
     function m(c) { return c.replace(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/, function (_, r, g, b) {
       return 'rgb(' + [r, g, b].map(function (v, i) { return Math.round(+v + (dark[i] - +v) * q); }).join(',') + ')'; }); }
-    var edge = 'rgb(28,30,36)';
-    var out = { road0: m(pal.road0), road1: m(pal.road1), rumble0: edge, rumble1: edge, lane: pal.lane };
+    var out = { road0: m(pal.road0), road1: m(pal.road1), rumble0: m(pal.rumble0), rumble1: m(pal.rumble1), lane: pal.lane };
     farCache = { pal: pal, k: q, out: out };
     return out;
   }
@@ -643,28 +642,43 @@
     // assegna le auto ai segmenti visibili
     for (n = 0; n < DRAW; n++) { seg = T.segs[base.i + n]; if (seg) seg.cars.length = 0; }
     cars.forEach(function (c) { var i = Math.floor(c.z / SEG); if (i >= base.i && i < base.i + DRAW) T.segs[i].cars.push(c); });
-    var fogR = pal.fogRGB;
+    var fogR = pal.fogRGB, nStart = -1, yStart = 0;
     for (n = 0; n < DRAW; n++) {
       seg = T.segs[base.i + n]; if (!seg) break;
       var d = n / DRAW; seg.fog = Math.max(0.7, 1 / Math.pow(Math.E, d * d * FOGD)); seg.clip = maxy;
       project(seg.p1, playerX * ROADW - x, pY + CAMH, position);
       project(seg.p2, playerX * ROADW - x - dx, pY + CAMH, position);
       x += dx; dx += seg.curve;
+      // da qui in poi i segmenti sono più bassi di un pixel e la strada non verrebbe disegnata
+      if (nStart < 0 && seg.p1.cz > DEPTH && seg.p2.sy >= seg.p1.sy) { nStart = n; yStart = maxy; }
       if (seg.p1.cz <= DEPTH || seg.p2.sy >= seg.p1.sy || seg.p2.sy >= maxy) continue;
       var p1 = seg.p1, p2 = seg.p2, light = Math.floor(seg.i / RUMBLE) % 2 === 0;
-      cx.fillStyle = light ? pal.grass0 : pal.grass1; cx.fillRect(-10, p2.sy, W + 20, p1.sy - p2.sy + 1);
+      cx.fillStyle = light ? pal.grass0 : pal.grass1; cx.fillRect(-10, p2.sy, W + 20, p1.sy - p2.sy);
       var c1 = seg.f1 * FORKC, c2 = seg.f2 * FORKC;
       // strada lontana: più scura, così non si confonde con la sabbia
       // in lontananza la strada non deve assottigliarsi fino a sparire: larghezza minima
-      var rp = seg.fog < 0.99 ? farPal(pal, Math.min(0.85, (1 - seg.fog) * 2.6)) : pal;
+      var rp = seg.fog < 0.99 ? farPal(pal, Math.min(0.55, (1 - seg.fog) * 2)) : pal;
       var w1 = seg.fog < 0.99 ? Math.max(p1.sw, 6) : p1.sw, w2 = seg.fog < 0.99 ? Math.max(p2.sw, 6) : p2.sw;
       if (c1 === 0 && c2 === 0) roadPoly(p1.sx, p1.sy, w1, p2.sx, p2.sy, w2, light, rp);
       else {
         roadPoly(p1.sx - c1 * w1, p1.sy, w1, p2.sx - c2 * w2, p2.sy, w2, light, rp);
         roadPoly(p1.sx + c1 * w1, p1.sy, w1, p2.sx + c2 * w2, p2.sy, w2, light, rp);
       }
-      if (seg.fog < 0.99) { cx.fillStyle = 'rgba(' + (fogR[0] | 0) + ',' + (fogR[1] | 0) + ',' + (fogR[2] | 0) + ',' + (1 - seg.fog).toFixed(3) + ')'; cx.fillRect(-10, p2.sy, W + 20, p1.sy - p2.sy + 1); }
+      if (seg.fog < 0.99) { cx.fillStyle = 'rgba(' + (fogR[0] | 0) + ',' + (fogR[1] | 0) + ',' + (fogR[2] | 0) + ',' + (1 - seg.fog).toFixed(3) + ')'; cx.fillRect(-10, p2.sy, W + 20, p1.sy - p2.sy); }
       maxy = p2.sy;
+    }
+    // pezzi di strada mancanti: fasce di strada vera (cordoli, asfalto, strisce) proiettate fino all'orizzonte
+    if (nStart >= 0) {
+      var prev = null, last = yStart, hz = H / 2 + 4, q1, cur, rpf;
+      for (n = nStart; n < DRAW; n++) {
+        seg = T.segs[base.i + n]; if (!seg) break;
+        q1 = seg.p1; if (q1.cz <= DEPTH || q1.sy >= last || q1.sy < hz) continue;
+        cur = { sx: q1.sx, sy: q1.sy, sw: Math.max(q1.sw, 2), light: Math.floor(seg.i / RUMBLE) % 2 === 0, fog: seg.fog };
+        if (!prev) prev = { sx: q1.sx, sy: yStart, sw: cur.sw, light: cur.light, fog: seg.fog };
+        rpf = farPal(pal, Math.min(0.55, (1 - cur.fog) * 2));
+        roadPoly(prev.sx, prev.sy, prev.sw, cur.sx, cur.sy, cur.sw, cur.light, rpf);
+        last = q1.sy; prev = cur;
+      }
     }
     var pz = position + PZ;
     for (n = DRAW - 1; n > 0; n--) {
