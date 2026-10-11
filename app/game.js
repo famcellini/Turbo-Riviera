@@ -560,6 +560,18 @@
       }
     }
   }
+  // palette della strada con asfalto scuro miscelato in base alla distanza (k 0..1)
+  var farCache = { pal: null, k: -1, out: null };
+  function farPal(pal, k) {
+    var q = Math.round(k * 20) / 20;
+    if (farCache.pal === pal && farCache.k === q) return farCache.out;
+    var dark = [38, 42, 50];
+    function m(c) { return c.replace(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/, function (_, r, g, b) {
+      return 'rgb(' + [r, g, b].map(function (v, i) { return Math.round(+v + (dark[i] - +v) * q); }).join(',') + ')'; }); }
+    var out = { road0: m(pal.road0), road1: m(pal.road1), rumble0: m(pal.rumble0), rumble1: m(pal.rumble1), lane: pal.lane };
+    farCache = { pal: pal, k: q, out: out };
+    return out;
+  }
   var palCache = { key: '', pal: null };
   function palette() {
     var a = TH[prevTheme].rgb, b = TH[stageId].rgb, t = themeT, key = prevTheme + ':' + stageId + ':' + t.toFixed(2);
@@ -641,10 +653,12 @@
       var p1 = seg.p1, p2 = seg.p2, light = Math.floor(seg.i / RUMBLE) % 2 === 0;
       cx.fillStyle = light ? pal.grass0 : pal.grass1; cx.fillRect(-10, p2.sy, W + 20, p1.sy - p2.sy + 1);
       var c1 = seg.f1 * FORKC, c2 = seg.f2 * FORKC;
-      if (c1 === 0 && c2 === 0) roadPoly(p1.sx, p1.sy, p1.sw, p2.sx, p2.sy, p2.sw, light, pal);
+      // strada lontana: più scura, così non si confonde con la sabbia
+      var rp = seg.fog < 0.99 ? farPal(pal, Math.min(0.6, (1 - seg.fog) * 1.6)) : pal;
+      if (c1 === 0 && c2 === 0) roadPoly(p1.sx, p1.sy, p1.sw, p2.sx, p2.sy, p2.sw, light, rp);
       else {
-        roadPoly(p1.sx - c1 * p1.sw, p1.sy, p1.sw, p2.sx - c2 * p2.sw, p2.sy, p2.sw, light, pal);
-        roadPoly(p1.sx + c1 * p1.sw, p1.sy, p1.sw, p2.sx + c2 * p2.sw, p2.sy, p2.sw, light, pal);
+        roadPoly(p1.sx - c1 * p1.sw, p1.sy, p1.sw, p2.sx - c2 * p2.sw, p2.sy, p2.sw, light, rp);
+        roadPoly(p1.sx + c1 * p1.sw, p1.sy, p1.sw, p2.sx + c2 * p2.sw, p2.sy, p2.sw, light, rp);
       }
       if (seg.fog < 0.99) { cx.fillStyle = 'rgba(' + (fogR[0] | 0) + ',' + (fogR[1] | 0) + ',' + (fogR[2] | 0) + ',' + (1 - seg.fog).toFixed(3) + ')'; cx.fillRect(-10, p2.sy, W + 20, p1.sy - p2.sy + 1); }
       maxy = p2.sy;
