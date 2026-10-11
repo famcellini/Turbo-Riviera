@@ -8,7 +8,7 @@
   var cv = document.getElementById('game'), cx = cv.getContext('2d');
   var uv = document.getElementById('ui'), ux = uv.getContext('2d');
   // risoluzione di disegno del mondo (strada, sfondo, sprite): più bassa = più veloce; le coordinate restano 640x360
-  var RS = 0.8;
+  var RS = 0.56;
   cv.width = Math.round(W * RS); cv.height = Math.round(H * RS); uv.width = UW; uv.height = UH;
   cx.setTransform(RS, 0, 0, RS, 0, 0);
   cx.imageSmoothingEnabled = false;

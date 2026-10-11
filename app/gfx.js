@@ -317,8 +317,8 @@ var TR = window.TR = window.TR || {};
     ['BAR RAGNO', '#c81818', '#ffffff', 'COFFEE', '#ff4ae0'], ['PIZZERIA IL PIMCIO', '#1a8a3a', '#ffffff', 'PIZZA', '#4af0ff'],
     ['LOASI FM', '#5a2a9a', '#ffe14a', '', '#ffe14a']];
   ADS.forEach(function (a, i) {
-    def('bill' + i, 120, 76, 2400, billboard(a[0], a[1], a[2], a[3]));
-    def('neon' + i, 120, 76, 2400, billboard(a[0], '#14102a', a[4], a[3], true));
+    def('bill' + i, 120, 76, 1200, billboard(a[0], a[1], a[2], a[3]));
+    def('neon' + i, 120, 76, 1200, billboard(a[0], '#14102a', a[4], a[3], true));
   });
   function chevron(left) {
     return function (g, w, h) {
