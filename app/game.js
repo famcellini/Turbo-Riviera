@@ -107,7 +107,7 @@
       gates.push([STUB, 'CHECKPOINT', '#e02020', -FORKC], [STUB, 'CHECKPOINT', '#e02020', FORKC]);
     }
     var bodyStart = B.segs.length, target = 2300 + lv * 180;
-    var cmax = 2.2 + lv * 0.9, hmax = 25 + lv * 10, curY = 0;
+    var cmax = 2.2 + Math.min(lv, 2) * 0.9 + Math.max(0, lv - 2) * 0.35, hmax = 25 + lv * 10, curY = 0;
     while (B.segs.length - bodyStart < target) {
       var t = r(), ny = r() < 0.35 ? curY : Math.round((r() * 2 - 1) * hmax), dy = ny - curY; curY = ny;
       if (t < 0.22) addRoad(20 + (r() * 20 | 0), 30 + (r() * 60 | 0), 20 + (r() * 20 | 0), 0, dy);
@@ -468,7 +468,19 @@
         pSeg = drive(dt, stateT > 1.5 ? 'stop' : 'auto'); updateCars(dt);
         A.engine(true, Math.max(0.1, spd), false, false, spd);
         if (stateT > 1 && endBonus > 0) { var step = Math.min(endBonus, 50000 * dt * 8); endBonus -= step; score += step; }
-        if (stateT > 6 || (stateT > 2 && pressed.ok)) { score += endBonus; endBonus = 0; state = 'ending'; stateT = 0; }
+        if (stateT > 6 || (stateT > 2 && pressed.ok)) { score += endBonus; endBonus = 0; state = 'clip'; stateT = 0; speed = 0; clipSmoke = []; }
+        break;
+      case 'clip':
+        // filmato finale: sgommata e fuga verso l'orizzonte
+        updateCars(dt);
+        var cp = clipPos(stateT);
+        A.engine(true, stateT < CLIP_BURN ? 0.95 : Math.max(0.15, 1 - (stateT - CLIP_BURN) * 0.15), stateT < CLIP_BURN + 0.6, false, cp.d);
+        if (Math.random() < (stateT < CLIP_BURN ? 0.9 : stateT < CLIP_BURN + 0.5 ? 0.4 : 0)) [-1, 1].forEach(function (sd) {
+          clipSmoke.push({ x: cp.x + sd * cp.w * 0.3 + (Math.random() - 0.5) * 30 * cp.d, y: cp.y - 20 * cp.d, r: (30 + Math.random() * 30) * cp.d, vx: sd * (40 + Math.random() * 80), vy: -20 - Math.random() * 40, a: 0.75 });
+        });
+        clipSmoke.forEach(function (m) { m.x += m.vx * dt; m.y += m.vy * dt; m.r += 70 * dt; m.a -= 0.4 * dt; });
+        clipSmoke = clipSmoke.filter(function (m) { return m.a > 0; });
+        if (stateT > CLIP_LEN || (stateT > 1.5 && pressed.ok)) { state = 'ending'; stateT = 0; clipSmoke = []; }
         break;
       case 'ending':
         A.engine(false, 0, false, false, 0);
@@ -636,7 +648,7 @@
       }
     }
     // auto del giocatore
-    if (state !== 'title' && state !== 'radio' && state !== 'rank') {
+    if (state !== 'title' && state !== 'radio' && state !== 'rank' && state !== 'clip') {
       var spd = speed / MAXS, bounce = (offroad && spd > 0.05 ? (Math.random() * 3) : (Math.random() * 1.2 * spd)) | 0;
       var img = (lookT > 0 ? carTurned : cheerT > 0 ? carCheer : carFrames)[crashT > 0 ? 0 : steerDir][brakeOn ? 1 : 0];
       var px = W / 2, py = H - 6 - bounce;
@@ -809,6 +821,32 @@
     });
     txt('◀ ▶ steer   ▼ brake   ' + (autoGas ? 'auto throttle (no need for ▲ or OK)' : '▲ / OK accelerate') + '   YELLOW toggles throttle', UW / 2, UH - 50, 30, '#ffffff', 'center', false);
   }
+  var CLIP_BURN = 1.4, CLIP_LEN = 7, clipSmoke = [], clipCar = null;
+  function clipPos(t) {
+    // posizione e grandezza dell'auto: ferma (sgommata) poi sempre più piccola verso il punto di fuga
+    var base = 132 * K * 2, d = 1;
+    if (t > CLIP_BURN) { var p = t - CLIP_BURN; d = 1 / (1 + p * p * 1.6 + p * 0.6); }
+    var hy = UH * 0.565, by = UH - 20;
+    var shake = t < CLIP_BURN ? (Math.random() - 0.5) * 8 : 0;
+    return { d: d, w: base * d, x: UW / 2 + shake, y: hy + (by - hy) * d + (t < CLIP_BURN ? Math.random() * 4 : 0) };
+  }
+  function drawClip(t) {
+    if (!clipCar) clipCar = G.playerCar(0, false, 'cheer', 6);
+    var cp = clipPos(t), h = cp.w * clipCar.height / clipCar.width;
+    ux.save(); ux.imageSmoothingEnabled = true; ux.imageSmoothingQuality = 'high';
+    // fumo dietro le gomme
+    clipSmoke.forEach(function (m) { if (m.y > cp.y - h * 0.3) return; G.E(ux, m.x, m.y, m.r, m.r * 0.7, 'rgba(235,235,240,' + (m.a * 0.8) + ')'); });
+    ux.drawImage(clipCar, cp.x - cp.w / 2, cp.y - h, cp.w, h);
+    // fiammate all'avvio
+    if (t > CLIP_BURN && t < CLIP_BURN + 0.7 && Math.random() < 0.85) [37.5, 90.5].forEach(function (ex) {
+      var k = cp.w / 132, fx = cp.x - cp.w / 2 + (ex + 2) * k, fy = cp.y - h + 66 * k, fl = (10 + Math.random() * 12) * k;
+      G.E(ux, fx, fy + fl * 0.4, 7 * k, fl * 0.55, 'rgba(255,80,20,0.95)'); G.E(ux, fx, fy + fl * 0.3, 4.5 * k, fl * 0.35, '#ffd23a');
+    });
+    clipSmoke.forEach(function (m) { if (m.y <= cp.y - h * 0.3) return; G.E(ux, m.x, m.y, m.r, m.r * 0.7, 'rgba(235,235,240,' + (m.a * 0.8) + ')'); });
+    ux.restore();
+    if (t > CLIP_BURN + 1.5) txt('SEE YOU ON THE RIVIERA!', UW / 2, 200, 84, '#ffe14a', 'center', true);
+    if (t > CLIP_LEN - 0.8) { ux.fillStyle = 'rgba(10,6,40,' + Math.min(1, (t - CLIP_LEN + 0.8) / 0.8) + ')'; ux.fillRect(0, 0, UW, UH); }
+  }
   function drawEnding() {
     ux.fillStyle = 'rgba(10,6,40,' + Math.min(0.75, stateT * 0.5) + ')'; ux.fillRect(0, 0, UW, UH);
     if (!logoCanvas) makeLogo();
@@ -853,6 +891,7 @@
       case 'pause': hud(); drawPause(); break;
       case 'timeup': hud(); if (Math.floor(stateT * 3) % 2 === 0) txt('TIME UP', UW / 2, 460, 140, '#ff3030', 'center', true); txt('GAME OVER', UW / 2, 600, 80, '#ffffff', 'center', true); break;
       case 'goal': hud(); drawMsgs(); if (stateT > 1) txt('TIME BONUS ' + fmtN(endBonus), UW / 2, 560, 70, '#ffffff', 'center', true); break;
+      case 'clip': drawClip(stateT); break;
       case 'ending': drawEnding(); break;
       case 'name': drawName(); break;
     }

@@ -22,9 +22,12 @@ var TR = window.TR = window.TR || {};
   TR.mk = mk; TR.rng = rng; TR.shade = shade; TR.RR = RR;
 
   /* ================= AUTO DEL GIOCATORE (cabriolet rossa, vista da dietro) ================= */
-  function playerCar(dir, brake, turned) {
-    // sportiva italiana anni '80 scoperta: larga e bassa, griglia a lamelle sopra i fanali (nessun marchio)
-    var c = mk(132, 78), g = c.getContext('2d'), sh = dir * 3, i;
+  function playerCar(dir, brake, turned, hs) {
+    // sportiva italiana anni '80 scoperta: larga e bassa, griglia a lamelle sopra i fanali
+    // hs: fattore di risoluzione (per il filmato finale l'auto è disegnata più grande e più definita)
+    hs = hs || 1;
+    var c = mk(132 * hs, 78 * hs), g = c.getContext('2d'), sh = dir * 3, i;
+    g.scale(hs, hs);
     g.translate(2, 10);
     E(g, 64, 62, 64, 6, 'rgba(0,0,0,0.4)');
     // ruote larghe
