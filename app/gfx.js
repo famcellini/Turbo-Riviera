@@ -148,15 +148,18 @@ var TR = window.TR = window.TR || {};
   function trafficCar(type, col) {
     var c, g, dk = shade(col, -0.35), lt = shade(col, 0.3);
     if (type === 'car') {
-      c = mk(68, 46); g = c.getContext('2d');
+      c = mk(204, 138); g = c.getContext('2d'); g.scale(3, 3);
       E(g, 34, 43, 33, 3, 'rgba(0,0,0,0.35)');
       RR(g, 4, 30, 13, 14, 3, '#111'); RR(g, 51, 30, 13, 14, 3, '#111');
       P(g, [12, 18, 17, 3, 51, 3, 56, 18], dk); P(g, [15, 16, 19, 6, 49, 6, 53, 16], '#2b3c55'); R(g, 20, 7, 10, 2, '#6c86a8');
       RR(g, 2, 17, 64, 21, 4, col); R(g, 4, 19, 60, 2, lt);
       RR(g, 4, 23, 13, 6, 2, '#c0101a'); RR(g, 51, 23, 13, 6, 2, '#c0101a'); R(g, 4, 23, 4, 6, '#ff9a00'); R(g, 60, 23, 4, 6, '#ff9a00');
       R(g, 27, 27, 14, 6, '#eeeeee'); RR(g, 3, 34, 62, 5, 2, '#3a3a3a');
+      P(g, [20, 15, 24, 7, 34, 7, 30, 15], 'rgba(255,255,255,0.28)'); R(g, 33, 17, 1, 19, 'rgba(0,0,0,0.25)');
+      E(g, 10.5, 37, 3, 3, '#9a9a9a'); E(g, 57.5, 37, 3, 3, '#9a9a9a'); R(g, 6, 24, 9, 1, '#ff6a6a'); R(g, 53, 24, 9, 1, '#ff6a6a');
+      g.fillStyle = '#222'; g.font = 'bold 5px Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('MC 432', 34, 30);
     } else if (type === 'van') {
-      c = mk(68, 60); g = c.getContext('2d');
+      c = mk(204, 180); g = c.getContext('2d'); g.scale(3, 3);
       E(g, 34, 57, 33, 3, 'rgba(0,0,0,0.35)');
       RR(g, 4, 44, 13, 14, 3, '#111'); RR(g, 51, 44, 13, 14, 3, '#111');
       RR(g, 3, 2, 62, 50, 6, col); R(g, 5, 4, 58, 2, lt);
@@ -164,8 +167,11 @@ var TR = window.TR = window.TR || {};
       R(g, 3, 26, 62, 3, '#ffffff'); R(g, 3, 29, 62, 2, dk);
       RR(g, 4, 34, 8, 10, 2, '#c0101a'); RR(g, 56, 34, 8, 10, 2, '#c0101a');
       R(g, 27, 40, 14, 6, '#eeeeee'); RR(g, 2, 48, 64, 5, 2, '#3a3a3a');
+      P(g, [11, 9, 16, 9, 12, 21, 9, 21], 'rgba(255,255,255,0.25)'); P(g, [39, 9, 44, 9, 40, 21, 37, 21], 'rgba(255,255,255,0.25)');
+      E(g, 10.5, 54, 3, 3, '#9a9a9a'); E(g, 57.5, 54, 3, 3, '#9a9a9a'); R(g, 5, 35, 6, 1, '#ff6a6a'); R(g, 57, 35, 6, 1, '#ff6a6a');
+      g.fillStyle = '#222'; g.font = 'bold 5px Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('AN 117', 34, 43);
     } else if (type === 'truck') {
-      c = mk(76, 88); g = c.getContext('2d');
+      c = mk(228, 264); g = c.getContext('2d'); g.scale(3, 3);
       E(g, 38, 85, 37, 3, 'rgba(0,0,0,0.35)');
       RR(g, 3, 70, 16, 16, 3, '#111'); RR(g, 57, 70, 16, 16, 3, '#111'); RR(g, 20, 72, 10, 14, 2, '#111'); RR(g, 46, 72, 10, 14, 2, '#111');
       R(g, 2, 0, 72, 70, '#e8e8e8'); R(g, 2, 0, 72, 3, '#ffffff'); R(g, 2, 67, 72, 3, '#9a9a9a');
@@ -173,8 +179,10 @@ var TR = window.TR = window.TR || {};
       for (var i = 0; i < 4; i++) { R(g, 12, 6 + i * 16, 4, 3, '#999'); R(g, 60, 6 + i * 16, 4, 3, '#999'); }
       R(g, 4, 70, 68, 5, '#444'); RR(g, 4, 71, 9, 4, 1, '#d01010'); RR(g, 63, 71, 9, 4, 1, '#d01010');
       for (i = 0; i < 8; i++) R(g, 16 + i * 6, 75, 3, 3, i % 2 ? '#ffcc00' : '#222');
+      R(g, 2, 14, 72, 1, 'rgba(0,0,0,0.12)'); R(g, 2, 48, 72, 1, 'rgba(0,0,0,0.12)'); R(g, 5, 31, 66, 1, 'rgba(255,255,255,0.35)');
+      E(g, 11, 78, 3, 3, '#9a9a9a'); E(g, 65, 78, 3, 3, '#9a9a9a'); R(g, 5, 71, 7, 1, '#ff7a7a'); R(g, 64, 71, 7, 1, '#ff7a7a');
     } else { // sportiva
-      c = mk(70, 40); g = c.getContext('2d');
+      c = mk(210, 120); g = c.getContext('2d'); g.scale(3, 3);
       E(g, 35, 37, 34, 3, 'rgba(0,0,0,0.35)');
       RR(g, 3, 24, 15, 14, 3, '#111'); RR(g, 52, 24, 15, 14, 3, '#111');
       P(g, [14, 15, 20, 4, 50, 4, 56, 15], dk); P(g, [18, 13, 22, 6, 48, 6, 52, 13], '#22303f');
@@ -182,7 +190,14 @@ var TR = window.TR = window.TR || {};
       R(g, 2, 10, 66, 3, dk); R(g, 6, 12, 3, 5, '#222'); R(g, 61, 12, 3, 5, '#222');
       R(g, 4, 21, 62, 4, '#b0101a'); R(g, 4, 21, 62, 1, '#ff4a4a');
       R(g, 28, 26, 14, 5, '#eeeeee'); RR(g, 2, 30, 66, 4, 2, '#262626');
+      P(g, [22, 12, 26, 6, 36, 6, 32, 12], 'rgba(255,255,255,0.28)'); R(g, 7, 22, 12, 1, '#ff7a7a'); R(g, 51, 22, 12, 1, '#ff7a7a');
+      E(g, 10.5, 31, 3, 3, '#9a9a9a'); E(g, 59.5, 31, 3, 3, '#9a9a9a');
+      g.fillStyle = '#222'; g.font = 'bold 4px Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('PU 905', 35, 28.5);
     }
+    var cw = c.width, ch = c.height, sg = g.createLinearGradient(0, 0, 0, ch);
+    g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'source-atop';
+    sg.addColorStop(0, 'rgba(255,255,255,0.16)'); sg.addColorStop(0.45, 'rgba(255,255,255,0)'); sg.addColorStop(1, 'rgba(0,0,0,0.18)');
+    g.fillStyle = sg; g.fillRect(0, 0, cw, ch); g.restore();
     return c;
   }
 

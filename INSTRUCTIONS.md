@@ -1,13 +1,13 @@
 # Turbo Riviera: install on the LG 27TQ615S-PZ monitor
 
-File to install: `com.cristian.turboriviera_2.0.19_all.ipk`
+File to install: `com.cristian.turboriviera_2.0.20_all.ipk`
 
 Turbo Riviera is a 90s-style arcade road racer (pseudo-3D road, red convertible, curves, hills, traffic, a countdown timer and forks). Name, graphics and music are original: no Sega material.
 
 ## Install
 The monitor is already set up (Developer Mode on, as for Super Eleonora).
 1. Open webOS Dev Manager on the PC (monitor and PC on the same network).
-2. **Apps** tab → **Install** (or drag the `.ipk` file into the window) and pick `com.cristian.turboriviera_2.0.19_all.ipk`.
+2. **Apps** tab → **Install** (or drag the `.ipk` file into the window) and pick `com.cristian.turboriviera_2.0.20_all.ipk`.
 3. Turbo Riviera appears among the monitor's apps with the convertible-at-sunset icon.
 
 Remember: Developer Mode expires after about 50 hours; to renew it open the Developer Mode app and press "Extend".
