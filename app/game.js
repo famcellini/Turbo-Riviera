@@ -99,6 +99,7 @@
     for (n = 0; n < hold; n++) addSeg(curve, easeInOut(sy, ey, (enter + n) / tot));
     for (n = 0; n < leave; n++) addSeg(easeInOut(curve, 0, n / leave), easeInOut(sy, ey, (enter + hold + n) / tot));
   }
+  S.puddle.ww = ROADW * 0.5;   // larga 1/4 della carreggiata
   var adN = 0;
   function adName(nm) { return nm === 'ad' ? 'bill' + (adN++ % G.NADS) : nm === 'nad' ? 'neon' + (adN++ % G.NADS) : nm; }
   function addSpr(i, name, off, fl) { var s = B.segs[i]; if (s) s.spr.push({ s: typeof name === 'string' ? S[name] : name, off: off, fl: fl }); }
@@ -161,6 +162,14 @@
       for (var q = i - 30; q < i + 6; q++) if (B.segs[q]) B.segs[q].spr = B.segs[q].spr.filter(function (x) { return x.s !== S.signL && x.s !== S.signR && (q !== i || Math.abs(x.off) > 3); });
       addSpr(i, sg, (r() < 0.75 ? 1 : -1) * (1.45 + sg.ww / ROADW / 2));
     }
+    // pozzanghere (dal secondo livello): 2 per tratta nel livello 2, 3 nel livello 3
+    B.puddles = [];
+    var npud = round >= 3 ? 3 : round === 2 ? 2 : 0;
+    for (n = 0; n < npud; n++) {
+      var span = bodyEnd - bodyStart - 500, pidx = bodyStart + 250 + Math.floor(((n + 0.15 + Math.random() * 0.7) / npud) * span), poff = (Math.random() * 2 - 1) * 0.72;
+      addSpr(pidx, 'puddle', poff, false);
+      B.puddles.push({ z: pidx * SEG + SEG / 2, off: poff, hit: false });
+    }
     if (!B.final) {
       B.forkStart = B.segs.length;
       for (n = 0; n < 230; n++) addSeg(0, lastY(), easeInOut(0, FK, n / 230));
@@ -207,7 +216,7 @@
   var position = 0, speed = 0, playerX = 0, cars = [];
   var timeLeft = 0, score = 0, stageTime = 0, totalTime = 0, path = [0], stageId = 0;
   var prevTheme = 0, themeT = 1, bgOff = [0, 0, 0], cloudDrift = 0;
-  var forkSide = 0, gasOn = false, downT = 0, gearHi = false, crashT = 0, crashAng = 0, shake = 0, steerDir = 0, brakeOn = false, offroad = false, skid = false;
+  var round = 1, slipT = 0, slipDir = 0, clipBalloons = [], forkSide = 0, gasOn = false, downT = 0, gearHi = false, crashT = 0, crashAng = 0, shake = 0, steerDir = 0, brakeOn = false, offroad = false, skid = false;
   var state = 'intro', stateT = 0, msg = [], menuSel = 0, pauseSel = 0;
   var autoGas = store.get('tr_auto', true), station = store.get('tr_station', 0);
   var lapTimes = [], countN = 3, demo = false, nameChars = [0, 0, 0], namePos = 0, newRank = -1, endBonus = 0;
@@ -220,6 +229,7 @@
   function stageSecs(tr) { return (tr.gateIdx * SEG) / (MAXS * 0.8); }
 
   function spawnCars(tr, fromZ, toZ, count, r) {
+    count = Math.round(count * (1 + 0.1 * (round - 1)));   // +10% di traffico per livello
     for (var k = 0; k < count; k++) {
       var tv = traffic[(r() * traffic.length) | 0], ln = (r() * 4) | 0;
       cars.push({ z: fromZ + r() * (toZ - fromZ), off: LANEX[ln], tOff: LANEX[ln], ln: ln, spd: MAXS * (0.22 + r() * 0.3), tm: 2 + r() * 6, v: tv });
@@ -227,17 +237,29 @@
   }
 
   function startDemo() {
-    demo = true; stageId = 0; region = 'Fermo'; T = buildStage(0, 'demo'); prevTheme = 0; themeT = 1;
+    demo = true; round = 1; stageId = 0; region = 'Fermo'; T = buildStage(0, 'demo'); prevTheme = 0; themeT = 1;
     position = 60 * SEG; speed = MAXS * 0.72; playerX = 0; cars = []; crashT = 0;
   }
   function startGame() {
-    demo = false; stageId = 0; region = 'Fermo'; forkSide = 0; path = [0]; T = buildStage(0, true); prevTheme = 0; themeT = 1;
+    demo = false; round = 1; slipT = 0; stageId = 0; region = 'Fermo'; forkSide = 0; path = [0]; T = buildStage(0, true); prevTheme = 0; themeT = 1;
     position = 0; speed = 0; playerX = -0.25; cars = []; crashT = 0; shake = 0; gearHi = false; gasOn = false; downT = 0;
     timeLeft = Math.ceil(stageSecs(T)) + 8; score = 0; stageTime = 0; totalTime = 0; lapTimes = [];
     var r = TR.rng(Date.now() & 0xffff);
     spawnCars(T, 60 * SEG, T.forkStart * SEG - 20 * SEG, 34, r);
     state = 'count'; stateT = 0; countN = 3; msg = [];
     A.playSong(station);
+    showMsg(TH[0].n.toUpperCase(), '#ffffff', 3.5, 'stage');
+  }
+  function nextRound() {
+    score += endBonus; endBonus = 0;
+    round++; stageId = 0; region = 'Fermo'; forkSide = 0; path = [0]; slipT = 0; prevTheme = 0; themeT = 1;
+    T = buildStage(0, true);
+    position = 0; speed = 0; playerX = -0.25; cars = []; crashT = 0; shake = 0; gearHi = false; gasOn = false; downT = 0;
+    timeLeft = Math.ceil(stageSecs(T)) + 8; stageTime = 0;
+    spawnCars(T, 60 * SEG, T.forkStart * SEG - 20 * SEG, 34, TR.rng(Date.now() & 0xffff));
+    state = 'count'; stateT = 0; countN = 3; msg = [];
+    A.playSong(station);
+    showMsg('LEVEL ' + round, '#ffe14a', 3.5, 'big');
     showMsg(TH[0].n.toUpperCase(), '#ffffff', 3.5, 'stage');
   }
   function showMsg(text, col, dur, kind) { msg.push({ t: text, c: col, d: dur, a: 0, k: kind || '' }); }
@@ -301,7 +323,7 @@
     return Math.abs(x + c) <= 1 || Math.abs(x - c) <= 1;
   }
   function drive(dt, ctrl) {
-    var pSeg = findSeg(position + PZ), pPct = ((position + PZ) % SEG) / SEG, spd = speed / MAXS;
+    var z0 = position + PZ, pSeg = findSeg(position + PZ), pPct = ((position + PZ) % SEG) / SEG, spd = speed / MAXS;
     var cNow = (pSeg.f1 + (pSeg.f2 - pSeg.f1) * pPct) * FORKC;
     var left = false, right = false, gas = false, brk = false;
     if (ctrl === 'player' && crashT <= 0) {
@@ -320,10 +342,19 @@
       if (playerX < want - 0.08) right = true; else if (playerX > want + 0.08) left = true;
       gas = ctrl === 'auto' && speed < MAXS * 0.72; brk = ctrl === 'stop';
     }
+    if (slipT > 0) { left = right = false; }   // sulla pozzanghera lo sterzo non risponde
     var dx = dt * 1.6 * Math.min(1, spd * 1.5);
     position += speed * dt;
-    steerDir = left ? -1 : right ? 1 : 0;
+    steerDir = slipT > 0 ? slipDir : left ? -1 : right ? 1 : 0;
     if (left) playerX -= dx; else if (right) playerX += dx;
+    if (slipT > 0) { slipT -= dt; playerX += slipDir * dt * 3.3 * Math.min(1, spd * 1.5 + 0.2); }
+    else if (ctrl === 'player' && crashT <= 0 && T.puddles) {
+      var z1 = position + PZ;
+      for (var pi = 0; pi < T.puddles.length; pi++) {
+        var pd = T.puddles[pi];
+        if (!pd.hit && pd.z > z0 && pd.z <= z1 && Math.abs(playerX - pd.off) < (PW + 0.5) / 2) { pd.hit = true; slipT = 1 / 3; slipDir = Math.random() < 0.5 ? -1 : 1; shake = 0.2; A.sfx.splash(); }
+      }
+    }
     playerX -= dx * spd * pSeg.curve * CENT;
     // al bivio, una volta imboccata una strada non si passa nell'altra attraverso l'erba
     if (cNow > 1.2 && !forkSide && Math.abs(playerX) > 0.5) forkSide = playerX < 0 ? -1 : 1;
@@ -358,7 +389,7 @@
       if (!gearHi && spd > 0.52) { gearHi = true; if (ctrl === 'player') { A.sfx.shift(); flameT = 0.45; } }
       else if (gearHi && spd < 0.4) gearHi = false;
     }
-    skid = crashT <= 0 && ((steerDir !== 0 && spd > 0.75 && Math.abs(pSeg.curve) > 2.5) || (brk && spd > 0.6));
+    skid = crashT <= 0 && (slipT > 0 || (steerDir !== 0 && spd > 0.75 && Math.abs(pSeg.curve) > 2.5) || (brk && spd > 0.6));
     // collisioni con gli oggetti
     if (crashT <= 0 && ctrl === 'player') {
       for (var i = 0; i < pSeg.spr.length; i++) {
@@ -509,7 +540,15 @@
         pSeg = drive(dt, stateT > 1.5 ? 'stop' : 'auto'); updateCars(dt);
         A.engine(true, Math.max(0.1, spd), false, false, spd);
         if (stateT > 1 && endBonus > 0) { var step = Math.min(endBonus, 50000 * dt * 8); endBonus -= step; score += step; }
-        if (stateT > 6 || (stateT > 2 && pressed.ok)) { score += endBonus; endBonus = 0; state = 'clip'; stateT = 0; speed = 0; clipSmoke = []; }
+        if (stateT > 6 || (stateT > 2 && pressed.ok)) {
+          if (round < 3) nextRound();
+          else {
+            score += endBonus; endBonus = 0; state = 'clip'; stateT = 0; speed = 0; clipSmoke = [];
+            var BC = ['#ff4a4a', '#ffd21f', '#3a9af0', '#2fd06a', '#ff7ab0', '#ff9a1f', '#a45cff'];
+            clipBalloons = [];
+            for (var bi = 0; bi < 30; bi++) clipBalloons.push({ x: 90 + Math.random() * (UW - 180), y0: UH + 90 + Math.random() * 380, vy: 150 + Math.random() * 120, r: 40 + Math.random() * 26, col: BC[bi % 7], ph: Math.random() * 6.28, dl: Math.random() * 2.2 });
+          }
+        }
         break;
       case 'clip':
         // filmato finale: sgommata e fuga verso l'orizzonte
@@ -786,7 +825,7 @@
     txt('SCORE', UW / 2, 70, 36, '#ff7ab0', 'center', true);
     txt(fmtN(score), UW / 2, 140, 64, '#ffffff', 'center', true);
     // giro
-    txt('STAGE ' + (levelOf(stageId) + 1) + ' / 4', UW - 70, 70, 36, '#4af0ff', 'right', true);
+    txt('LEVEL ' + round + '   STAGE ' + (levelOf(stageId) + 1) + ' / 4', UW - 70, 70, 36, '#4af0ff', 'right', true);
     txt(fmtT(stageTime), UW - 70, 140, 56, '#ffffff', 'right', true);
     // tachimetro
     var bx = 70, by = UH - 70;
@@ -920,6 +959,38 @@
     var shake = t < CLIP_BURN ? (Math.random() - 0.5) * 8 : 0;
     return { d: d, w: base * d, x: UW / 2 + shake, y: hy + (by - hy) * d + (t < CLIP_BURN ? Math.random() * 4 : 0) };
   }
+  function drawBalloons(t) {
+    clipBalloons.forEach(function (b) {
+      var tt = t - b.dl; if (tt <= 0) return;
+      var y = b.y0 - tt * b.vy, x = b.x + Math.sin(tt * 1.6 + b.ph) * 22;
+      if (y < -200) return;
+      var rx = b.r, ry = b.r * 1.22;
+      ux.strokeStyle = 'rgba(255,255,255,0.75)'; ux.lineWidth = 2.5; ux.beginPath(); ux.moveTo(x, y + ry + 6);
+      ux.bezierCurveTo(x - 14 + Math.sin(tt * 3 + b.ph) * 10, y + ry + 40, x + 14, y + ry + 70, x + Math.sin(tt * 2 + b.ph) * 12, y + ry + 110); ux.stroke();
+      var g = ux.createRadialGradient(x - rx * 0.35, y - ry * 0.4, rx * 0.1, x, y, rx * 1.15); g.addColorStop(0, '#ffffff'); g.addColorStop(0.18, b.col); g.addColorStop(1, 'rgba(0,0,0,0.55)');
+      ux.fillStyle = b.col; ux.beginPath(); ux.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2); ux.fill();
+      ux.fillStyle = g; ux.globalAlpha = 0.85; ux.beginPath(); ux.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2); ux.fill(); ux.globalAlpha = 1;
+      ux.fillStyle = b.col; ux.beginPath(); ux.moveTo(x, y + ry - 2); ux.lineTo(x - 8, y + ry + 12); ux.lineTo(x + 8, y + ry + 12); ux.closePath(); ux.fill();
+      ux.fillStyle = 'rgba(255,255,255,0.7)'; ux.beginPath(); ux.ellipse(x - rx * 0.4, y - ry * 0.45, rx * 0.16, ry * 0.26, -0.5, 0, Math.PI * 2); ux.fill();
+    });
+  }
+  function drawFinishTitle(t) {
+    if (t < 0.4) return;
+    var k = Math.min(1, (t - 0.4) / 0.6), sc = 1 + Math.sin(k * Math.PI) * 0.25 + (k >= 1 ? Math.sin(t * 3) * 0.02 : 0), cxp = UW / 2, cyp = 330;
+    ux.save(); ux.globalAlpha = k; ux.translate(cxp, cyp); ux.scale(sc * k, sc * k);
+    ux.font = 'italic 900 330px ' + FONT; ux.textAlign = 'center'; ux.textBaseline = 'alphabetic'; ux.lineJoin = 'round';
+    ux.shadowColor = '#ff4ae0'; ux.shadowBlur = 50; ux.lineWidth = 46; ux.strokeStyle = '#1a0f4a'; ux.strokeText('FINISH', 0, 110);
+    ux.shadowBlur = 0; ux.lineWidth = 22; ux.strokeStyle = '#ffffff'; ux.strokeText('FINISH', 0, 110);
+    var gr = ux.createLinearGradient(0, -170, 0, 120); gr.addColorStop(0, '#fff3a0'); gr.addColorStop(0.45, '#ffc21f'); gr.addColorStop(0.5, '#ff7a1f'); gr.addColorStop(1, '#ff2a7a');
+    ux.fillStyle = gr; ux.fillText('FINISH', 0, 110);
+    ux.fillStyle = 'rgba(255,255,255,0.35)'; ux.save(); ux.beginPath(); ux.rect(-700, -170, 1400, 120); ux.clip(); ux.fillText('FINISH', 0, 110); ux.restore();
+    ux.restore();
+    // stelline che brillano intorno alla scritta
+    for (var i = 0; i < 9; i++) {
+      var a = (t * 2 + i * 0.7) % 2, sx = cxp + Math.cos(i * 2.4) * 640, sy = cyp - 40 + Math.sin(i * 3.1) * 130, r = 18 * Math.max(0, 1 - Math.abs(a - 1)) * k;
+      if (r > 1) { ux.fillStyle = '#ffffff'; ux.beginPath(); ux.moveTo(sx, sy - r * 2); ux.lineTo(sx + r * 0.5, sy - r * 0.5); ux.lineTo(sx + r * 2, sy); ux.lineTo(sx + r * 0.5, sy + r * 0.5); ux.lineTo(sx, sy + r * 2); ux.lineTo(sx - r * 0.5, sy + r * 0.5); ux.lineTo(sx - r * 2, sy); ux.lineTo(sx - r * 0.5, sy - r * 0.5); ux.closePath(); ux.fill(); }
+    }
+  }
   function drawClip(t) {
     if (!clipCar) clipCar = G.carHD('cheer', 6);
     var cp = clipPos(t), h = cp.w * clipCar.height / clipCar.width;
@@ -939,7 +1010,8 @@
     });
     clipSmoke.forEach(function (m) { if (m.y <= cp.y - h * 0.3) return; G.E(ux, m.x, m.y, m.r, m.r * 0.7, 'rgba(235,235,240,' + (m.a * 0.8) + ')'); });
     ux.restore();
-    if (t > CLIP_BURN + 1.5) txt('SEE YOU ON THE RIVIERA!', UW / 2, 200, 84, '#ffe14a', 'center', true);
+    drawBalloons(t); drawFinishTitle(t);
+    if (t > CLIP_BURN + 1.5) txt('SEE YOU ON THE RIVIERA!', UW / 2, 470, 84, '#ffe14a', 'center', true);
     if (t > CLIP_LEN - 0.8) { ux.fillStyle = 'rgba(10,6,40,' + Math.min(1, (t - CLIP_LEN + 0.8) / 0.8) + ')'; ux.fillRect(0, 0, UW, UH); }
   }
   function drawEnding() {

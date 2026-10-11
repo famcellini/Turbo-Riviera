@@ -405,6 +405,7 @@ var TR = window.TR = window.TR || {};
     goal: function () { arp([67, 72, 76, 79, 84, 88, 91, 96], 0.09, 'square', 0.15); },
     tick: function () { tone(1760, 0.05, 'square', 0.09); },
     radio: function () { if (!AC) return; noiseHit(AC.currentTime, 0.3, 0.25, 'bandpass', 2500, 0.6, sfxBus); tone(3000, 0.06, 'sine', 0.05); },
+    splash: function () { if (!AC) return; noiseHit(AC.currentTime, 0.3, 0.3, 'bandpass', 1800, 0.7, sfxBus); tone(260, 0.18, 'triangle', 0.2, 120); },
     pause: function () { arp([79, 72], 0.08, 'square', 0.12); },
     letter: function () { tone(880, 0.05, 'square', 0.1); },
     over: function () { arp([72, 71, 70, 69, 67, 60], 0.14, 'triangle', 0.18); }

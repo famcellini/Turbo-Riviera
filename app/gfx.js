@@ -340,6 +340,14 @@ var TR = window.TR = window.TR || {};
     def('bill' + i, 120, 76, 600, billboard(a[0], a[1], a[2], a[3]));
     def('neon' + i, 120, 76, 600, billboard(a[0], '#14102a', a[4], a[3], true));
   });
+  // pozzanghera: ellisse piatta, trasparente ai bordi, con riflesso del cielo
+  def('puddle', 120, 22, 900, function (g, w, h) {
+    var gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, 'rgba(150,200,240,0.9)'); gr.addColorStop(1, 'rgba(40,80,140,0.92)');
+    g.fillStyle = 'rgba(30,50,90,0.55)'; g.beginPath(); g.ellipse(w / 2, h / 2 + 1, w / 2, h / 2, 0, 0, Math.PI * 2); g.fill();
+    g.fillStyle = gr; g.beginPath(); g.ellipse(w / 2, h / 2, w / 2 - 3, h / 2 - 2, 0, 0, Math.PI * 2); g.fill();
+    g.fillStyle = 'rgba(255,255,255,0.65)'; g.beginPath(); g.ellipse(w * 0.4, h * 0.38, w * 0.2, h * 0.12, 0, 0, Math.PI * 2); g.fill();
+    g.fillStyle = 'rgba(255,255,255,0.35)'; g.fillRect(w * 0.55, h * 0.58, w * 0.22, 1.5);
+  }, { nc: true });
   function chevron(left) {
     return function (g, w, h) {
       R(g, w / 2 - 2, 26, 4, h - 26, '#8a8f98'); R(g, 2, 2, w - 4, 26, '#202020'); R(g, 4, 4, w - 8, 22, '#ffd21f');
