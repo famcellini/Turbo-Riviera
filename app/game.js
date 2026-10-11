@@ -8,7 +8,7 @@
   var cv = document.getElementById('game'), cx = cv.getContext('2d');
   var uv = document.getElementById('ui'), ux = uv.getContext('2d');
   // risoluzione di disegno del mondo (strada, sfondo, sprite): più bassa = più veloce; le coordinate restano 640x360
-  var RS = 0.56;
+  var RS = 0.8;
   cv.width = Math.round(W * RS); cv.height = Math.round(H * RS); uv.width = UW; uv.height = UH;
   cx.setTransform(RS, 0, 0, RS, 0, 0);
   cx.imageSmoothingEnabled = false;
@@ -27,7 +27,7 @@
 
   /* ================= COSTANTI ================= */
   var SEG = 200, ROADW = 1800, LANES = 4, RUMBLE = 3, CAMH = 1500, DEPTH = 1 / Math.tan(50 * Math.PI / 180);
-  var DRAW = 200, PZ = CAMH * DEPTH, MAXS = SEG * 60, FORKC = 1.85, PW = 0.33, CENT = 0.3, FOGD = 1.2, STUB = 20;
+  var DRAW = 180, PZ = CAMH * DEPTH, MAXS = SEG * 60, FORKC = 1.85, PW = 0.33, CENT = 0.3, FOGD = 1.2, STUB = 20;
   var LANEX = [-0.75, -0.25, 0.25, 0.75];
 
   /* ================= TAPPE (15, a piramide come i bivi) ================= */
