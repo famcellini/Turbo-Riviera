@@ -29,35 +29,35 @@
 
   /* ================= TAPPE (15, a piramide come i bivi) ================= */
   var TH = [
-    { n: 'Riviera Azzurra', sky: ['#1f7fe8', '#a8dcff'], fog: '#b8e2ff', sun: [0.78, 0.16, 16, '#fff8d0'], far: 'sea', farC: ['#1a66c8', '#5ab0ff', '#5a8aa0'], clouds: 1,
+    { n: 'Azure Riviera', sky: ['#1f7fe8', '#a8dcff'], fog: '#b8e2ff', sun: [0.78, 0.16, 16, '#fff8d0'], far: 'sea', farC: ['#1a66c8', '#5ab0ff', '#5a8aa0'], clouds: 1,
       grass: ['#ecd592', '#e2c982'], road: ['#727272', '#6b6b6b'], rumble: ['#ffffff', '#e02020'], lane: '#ffffff', spr: [['ad', 0.9], ['palm', 6], ['umbrella', 3], ['lighthouse', 0.4]], dens: 0.55 },
-    { n: 'Colline Toscane', sky: ['#3a8ef0', '#d8eeff'], fog: '#d8eeff', sun: [0.25, 0.14, 14, '#fff8d0'], far: 'mount', farC: ['#8aa8c8', '#7aa070'], near: 'trees', nearC: ['#5a8a3a', '#3a6a2a'], clouds: 1,
+    { n: 'Tuscan Hills', sky: ['#3a8ef0', '#d8eeff'], fog: '#d8eeff', sun: [0.25, 0.14, 14, '#fff8d0'], far: 'mount', farC: ['#8aa8c8', '#7aa070'], near: 'trees', nearC: ['#5a8a3a', '#3a6a2a'], clouds: 1,
       grass: ['#a8c048', '#9ab43e'], road: ['#727272', '#6b6b6b'], rumble: ['#ffffff', '#c02020'], lane: '#ffffff', spr: [['ad', 0.9], ['cypress', 6], ['haybale', 2], ['oak', 2]], dens: 0.5 },
-    { n: 'Canyon Rosso', sky: ['#ff8a3a', '#ffd9a0'], fog: '#ffd0a0', sun: [0.7, 0.3, 24, '#fff0a0'], far: 'mesa', farC: ['#b04a2a', '#d0683a'],
+    { n: 'Red Canyon', sky: ['#ff8a3a', '#ffd9a0'], fog: '#ffd0a0', sun: [0.7, 0.3, 24, '#fff0a0'], far: 'mesa', farC: ['#b04a2a', '#d0683a'],
       grass: ['#d07a48', '#c46e3e'], road: ['#7a6a60', '#746458'], rumble: ['#ffffff', '#303030'], lane: '#ffffff', spr: [['ad', 0.9], ['redrock', 3], ['cactus', 3], ['drybush', 2], ['rock', 2]], dens: 0.45 },
-    { n: 'Lago Alpino', sky: ['#2a7ae0', '#cfe6ff'], fog: '#d8ecff', sun: [0.6, 0.12, 14, '#ffffff'], far: 'snow', farC: ['#6a7fa8', '#4a6a8a'], near: 'trees', nearC: ['#2a5a3a', '#1d4a2a'], clouds: 1,
+    { n: 'Alpine Lake', sky: ['#2a7ae0', '#cfe6ff'], fog: '#d8ecff', sun: [0.6, 0.12, 14, '#ffffff'], far: 'snow', farC: ['#6a7fa8', '#4a6a8a'], near: 'trees', nearC: ['#2a5a3a', '#1d4a2a'], clouds: 1,
       grass: ['#4aa04a', '#3f923f'], road: ['#6e6e74', '#68686e'], rumble: ['#ffffff', '#2050c0'], lane: '#ffffff', spr: [['ad', 0.9], ['pine', 6], ['rock', 2], ['bush', 1]], dens: 0.55 },
-    { n: 'Città di Notte', night: 1, sky: ['#05061a', '#2a1a50'], fog: '#241848', moon: [0.2, 0.15, 10, '#f0f0ff'], far: 'city', farC: ['#1a1838', '#24204a'],
+    { n: 'Night City', night: 1, sky: ['#05061a', '#2a1a50'], fog: '#241848', moon: [0.2, 0.15, 10, '#f0f0ff'], far: 'city', farC: ['#1a1838', '#24204a'],
       grass: ['#2a2a3a', '#262636'], road: ['#3c3c46', '#383840'], rumble: ['#c0c0c0', '#c02020'], lane: '#e0e0e0', spr: [['nad', 1.6], ['nbld0', 2], ['nbld1', 2], ['nbld2', 2], ['nlamp', 4]], dens: 0.65 },
-    { n: "Deserto d'Oro", sky: ['#3a9af0', '#f8e8b0'], fog: '#f8e8b0', sun: [0.5, 0.1, 18, '#ffffff'], far: 'dunes', farC: ['#e0b060', '#d09a50'],
+    { n: 'Golden Desert', sky: ['#3a9af0', '#f8e8b0'], fog: '#f8e8b0', sun: [0.5, 0.1, 18, '#ffffff'], far: 'dunes', farC: ['#e0b060', '#d09a50'],
       grass: ['#eac47a', '#e0b86c'], road: ['#7a7470', '#74706a'], rumble: ['#ffffff', '#d06020'], lane: '#ffffff', spr: [['ad', 0.9], ['cactus', 3], ['dune', 2], ['drybush', 2], ['rock', 1]], dens: 0.4 },
-    { n: "Foresta d'Autunno", sky: ['#5a90d0', '#f0d8b0'], fog: '#f0dcc0', sun: [0.3, 0.2, 16, '#fff0c0'], far: 'mount', farC: ['#8a7aa0', '#a06a40'], near: 'trees', nearC: ['#a04a20', '#c0602a'], clouds: 1,
+    { n: 'Autumn Forest', sky: ['#5a90d0', '#f0d8b0'], fog: '#f0dcc0', sun: [0.3, 0.2, 16, '#fff0c0'], far: 'mount', farC: ['#8a7aa0', '#a06a40'], near: 'trees', nearC: ['#a04a20', '#c0602a'], clouds: 1,
       grass: ['#8a8a30', '#7e7e2a'], road: ['#6e6a66', '#686460'], rumble: ['#ffffff', '#d07020'], lane: '#ffffff', spr: [['ad', 0.9], ['autumn', 6], ['oak', 1], ['bush', 1]], dens: 0.55 },
-    { n: 'Valle dei Templi', sky: ['#3a2a7a', '#ff9a5a'], fog: '#ffa070', sun: [0.65, 0.34, 26, '#ffd060'], far: 'mount', farC: ['#6a4a6a', '#8a5a5a'],
+    { n: 'Valley of Temples', sky: ['#3a2a7a', '#ff9a5a'], fog: '#ffa070', sun: [0.65, 0.34, 26, '#ffd060'], far: 'mount', farC: ['#6a4a6a', '#8a5a5a'],
       grass: ['#c0a050', '#b49648'], road: ['#7a6e66', '#746860'], rumble: ['#ffffff', '#a03020'], lane: '#ffffff', spr: [['ad', 0.9], ['column', 4], ['ruins', 2], ['cypress', 2], ['drybush', 1]], dens: 0.5 },
-    { n: 'Costa Tropicale', sky: ['#ff5a9a', '#ffd0a0'], fog: '#ffd0b0', sun: [0.35, 0.3, 22, '#fff0b0'], far: 'sea', farC: ['#2a6ad0', '#ff9ac0', '#7a4a8a'], clouds: 1, cloudC: 'rgba(255,220,240,0.8)',
+    { n: 'Tropical Coast', sky: ['#ff5a9a', '#ffd0a0'], fog: '#ffd0b0', sun: [0.35, 0.3, 22, '#fff0b0'], far: 'sea', farC: ['#2a6ad0', '#ff9ac0', '#7a4a8a'], clouds: 1, cloudC: 'rgba(255,220,240,0.8)',
       grass: ['#f4dca0', '#eacf90'], road: ['#747070', '#6e6a6a'], rumble: ['#ffffff', '#ff4a90'], lane: '#ffffff', spr: [['ad', 0.9], ['palm', 7], ['umbrella', 2]], dens: 0.6 },
-    { n: 'Altopiano Ventoso', sky: ['#7a8aa8', '#d0d8e0'], fog: '#d0d8e0', far: 'mount', farC: ['#7a8a9a', '#6a7a6a'], near: 'hills', nearC: ['#6a8a4a', '#5a7a3a'], clouds: 1, cloudC: 'rgba(230,234,240,0.9)',
+    { n: 'Windy Plateau', sky: ['#7a8aa8', '#d0d8e0'], fog: '#d0d8e0', far: 'mount', farC: ['#7a8a9a', '#6a7a6a'], near: 'hills', nearC: ['#6a8a4a', '#5a7a3a'], clouds: 1, cloudC: 'rgba(230,234,240,0.9)',
       grass: ['#7aa048', '#6e9440'], road: ['#6a6a6a', '#646464'], rumble: ['#ffffff', '#404040'], lane: '#ffffff', spr: [['ad', 0.9], ['rock', 3], ['bush', 3], ['drybush', 2]], dens: 0.45 },
-    { n: 'Passo del Ghiacciaio', sky: ['#3a6ad0', '#e8f4ff'], fog: '#eef6ff', sun: [0.8, 0.12, 13, '#ffffff'], far: 'snow', farC: ['#9ab0d0', '#c0d0e8'], near: 'hills', nearC: ['#e8f0ff', '#c8d8f0'],
+    { n: 'Glacier Pass', sky: ['#3a6ad0', '#e8f4ff'], fog: '#eef6ff', sun: [0.8, 0.12, 13, '#ffffff'], far: 'snow', farC: ['#9ab0d0', '#c0d0e8'], near: 'hills', nearC: ['#e8f0ff', '#c8d8f0'],
       grass: ['#f4f8ff', '#e2eaf6'], road: ['#6a6e78', '#646872'], rumble: ['#d02020', '#ffffff'], lane: '#ffffff', spr: [['ad', 0.9], ['snowpine', 5], ['ice', 2], ['snowman', 0.5]], dens: 0.55 },
     { n: 'Vulcano', sky: ['#2a0a0a', '#c03a1a'], fog: '#a0401a', far: 'volcano', farC: ['#2a1a1a', '#3a2222'],
       grass: ['#3a3030', '#342a2a'], road: ['#4a4446', '#444042'], rumble: ['#ffcc00', '#202020'], lane: '#ffcc00', spr: [['ad', 0.9], ['lavarock', 5], ['rock', 1]], dens: 0.45 },
     { n: 'Metropoli', night: 1, sky: ['#0a0420', '#5a1a6a'], fog: '#4a1658', moon: [0.82, 0.12, 9, '#ffe0ff'], far: 'city', farC: ['#1a1030', '#2a1440'],
       grass: ['#26203a', '#221c34'], road: ['#3a3644', '#36323f'], rumble: ['#ff4ae0', '#4af0ff'], lane: '#ffffff', spr: [['nad', 1.6], ['nbld0', 3], ['nbld1', 3], ['nbld2', 3], ['nlamp', 3]], dens: 0.7 },
-    { n: 'Oasi Lontana', sky: ['#4aa0f0', '#fff0c0'], fog: '#fff0c8', sun: [0.2, 0.12, 18, '#ffffff'], far: 'dunes', farC: ['#e8b868', '#d8a458'],
+    { n: 'Distant Oasis', sky: ['#4aa0f0', '#fff0c0'], fog: '#fff0c8', sun: [0.2, 0.12, 18, '#ffffff'], far: 'dunes', farC: ['#e8b868', '#d8a458'],
       grass: ['#ecc880', '#e2bc72'], road: ['#7a7470', '#74706a'], rumble: ['#ffffff', '#20a060'], lane: '#ffffff', spr: [['ad', 0.9], ['palm', 4], ['dune', 2], ['cactus', 1], ['drybush', 1]], dens: 0.45 },
-    { n: 'Porto al Tramonto', sky: ['#4a2a8a', '#ffb070'], fog: '#ffb88a', sun: [0.5, 0.33, 28, '#ffd060'], far: 'sea', farC: ['#3a4aa0', '#ffb080', '#4a3a6a'],
+    { n: 'Sunset Harbour', sky: ['#4a2a8a', '#ffb070'], fog: '#ffb88a', sun: [0.5, 0.33, 28, '#ffd060'], far: 'sea', farC: ['#3a4aa0', '#ffb080', '#4a3a6a'],
       grass: ['#a8a4a0', '#9e9a96'], road: ['#6a6670', '#64606a'], rumble: ['#ffffff', '#2050c0'], lane: '#ffffff', spr: [['ad', 0.9], ['lamp', 4], ['lighthouse', 1], ['palm', 2], ['umbrella', 1]], dens: 0.55 }
   ];
   TH.forEach(function (t, i) { t.seed = i * 31 + 5; t.rgb = {}; ['fog', 'lane'].forEach(function (k) { t.rgb[k] = rgb(t[k]); }); ['sky', 'grass', 'road', 'rumble'].forEach(function (k) { t.rgb[k] = [rgb(t[k][0]), rgb(t[k][1])]; }); });
@@ -98,7 +98,7 @@
     var lv = levelOf(id), th = TH[id], r = TR.rng(id * 977 + 13 + (first === 'demo' ? 5 : 0)), n, i;
     B = { segs: [], id: id, lv: lv, gateIdx: -1, forkStart: -1, final: lv === 4 };
     var gates = [];
-    if (first) { addRoad(0, 50, 0, 0, 0); gates.push([10, 'PARTENZA', '#1e64d0', 0]); }
+    if (first) { addRoad(0, 50, 0, 0, 0); gates.push([10, 'START', '#1e64d0', 0]); }
     else {
       for (n = 0; n < STUB; n++) addSeg(0, 0, 1);
       for (n = 0; n < 150; n++) addSeg(0, 0, easeInOut(1, 0, n / 150));
@@ -161,7 +161,7 @@
       B.gateIdx = B.segs.length;
       addRoad(0, 320, 0, 0, 0);
       lamps(B.gateIdx - 60, B.gateIdx + 200, th.night);
-      gates.push([B.gateIdx, 'TRAGUARDO', '#18a040', 0]);
+      gates.push([B.gateIdx, 'FINISH', '#18a040', 0]);
     }
     var gc = {};
     gates.forEach(function (gd) { var key = gd[1] + gd[2]; gc[key] = gc[key] || G.gate(gd[1], gd[2]); B.segs[gd[0]].spr = []; addSpr(gd[0], gc[key], gd[3]); });
@@ -194,8 +194,8 @@
   var autoGas = store.get('tr_auto', true), station = store.get('tr_station', 0);
   var lapTimes = [], countN = 3, demo = false, nameChars = [0, 0, 0], namePos = 0, newRank = -1, endBonus = 0;
   var scores = store.get('tr_scores', null) || [
-    { n: 'ELE', s: 3500000, st: 'Porto al Tramonto' }, { n: 'CRI', s: 2800000, st: 'Vulcano' },
-    { n: 'MAX', s: 2000000, st: "Foresta d'Autunno" }, { n: 'SOF', s: 1200000, st: 'Lago Alpino' }, { n: 'TEO', s: 600000, st: 'Colline Toscane' }];
+    { n: 'ELE', s: 3500000, st: 'Sunset Harbour' }, { n: 'CRI', s: 2800000, st: 'Vulcano' },
+    { n: 'MAX', s: 2000000, st: 'Autumn Forest' }, { n: 'SOF', s: 1200000, st: 'Alpine Lake' }, { n: 'TEO', s: 600000, st: 'Tuscan Hills' }];
   var stationShowT = 0;
 
   function findSeg(z) { var i = Math.floor(z / SEG); if (i < 0) i = 0; if (i >= T.segs.length) i = T.segs.length - 1; return T.segs[i]; }
@@ -240,8 +240,8 @@
     var add = Math.ceil(stageSecs(T) - (STUB + 0) * SEG / (MAXS * 0.8)) + 2 - T.lv;
     timeLeft += add;
     A.sfx.checkpoint();
-    showMsg('TEMPO EXTRA!', '#ffe14a', 3, 'big');
-    showMsg('+' + add + ' SECONDI', '#ffffff', 3, 'small');
+    showMsg('EXTRA TIME!', '#ffe14a', 3, 'big');
+    showMsg('+' + add + ' SECONDS', '#ffffff', 3, 'small');
     showMsg(TH[next].n.toUpperCase(), '#ffffff', 4, 'stage');
     mapT = 5;
     score += 100000;
@@ -416,7 +416,7 @@
         if (stateT > 0.6 && countN === 3) { A.sfx.beep(); countN = 2.5; }
         if (stateT > 1.6 && countN === 2.5) { A.sfx.beep(); countN = 2; }
         if (stateT > 2.6 && countN === 2) { A.sfx.beep(); countN = 1; }
-        if (stateT > 3.6) { A.sfx.go(); state = 'play'; stateT = 0; showMsg('VIA!', '#ffe14a', 1.2, 'go'); }
+        if (stateT > 3.6) { A.sfx.go(); state = 'play'; stateT = 0; showMsg('GO!', '#ffe14a', 1.2, 'go'); }
         if (pressed.back) { state = 'pause'; pauseSel = 0; A.sfx.pause(); }
         if (pressed.red) nextStation(1);
         break;
@@ -430,16 +430,16 @@
         var rpm = gearHi ? 0.45 + (spd - 0.4) / 0.6 * 0.55 : spd / 0.52;
         A.engine(true, Math.max(0.12, rpm), skid, offroad, spd);
         if (position + PZ >= T.gateIdx * SEG) {
-          if (T.final) { lapTimes.push(stageTime); state = 'goal'; stateT = 0; A.sfx.goal(); A.playSong(3); endBonus = Math.max(0, Math.floor(timeLeft)) * 50000; showMsg('TRAGUARDO!', '#ffe14a', 4, 'big'); }
+          if (T.final) { lapTimes.push(stageTime); state = 'goal'; stateT = 0; A.sfx.goal(); A.playSong(3); endBonus = Math.max(0, Math.floor(timeLeft)) * 50000; showMsg('FINISH!', '#ffe14a', 4, 'big'); }
           else checkpoint();
         }
         if (T.forkStart > 0 && position + PZ > (T.forkStart - 40) * SEG && position + PZ < T.gateIdx * SEG && Math.floor(stateT * 2) % 2 === 0 && !msg.some(function (m) { return m.k === 'fork'; }))
-          showMsg('BIVIO!  SCEGLI LA STRADA', '#ffe14a', 2.5, 'fork');
+          showMsg('FORK!  CHOOSE YOUR ROAD', '#ffe14a', 2.5, 'fork');
         if (timeLeft <= 0) { timeLeft = 0; state = 'timeup'; stateT = 0; A.sfx.over(); }
         if (pressed.back) { state = 'pause'; pauseSel = 0; A.sfx.pause(); }
         if (pressed.red) nextStation(1);
         if (pressed.green) A.setMute(!A.isMuted());
-        if (pressed.yellow) { autoGas = !autoGas; store.set('tr_auto', autoGas); showMsg(autoGas ? 'ACCELERATORE AUTOMATICO' : 'ACCELERATORE: TIENI OK', '#ffffff', 2, 'small'); }
+        if (pressed.yellow) { autoGas = !autoGas; store.set('tr_auto', autoGas); showMsg(autoGas ? 'AUTO THROTTLE' : 'THROTTLE: HOLD OK', '#ffffff', 2, 'small'); }
         break;
       case 'pause':
         A.engine(false, 0, false, false, 0);
@@ -672,20 +672,20 @@
     ux.fillStyle = col; ux.fillText(s, x, y);
   }
   function fmtT(t) { var m = Math.floor(t / 60), s = Math.floor(t % 60), c = Math.floor((t * 100) % 100); return m + "'" + (s < 10 ? '0' : '') + s + '"' + (c < 10 ? '0' : '') + c; }
-  function fmtN(n) { return String(Math.floor(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+  function fmtN(n) { return String(Math.floor(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
   function panel(x, y, w, h, a) { ux.fillStyle = 'rgba(10,8,30,' + (a == null ? 0.72 : a) + ')'; ux.fillRect(x, y, w, h); ux.strokeStyle = '#ff4ae0'; ux.lineWidth = 4; ux.strokeRect(x, y, w, h); }
 
   function hud() {
     var spd = speed / MAXS, kmh = Math.round(spd * 293);
     // tempo
-    txt('TEMPO', 70, 80, 40, '#ffe14a', 'left', true);
+    txt('TIME', 70, 80, 40, '#ffe14a', 'left', true);
     var tl = Math.ceil(Math.max(0, timeLeft)), low = timeLeft < 10 && Math.floor(stateT * 4) % 2 === 0;
     txt(String(tl), 80, 200, 130, low ? '#ff3030' : '#ffffff', 'left', true);
     // punteggio
-    txt('PUNTI', UW / 2, 70, 36, '#ff7ab0', 'center', true);
+    txt('SCORE', UW / 2, 70, 36, '#ff7ab0', 'center', true);
     txt(fmtN(score), UW / 2, 140, 64, '#ffffff', 'center', true);
     // giro
-    txt('TAPPA ' + (levelOf(stageId) + 1) + ' / 5', UW - 70, 70, 36, '#4af0ff', 'right', true);
+    txt('STAGE ' + (levelOf(stageId) + 1) + ' / 5', UW - 70, 70, 36, '#4af0ff', 'right', true);
     txt(fmtT(stageTime), UW - 70, 140, 56, '#ffffff', 'right', true);
     // tachimetro
     var bx = 70, by = UH - 70;
@@ -752,17 +752,17 @@
     if (!logoCanvas) makeLogo();
     ux.fillStyle = 'rgba(10,6,40,0.25)'; ux.fillRect(0, 0, UW, UH);
     ux.drawImage(logoCanvas, (UW - 1400) / 2, 20);
-    var items = ['GIOCA', 'CLASSIFICA', 'ACCELERATORE: ' + (autoGas ? 'AUTOMATICO' : 'MANUALE'), 'AUDIO: ' + (A.isMuted() ? 'NO' : 'SÌ')];
+    var items = ['PLAY', 'HIGH SCORES', 'THROTTLE: ' + (autoGas ? 'AUTO' : 'MANUAL'), 'SOUND: ' + (A.isMuted() ? 'OFF' : 'ON')];
     items.forEach(function (it, i) {
       var sel = i === menuSel, y = 640 + i * 90;
       if (sel) { ux.fillStyle = 'rgba(255,74,224,0.35)'; ux.fillRect(UW / 2 - 470, y - 66, 940, 84); }
       txt((sel ? '▶ ' : '') + it, UW / 2, y, sel ? 64 : 54, sel ? '#ffe14a' : '#ffffff', 'center', true);
     });
-    txt('▲▼ scegli   OK conferma   ROSSO radio   VERDE audio   INDIETRO esci', UW / 2, UH - 50, 32, '#ffffff', 'center', false);
+    txt('▲▼ select   OK confirm   RED radio   GREEN sound   BACK exit', UW / 2, UH - 50, 32, '#ffffff', 'center', false);
   }
   function drawRank() {
     ux.fillStyle = 'rgba(10,6,40,0.55)'; ux.fillRect(0, 0, UW, UH);
-    txt('CLASSIFICA', UW / 2, 170, 110, '#ffe14a', 'center', true);
+    txt('HIGH SCORES', UW / 2, 170, 110, '#ffe14a', 'center', true);
     scores.forEach(function (r, i) {
       var y = 330 + i * 120, hl = i === newRank && Math.floor(stateT * 4) % 2 === 0;
       var col = hl ? '#ff4ae0' : '#ffffff';
@@ -771,11 +771,11 @@
       txt(fmtN(r.s), 1150, y, 70, col, 'right', true);
       txt(r.st || '', 1220, y, 42, '#ffe14a', 'left', true);
     });
-    txt('OK per tornare', UW / 2, UH - 60, 36, '#ffffff', 'center', false);
+    txt('OK to go back', UW / 2, UH - 60, 36, '#ffffff', 'center', false);
   }
   function drawRadio() {
     ux.fillStyle = 'rgba(10,6,40,0.45)'; ux.fillRect(0, 0, UW, UH);
-    txt('SCEGLI LA RADIO', UW / 2, 170, 100, '#ffe14a', 'center', true);
+    txt('CHOOSE YOUR RADIO', UW / 2, 170, 100, '#ffe14a', 'center', true);
     // autoradio
     var x = 260, y = 280, w = 1400, h = 520;
     ux.fillStyle = '#1a1a22'; ux.fillRect(x, y, w, h); ux.strokeStyle = '#6a6a78'; ux.lineWidth = 8; ux.strokeRect(x, y, w, h);
@@ -794,43 +794,43 @@
       txt(A.songs[i].name, bxx + 180, y + 420, 38, sel ? '#1a1a22' : '#ffffff', 'center', false, 0);
       txt('FM ' + A.songs[i].fm, bxx + 180, y + 465, 32, sel ? '#1a1a22' : '#aaaacc', 'center', false, 0);
     }
-    txt('◀ ▶ cambia stazione     OK  PARTI!', UW / 2, UH - 120, 54, '#ffffff', 'center', true);
-    txt('Durante la corsa il tasto ROSSO cambia stazione', UW / 2, UH - 50, 34, '#ffe14a', 'center', false);
+    txt('◀ ▶ change station     OK  GO!', UW / 2, UH - 120, 54, '#ffffff', 'center', true);
+    txt('While driving, the RED button changes station', UW / 2, UH - 50, 34, '#ffe14a', 'center', false);
   }
   function drawPause() {
     ux.fillStyle = 'rgba(10,6,40,0.6)'; ux.fillRect(0, 0, UW, UH);
-    txt('PAUSA', UW / 2, 230, 130, '#ffe14a', 'center', true);
+    txt('PAUSE', UW / 2, 230, 130, '#ffe14a', 'center', true);
     var s = A.songs[station];
-    var items = ['RIPRENDI', '◀ RADIO: ' + s.name.toUpperCase() + ' ▶', 'ACCELERATORE: ' + (autoGas ? 'AUTOMATICO' : 'MANUALE'), 'RICOMINCIA', 'TORNA AL TITOLO'];
+    var items = ['RESUME', '◀ RADIO: ' + s.name.toUpperCase() + ' ▶', 'THROTTLE: ' + (autoGas ? 'AUTO' : 'MANUAL'), 'RESTART', 'BACK TO TITLE'];
     items.forEach(function (it, i) {
       var sel = i === pauseSel, y = 420 + i * 100;
       if (sel) { ux.fillStyle = 'rgba(255,74,224,0.35)'; ux.fillRect(UW / 2 - 560, y - 70, 1120, 90); }
       txt(it, UW / 2, y, sel ? 64 : 54, sel ? '#ffe14a' : '#ffffff', 'center', true);
     });
-    txt('◀ ▶ sterzo   ▼ freno   ' + (autoGas ? 'acceleratore automatico (▲ o OK non servono)' : '▲ / OK accelera') + '   GIALLO cambia acceleratore', UW / 2, UH - 50, 30, '#ffffff', 'center', false);
+    txt('◀ ▶ steer   ▼ brake   ' + (autoGas ? 'auto throttle (no need for ▲ or OK)' : '▲ / OK accelerate') + '   YELLOW toggles throttle', UW / 2, UH - 50, 30, '#ffffff', 'center', false);
   }
   function drawEnding() {
     ux.fillStyle = 'rgba(10,6,40,' + Math.min(0.75, stateT * 0.5) + ')'; ux.fillRect(0, 0, UW, UH);
     if (!logoCanvas) makeLogo();
-    txt('COMPLIMENTI!', UW / 2, 220, 140, '#ffe14a', 'center', true);
-    txt('Sei arrivato a: ' + TH[stageId].n, UW / 2, 340, 64, '#ffffff', 'center', true);
-    txt('Tempo totale ' + fmtT(totalTime), UW / 2, 450, 56, '#4af0ff', 'center', true);
-    txt('Punti ' + fmtN(score), UW / 2, 560, 72, '#ff7ab0', 'center', true);
+    txt('CONGRATULATIONS!', UW / 2, 220, 140, '#ffe14a', 'center', true);
+    txt('You reached: ' + TH[stageId].n, UW / 2, 340, 64, '#ffffff', 'center', true);
+    txt('Total time ' + fmtT(totalTime), UW / 2, 450, 56, '#4af0ff', 'center', true);
+    txt('Score ' + fmtN(score), UW / 2, 560, 72, '#ff7ab0', 'center', true);
     drawMap(UW - 330, 620, 0.9);
-    if (stateT > 2 && Math.floor(stateT * 2) % 2 === 0) txt('premi OK', UW / 2, UH - 50, 44, '#ffffff', 'center', true);
+    if (stateT > 2 && Math.floor(stateT * 2) % 2 === 0) txt('press OK', UW / 2, UH - 50, 44, '#ffffff', 'center', true);
   }
   function drawName() {
     ux.fillStyle = 'rgba(10,6,40,0.7)'; ux.fillRect(0, 0, UW, UH);
-    txt('NUOVO RECORD!', UW / 2, 200, 120, '#ffe14a', 'center', true);
-    txt((newRank + 1) + '° posto  -  ' + fmtN(score) + ' punti', UW / 2, 320, 60, '#ffffff', 'center', true);
-    txt('Scrivi le tue iniziali', UW / 2, 430, 50, '#4af0ff', 'center', true);
+    txt('NEW RECORD!', UW / 2, 200, 120, '#ffe14a', 'center', true);
+    txt(['1st', '2nd', '3rd', '4th', '5th'][newRank] + ' place  -  ' + fmtN(score) + ' points', UW / 2, 320, 60, '#ffffff', 'center', true);
+    txt('Enter your initials', UW / 2, 430, 50, '#4af0ff', 'center', true);
     for (var i = 0; i < 3; i++) {
       var x = UW / 2 + (i - 1) * 220, sel = i === namePos;
       ux.fillStyle = sel ? 'rgba(255,74,224,0.45)' : 'rgba(255,255,255,0.12)'; ux.fillRect(x - 90, 500, 180, 220);
       txt(LETTERS[nameChars[i]], x, 680, 160, sel ? '#ffe14a' : '#ffffff', 'center', true);
       if (sel) { txt('▲', x, 495, 50, '#ffffff', 'center', false); txt('▼', x, 780, 50, '#ffffff', 'center', false); }
     }
-    txt('▲▼ lettera   ◀ ▶ sposta   OK conferma', UW / 2, UH - 70, 44, '#ffffff', 'center', false);
+    txt('▲▼ letter   ◀ ▶ move   OK confirm', UW / 2, UH - 70, 44, '#ffffff', 'center', false);
   }
 
   function render() {
@@ -851,8 +851,8 @@
         break;
       case 'play': hud(); drawMsgs(); if (mapT > 0) drawMap(UW - 320, 260, 0.8); break;
       case 'pause': hud(); drawPause(); break;
-      case 'timeup': hud(); if (Math.floor(stateT * 3) % 2 === 0) txt('TEMPO SCADUTO', UW / 2, 460, 140, '#ff3030', 'center', true); txt('GAME OVER', UW / 2, 600, 80, '#ffffff', 'center', true); break;
-      case 'goal': hud(); drawMsgs(); if (stateT > 1) txt('BONUS TEMPO ' + fmtN(endBonus), UW / 2, 560, 70, '#ffffff', 'center', true); break;
+      case 'timeup': hud(); if (Math.floor(stateT * 3) % 2 === 0) txt('TIME UP', UW / 2, 460, 140, '#ff3030', 'center', true); txt('GAME OVER', UW / 2, 600, 80, '#ffffff', 'center', true); break;
+      case 'goal': hud(); drawMsgs(); if (stateT > 1) txt('TIME BONUS ' + fmtN(endBonus), UW / 2, 560, 70, '#ffffff', 'center', true); break;
       case 'ending': drawEnding(); break;
       case 'name': drawName(); break;
     }
@@ -921,8 +921,8 @@
     var rx = UW + 100 - ease((t - 2.8) / 0.8) * (UW + 100 - (UW / 2 - 630));
     if (t > 2.8) ux.drawImage(introC.riviera, rx, 290);
     if (t > 3.6 && t < 4.2) { ux.fillStyle = 'rgba(255,255,255,' + (1 - (t - 3.6) / 0.6) + ')'; ux.fillRect(0, 0, UW, UH); }
-    if (t > 4.3 && Math.floor(t * 1.5) % 2 === 0) txt('PREMI OK', UW / 2, 600, 56, '#ffffff', 'center', true);
-    if (t > 4.3) txt('un gioco per Cristian  •  2026', UW - 40, UH - 30, 28, '#ff9ae0', 'right', false, 0);
+    if (t > 4.3 && Math.floor(t * 1.5) % 2 === 0) txt('PRESS OK', UW / 2, 600, 56, '#ffffff', 'center', true);
+    if (t > 4.3) txt('a game for Cristian  •  2026', UW - 40, UH - 30, 28, '#ff9ae0', 'right', false, 0);
   }
 
   /* ================= CICLO PRINCIPALE ================= */

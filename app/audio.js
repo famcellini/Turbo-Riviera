@@ -156,7 +156,7 @@ var TR = window.TR = window.TR || {};
 
   /* ---------- le canzoni (composizioni originali) ---------- */
   var SONGS = [
-    { name: 'Onda Azzurra', fm: '88.6', bpm: 146, mtr: 0,
+    { name: 'Blue Wave', fm: '88.6', bpm: 146, mtr: 0,
       ins: { w1: 'square', w2: 'sawtooth', det: 9, cut: 3600, sus: 0.75, mix2: 0.45, pw: 'square', pcut: 2200, psus: 0.35, bcut: 1800 }, vol: { L: 0.15, B: 0.26, P: 0.07, K: 0.75, S: 0.38, H: 0.07 },
       drums: {
         main: { k: 'x.....x...x.....', s: '....x.......x..g', h: 'x.xxx.xxx.xxx.xo' },
@@ -181,7 +181,7 @@ var TR = window.TR = window.TR || {};
       },
       form: ['A', 'A', 'B', 'C', 'A', 'B'] },
 
-    { name: "Brezza d'Estate", fm: '94.2', bpm: 120, mtr: 0,
+    { name: 'Summer Breeze', fm: '94.2', bpm: 120, mtr: 0,
       ins: { w1: 'triangle', w2: 'square', det: 4, cut: 2600, sus: 0.65, mix2: 0.25, pw: 'triangle', pcut: 2600, psus: 0.55, patk: 0.03, pdelay: 1, bcut: 1200, bw: 'sawtooth' }, vol: { L: 0.24, B: 0.28, P: 0.12, K: 0.7, S: 0.3, H: 0.06 },
       drums: {
         main: { k: 'x.......x.x.....', s: '....x.......x...', h: 'x.x.x.x.x.x.x.x.' },
@@ -203,7 +203,7 @@ var TR = window.TR = window.TR || {};
       },
       form: ['A', 'A', 'B', 'B', 'A'] },
 
-    { name: 'Fuoco sul Mare', fm: '101.7', bpm: 160, mtr: 0,
+    { name: 'Fire on the Sea', fm: '101.7', bpm: 160, mtr: 0,
       ins: { w1: 'sawtooth', w2: 'square', det: 12, cut: 3200, sus: 0.8, mix2: 0.5, pw: 'sawtooth', pcut: 1500, psus: 0.4, bcut: 2000 }, vol: { L: 0.13, B: 0.27, P: 0.07, K: 0.8, S: 0.42, H: 0.07 },
       drums: {
         main: { k: 'x...x...x...x...', s: '....x.......x...', h: 'x.x.x.x.x.x.x.x.' },
@@ -225,7 +225,7 @@ var TR = window.TR = window.TR || {};
       },
       form: ['A', 'A', 'B', 'A', 'B', 'B'] },
 
-    { name: 'Ultimo Tramonto', fm: '', bpm: 84, mtr: 0, hidden: 1,
+    { name: 'Last Sunset', fm: '', bpm: 84, mtr: 0, hidden: 1,
       ins: { w1: 'triangle', w2: 'sawtooth', det: 6, cut: 2200, sus: 0.7, mix2: 0.2, pw: 'triangle', pcut: 2400, psus: 0.6, patk: 0.08, pdelay: 1, bcut: 1000 }, vol: { L: 0.26, B: 0.26, P: 0.13, K: 0.6, S: 0.25, H: 0.05 },
       drums: { main: { k: 'x.......x.......', s: '....x.......x...', h: 'x.x.x.x.x.x.x.x.' } },
       bass: { main: 'R.......F...O...' },
