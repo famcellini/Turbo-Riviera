@@ -1,13 +1,13 @@
 # Turbo Riviera: install on the LG 27TQ615S-PZ monitor
 
-File to install: `com.cristian.turboriviera_2.0.17_all.ipk`
+File to install: `com.cristian.turboriviera_2.0.18_all.ipk`
 
 Turbo Riviera is a 90s-style arcade road racer (pseudo-3D road, red convertible, curves, hills, traffic, a countdown timer and forks). Name, graphics and music are original: no Sega material.
 
 ## Install
 The monitor is already set up (Developer Mode on, as for Super Eleonora).
 1. Open webOS Dev Manager on the PC (monitor and PC on the same network).
-2. **Apps** tab → **Install** (or drag the `.ipk` file into the window) and pick `com.cristian.turboriviera_2.0.17_all.ipk`.
+2. **Apps** tab → **Install** (or drag the `.ipk` file into the window) and pick `com.cristian.turboriviera_2.0.18_all.ipk`.
 3. Turbo Riviera appears among the monitor's apps with the convertible-at-sunset icon.
 
 Remember: Developer Mode expires after about 50 hours; to renew it open the Developer Mode app and press "Extend".
@@ -33,7 +33,6 @@ Remember: Developer Mode expires after about 50 hours; to renew it open the Deve
 - **Radio**: before the start you pick a station, like on a car radio: *Blue Wave* (FM 88.6, cheerful), *Summer Breeze* (FM 94.2, relaxed), *Fire on the Sea* (FM 101.7, rock). *Last Sunset* plays at the finish and on the high-score screen. All tracks are original.
 - **4 stages**: at the end of the first three stages the road splits. A green sign shows the two directions of that fork (the route tree: Fermo/Macerata, then Ancona, Ascoli Piceno, Pesaro Urbino and so on): keep left or right to choose: once you are on a branch you cannot cross to the other one, and after the fork only the road you chose continues. The pyramid map shows your route. The last stage ends with "Welcome to <last city>".
 - **Road signs**: no town signs before the first fork; white town signs show 4 towns of the province you chose (e.g. Porto San Giorgio, Pedaso... after Fermo; Civitanova Marche, Recanati... after Macerata); blue direction signs show the two directions of the next fork.
-- **Billboards**: Cochetti Shop, Obbi Civitanova, Lidol Campiglione, Sapor di Mar, Bar Ragno, Bar Italia, Gelateria Pellacani, Pizzeria il Pimcio and Loasi FM rotate through every stage (as neon signs at night).
 - **Passenger**: at top speed she raises her arms; after a crash she turns towards the driver. Shifting from LO to HI shoots flames from the exhausts.
 - **Time**: every checkpoint gives extra time. Going off-road slows you down, hitting a car costs speed, hitting palms, rocks or signs at high speed flips the car.
 - At the finish the remaining time becomes a bonus, then a closing clip shows the car burning rubber and racing off towards the horizon. Top-5 high scores with initials, saved on the monitor.

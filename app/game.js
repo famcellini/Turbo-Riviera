@@ -131,14 +131,15 @@
     }
     addRoad(30, 30, 30, 0, -curY);
     var bodyEnd = B.segs.length;
-    // decorazioni
+    // decorazioni (senza cartelloni pubblicitari)
+    var sprs = th.spr.filter(function (e) { return e[0] !== 'ad' && e[0] !== 'nad'; });
     for (i = bodyStart + 6; i < bodyEnd; i += 3) {
       var sgm = B.segs[i];
       if (r() < th.dens) {
-        var nm = adName(pick(th.spr, r)), sp = S[nm], side = r() < 0.5 ? -1 : 1;
+        var nm = adName(pick(sprs, r)), sp = S[nm], side = r() < 0.5 ? -1 : 1;
         addSpr(i, nm, side * ((nm.indexOf('bld') >= 0 ? 2.2 : 1.2) + sp.ww / ROADW / 2 + r() * (nm.indexOf('bld') >= 0 ? 1.5 : 0.9)));
       }
-      if (r() < 0.12 && th.spr.length) { var nm2 = adName(pick(th.spr, r)), sp2 = S[nm2]; addSpr(i + 1, nm2, (r() < 0.5 ? -1 : 1) * (2.6 + sp2.ww / ROADW / 2 + r() * 2)); }
+      if (r() < 0.12 && sprs.length) { var nm2 = adName(pick(sprs, r)), sp2 = S[nm2]; addSpr(i + 1, nm2, (r() < 0.5 ? -1 : 1) * (2.6 + sp2.ww / ROADW / 2 + r() * 2)); }
     }
     for (i = bodyStart + 1; i < bodyEnd; i++) {
       var a = B.segs[i - 1].curve, b = B.segs[i].curve;
@@ -163,8 +164,8 @@
       for (n = 0; n < 120; n++) addSeg(0, lastY(), easeInOut(0, 1, n / 120));
       for (n = 0; n < 110; n++) addSeg(0, lastY(), 1);
       B.gateIdx = B.segs.length;
-      for (n = 0; n < 150; n++) addSeg(0, lastY(), easeInOut(1, 0, n / 150));
-      for (n = 0; n < 130; n++) addSeg(0, lastY(), 0);
+      // dopo il cancello le due strade restano separate (non si ricongiungono): la tappa successiva prosegue solo su quella scelta
+      for (n = 0; n < 280; n++) addSeg(0, lastY(), 1);
       var L = FORK[id][0], Rn = FORK[id][1];
       B.forkL = L; B.forkR = Rn;
       var fs = G.forkSign(L, Rn);
@@ -182,7 +183,6 @@
     var gc = {};
     gates.forEach(function (gd) { var key = gd[1] + gd[2]; gc[key] = gc[key] || G.gate(gd[1], gd[2]); B.segs[gd[0]].spr = []; addSpr(gd[0], gc[key], gd[3]); });
     if (first) for (i = 0; i < 40; i++) B.segs[i].spr = B.segs[i].spr.filter(function (x) { return x.s.nc; });
-    if (first) for (i = 16; i < 46; i += 10) { addSpr(i, adName('ad'), -2.6); addSpr(i + 5, adName('ad'), 2.6); }
     B.len = B.segs.length * SEG;
     return B;
   }
@@ -218,6 +218,7 @@
   function stageSecs(tr) { return (tr.gateIdx * SEG) / (MAXS * 0.8); }
 
   function spawnCars(tr, fromZ, toZ, count, r) {
+    count = Math.ceil(count / 2);
     for (var k = 0; k < count; k++) {
       var tv = traffic[(r() * traffic.length) | 0], ln = (r() * 4) | 0;
       cars.push({ z: fromZ + r() * (toZ - fromZ), off: LANEX[ln], tOff: LANEX[ln], ln: ln, spd: MAXS * (0.22 + r() * 0.3), tm: 2 + r() * 6, v: tv });
