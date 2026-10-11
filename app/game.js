@@ -79,7 +79,7 @@
     'Pesaro Urbino': ['Fano', 'Urbino', 'Fossombrone', 'Gabicce Mare'] };
   var region = 'Fermo';
   function idxIn(id) { return id - [0, 1, 3, 6, 10][levelOf(id)]; }
-  function childOf(id, right) { var L = levelOf(id), i = idxIn(id); return [0, 1, 3, 6, 10][L + 1] + i + (right ? 1 : 0); }
+  function childOf(id, right) { if (id >= 3) return 6 + (id - 3) * 2 + (right ? 1 : 0); var L = levelOf(id), i = idxIn(id); return [0, 1, 3, 6, 10][L + 1] + i + (right ? 1 : 0); }
   var bgCache = {};
   function bgOf(id) { return bgCache[id] || (bgCache[id] = G.background(TH[id])); }
 
@@ -803,17 +803,18 @@
     });
   }
   function drawMap(x0, y0, sc) {
-    var pos = function (id) { var L = levelOf(id), i = idxIn(id); return [x0 + (i - L / 2) * 120 * sc, y0 + L * 70 * sc]; };
+    var pos = function (id) { if (id >= 6) return [x0 + ((id - 6) - 2.5) * 60 * sc, y0 + 3 * 70 * sc]; var L = levelOf(id), i = idxIn(id); return [x0 + (i - L / 2) * 120 * sc, y0 + L * 70 * sc]; };
     ux.lineWidth = 6 * sc;
     for (var id = 0; id < 6; id++) for (var r = 0; r < 2; r++) {
       var a = pos(id), b = pos(childOf(id, r)), onPath = path.indexOf(id) >= 0 && path.indexOf(childOf(id, r)) >= 0;
       ux.strokeStyle = onPath ? '#ffe14a' : 'rgba(255,255,255,0.35)'; ux.beginPath(); ux.moveTo(a[0], a[1]); ux.lineTo(b[0], b[1]); ux.stroke();
     }
-    for (id = 0; id < 10; id++) {
+    for (id = 0; id < 12; id++) {
       var p = pos(id), cur = id === stageId, vis = path.indexOf(id) >= 0;
       if (cur && state === 'play' && Math.floor(stateT * 2) % 2) continue;
       ux.fillStyle = cur ? '#ff4ae0' : vis ? '#ffe14a' : '#5a5a7a';
-      ux.beginPath(); ux.arc(p[0], p[1], 16 * sc, 0, Math.PI * 2); ux.fill(); ux.strokeStyle = '#101018'; ux.lineWidth = 4; ux.stroke();
+      ux.beginPath(); ux.arc(p[0], p[1], (id >= 6 ? 12 : 16) * sc, 0, Math.PI * 2); ux.fill(); ux.strokeStyle = '#101018'; ux.lineWidth = 4; ux.stroke();
+      if (id >= 6) txt(['AN', 'AP', 'PU', 'FM', 'FM', 'MC'][id - 6], p[0], p[1] + 38 * sc, 22 * sc, vis ? '#ffe14a' : '#aaaacc', 'center', true);
     }
   }
   var logoCanvas = null;
