@@ -27,14 +27,14 @@
 
   /* ================= COSTANTI ================= */
   var SEG = 200, ROADW = 1800, LANES = 4, RUMBLE = 3, CAMH = 1500, DEPTH = 1 / Math.tan(50 * Math.PI / 180);
-  var DRAW = 162, PZ = CAMH * DEPTH, MAXS = SEG * 60, FORKC = 1.85, PW = 0.33, CENT = 0.3, FOGD = 1.56, STUB = 20;
+  var DRAW = 162, PZ = CAMH * DEPTH, MAXS = SEG * 60, FORKC = 1.85, FK = 1.5, PW = 0.33, CENT = 0.3, FOGD = 1.56, STUB = 20;
   var LANEX = [-0.75, -0.25, 0.25, 0.75];
 
   /* ================= TAPPE (15, a piramide come i bivi) ================= */
   var TH = [
     { n: 'Azure Riviera', sky: ['#1f7fe8', '#a8dcff'], fog: '#b8e2ff', sun: [0.78, 0.16, 16, '#fff8d0'], far: 'sea', farC: ['#1a66c8', '#5ab0ff', '#5a8aa0'], clouds: 1,
       grass: ['#ecd592', '#e2c982'], road: ['#727272', '#6b6b6b'], rumble: ['#ffffff', '#e02020'], lane: '#ffffff', spr: [['ad', 0.9], ['palm', 6], ['umbrella', 3], ['lighthouse', 0.4]], dens: 0.55 },
-    { n: 'Tuscan Hills', sky: ['#3a8ef0', '#d8eeff'], fog: '#d8eeff', sun: [0.25, 0.14, 14, '#fff8d0'], far: 'mount', farC: ['#8aa8c8', '#7aa070'], near: 'trees', nearC: ['#5a8a3a', '#3a6a2a'], clouds: 1,
+    { n: 'Marche Hills', sky: ['#3a8ef0', '#d8eeff'], fog: '#d8eeff', sun: [0.25, 0.14, 14, '#fff8d0'], far: 'mount', farC: ['#8aa8c8', '#7aa070'], near: 'trees', nearC: ['#5a8a3a', '#3a6a2a'], clouds: 1,
       grass: ['#a8c048', '#9ab43e'], road: ['#727272', '#6b6b6b'], rumble: ['#ffffff', '#c02020'], lane: '#ffffff', spr: [['ad', 0.9], ['cypress', 6], ['haybale', 2], ['oak', 2]], dens: 0.5 },
     { n: 'Red Canyon', sky: ['#ff8a3a', '#ffd9a0'], fog: '#ffd0a0', sun: [0.7, 0.3, 24, '#fff0a0'], far: 'mesa', farC: ['#b04a2a', '#d0683a'],
       grass: ['#d07a48', '#c46e3e'], road: ['#7a6a60', '#746458'], rumble: ['#ffffff', '#303030'], lane: '#ffffff', spr: [['ad', 0.9], ['redrock', 3], ['cactus', 3], ['drybush', 2], ['rock', 2]], dens: 0.45 },
@@ -113,13 +113,15 @@
     var gates = [];
     if (first) { addRoad(0, 50, 0, 0, 0); gates.push([10, 'START', '#1e64d0', 0]); }
     else {
+      // la strada scelta continua a divergere dall'altra (che non c'è più) e poi rientra lentamente al centro
       B.side = side || 0;
-      for (n = 0; n < STUB; n++) addSeg(0, 0, 1);
-      for (n = 0; n < 150; n++) addSeg(0, 0, easeInOut(1, 0, n / 150));
+      for (n = 0; n < STUB; n++) addSeg(0, 0, FK);
+      for (n = 0; n < 260; n++) addSeg(0, 0, easeInOut(FK, FK + 0.6, n / 260));
+      for (n = 0; n < 500; n++) addSeg(0, 0, easeInOut(FK + 0.6, 0, n / 500));
       B.side = 0;
       addRoad(0, 40, 0, 0, 0);
-      lamps(STUB + 8, STUB + 190, th.night);
-      if (side) gates.push([STUB, 'CHECKPOINT', '#e02020', side * FORKC]); else gates.push([STUB, 'CHECKPOINT', '#e02020', -FORKC], [STUB, 'CHECKPOINT', '#e02020', FORKC]);
+      lamps(STUB + 8, STUB + 400, th.night);
+      gates.push([STUB, 'CHECKPOINT', '#e02020', side * FORKC * FK]);
     }
     var bodyStart = B.segs.length, target = 2300 + lv * 180;
     var cmax = 2.2 + Math.min(lv, 2) * 0.9 + Math.max(0, lv - 2) * 0.35, hmax = 25 + lv * 10, curY = 0;
@@ -161,18 +163,18 @@
     }
     if (!B.final) {
       B.forkStart = B.segs.length;
-      for (n = 0; n < 120; n++) addSeg(0, lastY(), easeInOut(0, 1, n / 120));
-      for (n = 0; n < 110; n++) addSeg(0, lastY(), 1);
+      for (n = 0; n < 230; n++) addSeg(0, lastY(), easeInOut(0, FK, n / 230));
       B.gateIdx = B.segs.length;
       // dopo il cancello le due strade restano separate (non si ricongiungono): la tappa successiva prosegue solo su quella scelta
-      for (n = 0; n < 280; n++) addSeg(0, lastY(), 1);
+      for (n = 0; n < STUB; n++) addSeg(0, lastY(), FK);
+      for (n = 0; n < 260; n++) addSeg(0, lastY(), easeInOut(FK, FK + 0.6, n / 260));
       var L = FORK[id][0], Rn = FORK[id][1];
       B.forkL = L; B.forkR = Rn;
       var fs = G.forkSign(L, Rn);
-      addSpr(B.forkStart + 115, fs, 0); addSpr(B.forkStart + 175, fs, 0);
+      addSpr(B.forkStart + 150, fs, 0); addSpr(B.forkStart + 200, fs, 0);
       for (i = B.forkStart + 20; i < B.gateIdx - STUB; i += 8) { var cf = B.segs[i].f1 * FORKC; addSpr(i, th.night ? 'nlamp' : 'lamp', -(cf + 1.6)); addSpr(i, th.night ? 'nlamp' : 'lamp', cf + 1.6); }
       lamps(B.gateIdx + 8, B.gateIdx + 190, th.night);
-      gates.push([B.gateIdx, 'CHECKPOINT', '#e02020', -FORKC], [B.gateIdx, 'CHECKPOINT', '#e02020', FORKC]);
+      gates.push([B.gateIdx, 'CHECKPOINT', '#e02020', -FORKC * FK], [B.gateIdx, 'CHECKPOINT', '#e02020', FORKC * FK]);
     } else {
       addRoad(0, 40, 0, 0, 0);
       B.gateIdx = B.segs.length;
@@ -211,7 +213,7 @@
   var lapTimes = [], countN = 3, demo = false, nameChars = [0, 0, 0], namePos = 0, newRank = -1, endBonus = 0;
   var scores = store.get('tr_scores', null) || [
     { n: 'ELE', s: 3500000, st: 'Sunset Harbour' }, { n: 'CRI', s: 2800000, st: 'Vulcano' },
-    { n: 'MAX', s: 2000000, st: 'Autumn Forest' }, { n: 'SOF', s: 1200000, st: 'Alpine Lake' }, { n: 'TEO', s: 600000, st: 'Tuscan Hills' }];
+    { n: 'MAX', s: 2000000, st: 'Autumn Forest' }, { n: 'SOF', s: 1200000, st: 'Alpine Lake' }, { n: 'TEO', s: 600000, st: 'Marche Hills' }];
   var stationShowT = 0;
 
   function findSeg(z) { var i = Math.floor(z / SEG); if (i < 0) i = 0; if (i >= T.segs.length) i = T.segs.length - 1; return T.segs[i]; }
