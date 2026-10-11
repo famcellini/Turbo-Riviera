@@ -1,4 +1,4 @@
-/* (c) 2026 Cristian - Turbo Riviera. Distribuzione solo GRATUITA; vietate copia e commercializzazione. Free distribution only; copying and commercial use are NOT allowed. See LICENSE. */
+/* (c) 2026 Cristian - Turbo Riviera. CC BY-NC 4.0: libero uso, copia e modifica con citazione dell'autore, ma vietata la vendita / free to use, share and modify with credit, NO commercial use or sale. See LICENSE. */
 /* Turbo Riviera - corsa arcade in pseudo-3D per LG webOS
    Gioco originale in stile anni '90: grafica e musica generate dal codice. */
 'use strict';

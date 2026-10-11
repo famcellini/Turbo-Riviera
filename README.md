@@ -33,4 +33,4 @@ generated with the AI assistant following the author's direction.
 The author tested every version on an LG webOS monitor (27TQ615S), found the bugs and directed the fixes.
 
 ## License
-**Free distribution only.** This game may be shared for free, but it may not be copied or sold / commercialized. Il gioco può essere distribuito gratuitamente ma non può essere copiato né commercializzato. See [LICENSE](LICENSE).
+Open source under **CC BY-NC 4.0**: free to use, share and modify with credit to the author, but it may not be sold or used commercially. Codice libero, ma vietata la vendita. See [LICENSE](LICENSE).
