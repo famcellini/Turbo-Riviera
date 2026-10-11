@@ -1130,7 +1130,7 @@
     if (t > 2.8) ux.drawImage(introC.riviera, rx, 290);
     if (t > 3.6 && t < 4.2) { ux.fillStyle = 'rgba(255,255,255,' + (1 - (t - 3.6) / 0.6) + ')'; ux.fillRect(0, 0, UW, UH); }
     if (t > 4.3 && Math.floor(t * 1.5) % 2 === 0) txt('PRESS OK', UW / 2, 600, 56, '#ffffff', 'center', true);
-    if (t > 4.3) txt('a game for Cristian  •  2026', UW - 40, UH - 30, 28, '#ff9ae0', 'right', false, 0);
+    if (t > 4.3) txt('© 2026 Cristian  •  License: CC BY-NC 4.0 (no commercial use)', UW - 40, UH - 30, 28, '#ff9ae0', 'right', false, 0);
   }
 
   /* ================= CICLO PRINCIPALE ================= */
