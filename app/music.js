@@ -1,3 +1,4 @@
+/* (c) 2026 Cristian - Turbo Riviera. Distribuzione solo GRATUITA; vietate copia e commercializzazione. Free distribution only; copying and commercial use are NOT allowed. See LICENSE. */
 /* Turbo Riviera - i 4 brani originali registrati dal sintetizzatore di audio.js
    (PCM mu-law 8 bit, 22050 Hz, in base64: decodificati dal gioco senza codec) */
 window.TR = window.TR || {};

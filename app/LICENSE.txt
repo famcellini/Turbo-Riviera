@@ -1,0 +1,17 @@
+Turbo Riviera - Copyright (c) 2026 Cristian (famcellini). All rights reserved.
+
+NOTICE / AVVISO
+
+EN: This game may be distributed FREE OF CHARGE, unmodified and with this
+notice intact. It may NOT be sold, rented, bundled into a paid product or
+service, or otherwise commercialized, and it may NOT be copied, modified or
+reused in whole or in part (code, graphics, music) for commercial purposes,
+without the written permission of the author.
+
+IT: Questo gioco puo' essere distribuito GRATUITAMENTE, senza modifiche e con
+questo avviso. NON puo' essere venduto, noleggiato, incluso in prodotti o
+servizi a pagamento, ne' commercializzato in alcun modo, e NON puo' essere
+copiato, modificato o riutilizzato in tutto o in parte (codice, grafica,
+musica) a scopo commerciale senza il permesso scritto dell'autore.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.

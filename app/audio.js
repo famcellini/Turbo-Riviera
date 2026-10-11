@@ -1,3 +1,4 @@
+/* (c) 2026 Cristian - Turbo Riviera. Distribuzione solo GRATUITA; vietate copia e commercializzazione. Free distribution only; copying and commercial use are NOT allowed. See LICENSE. */
 /* Turbo Riviera - audio: musiche originali sintetizzate con Web Audio + effetti */
 'use strict';
 var TR = window.TR = window.TR || {};
