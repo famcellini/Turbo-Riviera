@@ -24,7 +24,7 @@
 
   /* ================= COSTANTI ================= */
   var SEG = 200, ROADW = 1800, LANES = 4, RUMBLE = 3, CAMH = 1500, DEPTH = 1 / Math.tan(50 * Math.PI / 180);
-  var DRAW = 200, PZ = CAMH * DEPTH, MAXS = SEG * 60, FORKC = 1.85, PW = 0.33, CENT = 0.3, FOGD = 5, STUB = 20;
+  var DRAW = 200, PZ = CAMH * DEPTH, MAXS = SEG * 60, FORKC = 1.85, PW = 0.33, CENT = 0.3, FOGD = 2.5, STUB = 20;
   var LANEX = [-0.75, -0.25, 0.25, 0.75];
 
   /* ================= TAPPE (15, a piramide come i bivi) ================= */
@@ -189,7 +189,7 @@
   var position = 0, speed = 0, playerX = 0, cars = [];
   var timeLeft = 0, score = 0, stageTime = 0, totalTime = 0, path = [0], stageId = 0;
   var prevTheme = 0, themeT = 1, bgOff = [0, 0, 0], cloudDrift = 0;
-  var gasOn = false, brakeHeld = false, gearHi = false, crashT = 0, crashAng = 0, shake = 0, steerDir = 0, brakeOn = false, offroad = false, skid = false;
+  var gasOn = false, downT = 0, gearHi = false, crashT = 0, crashAng = 0, shake = 0, steerDir = 0, brakeOn = false, offroad = false, skid = false;
   var state = 'intro', stateT = 0, msg = [], menuSel = 0, pauseSel = 0;
   var autoGas = store.get('tr_auto', true), station = store.get('tr_station', 0);
   var lapTimes = [], countN = 3, demo = false, nameChars = [0, 0, 0], namePos = 0, newRank = -1, endBonus = 0;
@@ -214,7 +214,7 @@
   }
   function startGame() {
     demo = false; stageId = 0; path = [0]; T = buildStage(0, true); prevTheme = 0; themeT = 1;
-    position = 0; speed = 0; playerX = -0.25; cars = []; crashT = 0; shake = 0; gearHi = false; gasOn = false; brakeHeld = false;
+    position = 0; speed = 0; playerX = -0.25; cars = []; crashT = 0; shake = 0; gearHi = false; gasOn = false; downT = 0;
     timeLeft = Math.ceil(stageSecs(T)) + 8; score = 0; stageTime = 0; totalTime = 0; lapTimes = [];
     var r = TR.rng(Date.now() & 0xffff);
     spawnCars(T, 60 * SEG, T.forkStart * SEG - 20 * SEG, 34, r);
@@ -289,10 +289,10 @@
       if (!autoGas) {
         // manuale: ▲ (anche un solo tocco) inserisce l'acceleratore, che resta inserito;
         // ▼ la prima volta lo disinserisce (velocità costante), le volte successive frena finché è premuto
-        if (pressed.up || keys.up) { gasOn = true; brakeHeld = false; }
-        if (pressed.down) { if (gasOn) { gasOn = false; brakeHeld = false; } else brakeHeld = true; }
-        if (!keys.down) brakeHeld = false;
-        brk = brakeHeld;
+        // ▼: il primo terzo di secondo stacca l'acceleratore, se si continua a premere l'auto frena
+        if (pressed.up || keys.up) { gasOn = true; downT = 0; }
+        if (keys.down) { gasOn = false; downT += dt; } else downT = 0;
+        brk = downT > 1 / 3;
       }
       gas = !brk && (autoGas ? true : gasOn);
       if (autoGas && keys.up) gas = true;
@@ -318,7 +318,7 @@
       var manual = ctrl === 'player' && !autoGas;
       if (gas) {
         var acc = gearHi ? MAXS * 0.2 * (1.15 - spd) : MAXS * 0.42 * (1.1 - spd);
-        if (manual) acc *= 1.1;   // in manuale si accelera il 10% più in fretta
+        if (manual) acc *= 1.21;   // in manuale si accelera il 21% più in fretta (+10% +10%)
         if (manual && gearHi && spd < 0.4) acc *= 0.35 + spd;   // in HI da fermi si parte piano
         speed += Math.max(acc, MAXS * 0.03) * dt;
         if (manual && !gearHi && speed > MAXS * 0.56) speed = MAXS * 0.56;   // in LO la velocità ha un limite
@@ -329,7 +329,7 @@
     }
     offroad = !onRoadAt(pSeg, pPct, playerX);
     if (offroad && speed > MAXS / 4) speed -= MAXS * 0.6 * dt;
-    speed = Math.max(0, Math.min(MAXS, speed));
+    speed = Math.max(0, Math.min(manual ? MAXS * 296 / 293 : MAXS, speed));   // in manuale fino a 296 km/h
     var lim = cNow + 2.4; playerX = Math.max(-lim, Math.min(lim, playerX));
     brakeOn = brk && speed > 1;
     // marce automatiche
@@ -459,7 +459,7 @@
         if (pressed.back) { state = 'pause'; pauseSel = 0; A.sfx.pause(); }
         if (pressed.red) nextStation(1);
         if (pressed.green) A.setMute(!A.isMuted());
-        if (pressed.yellow) { autoGas = !autoGas; store.set('tr_auto', autoGas); showMsg(autoGas ? 'AUTO THROTTLE' : 'MANUAL: ▲ GAS ON  ▼ HOLD / BRAKE  OK GEAR', '#ffffff', 2, 'small'); }
+        if (pressed.yellow) { autoGas = !autoGas; store.set('tr_auto', autoGas); showMsg(autoGas ? 'AUTO THROTTLE' : 'MANUAL: ▲ GAS ON  ▼ TAP OFF / HOLD BRAKE  OK GEAR', '#ffffff', 2, 'small'); }
         break;
       case 'pause':
         A.engine(false, 0, false, false, 0);
@@ -633,7 +633,7 @@
     var fogR = pal.fogRGB;
     for (n = 0; n < DRAW; n++) {
       seg = T.segs[base.i + n]; if (!seg) break;
-      var d = n / DRAW; seg.fog = 1 / Math.pow(Math.E, d * d * FOGD); seg.clip = maxy;
+      var d = n / DRAW; seg.fog = Math.max(0.5, 1 / Math.pow(Math.E, d * d * FOGD)); seg.clip = maxy;
       project(seg.p1, playerX * ROADW - x, pY + CAMH, position);
       project(seg.p2, playerX * ROADW - x - dx, pY + CAMH, position);
       x += dx; dx += seg.curve;
@@ -839,7 +839,7 @@
       if (sel) { ux.fillStyle = 'rgba(255,74,224,0.35)'; ux.fillRect(UW / 2 - 560, y - 70, 1120, 90); }
       txt(it, UW / 2, y, sel ? 64 : 54, sel ? '#ffe14a' : '#ffffff', 'center', true);
     });
-    txt('◀ ▶ steer   ▼ brake   ' + (autoGas ? 'auto throttle (no need for ▲ or OK)' : '▲ gas on   ▼ hold speed, again to brake   OK gear') + '   YELLOW toggles throttle', UW / 2, UH - 50, 30, '#ffffff', 'center', false);
+    txt('◀ ▶ steer   ▼ brake   ' + (autoGas ? 'auto throttle (no need for ▲ or OK)' : '▲ gas on   ▼ tap: hold speed, keep pressed: brake   OK gear') + '   YELLOW toggles throttle', UW / 2, UH - 50, 30, '#ffffff', 'center', false);
   }
   var CLIP_BURN = 1.4, CLIP_LEN = 7, clipSmoke = [], clipCar = null;
   function clipPos(t) {
