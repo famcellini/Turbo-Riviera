@@ -568,7 +568,8 @@
     var dark = [38, 42, 50];
     function m(c) { return c.replace(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/, function (_, r, g, b) {
       return 'rgb(' + [r, g, b].map(function (v, i) { return Math.round(+v + (dark[i] - +v) * q); }).join(',') + ')'; }); }
-    var out = { road0: m(pal.road0), road1: m(pal.road1), rumble0: m(pal.rumble0), rumble1: m(pal.rumble1), lane: pal.lane };
+    var edge = 'rgb(28,30,36)';
+    var out = { road0: m(pal.road0), road1: m(pal.road1), rumble0: edge, rumble1: edge, lane: pal.lane };
     farCache = { pal: pal, k: q, out: out };
     return out;
   }
@@ -656,7 +657,7 @@
       // strada lontana: più scura, così non si confonde con la sabbia
       // in lontananza la strada non deve assottigliarsi fino a sparire: larghezza minima
       var rp = seg.fog < 0.99 ? farPal(pal, Math.min(0.85, (1 - seg.fog) * 2.6)) : pal;
-      var w1 = seg.fog < 0.99 ? Math.max(p1.sw, 4) : p1.sw, w2 = seg.fog < 0.99 ? Math.max(p2.sw, 4) : p2.sw;
+      var w1 = seg.fog < 0.99 ? Math.max(p1.sw, 6) : p1.sw, w2 = seg.fog < 0.99 ? Math.max(p2.sw, 6) : p2.sw;
       if (c1 === 0 && c2 === 0) roadPoly(p1.sx, p1.sy, w1, p2.sx, p2.sy, w2, light, rp);
       else {
         roadPoly(p1.sx - c1 * w1, p1.sy, w1, p2.sx - c2 * w2, p2.sy, w2, light, rp);
