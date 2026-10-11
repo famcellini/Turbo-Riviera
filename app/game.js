@@ -67,7 +67,17 @@
   function rgb(h) { var n = parseInt(h.slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; }
   function css(c) { return 'rgb(' + (c[0] | 0) + ',' + (c[1] | 0) + ',' + (c[2] | 0) + ')'; }
   function mix(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
-  function levelOf(id) { return id < 1 ? 0 : id < 3 ? 1 : id < 6 ? 2 : id < 10 ? 3 : 4; }
+  function levelOf(id) { return id < 1 ? 0 : id < 3 ? 1 : id < 6 ? 2 : 3; }
+  // bivi: per ogni nodo le due direzioni (sinistra, destra), come nello schema del percorso
+  var FORK = [['Fermo', 'Macerata'], ['Ancona', 'Ascoli Piceno'], ['Ascoli Piceno', 'Pesaro Urbino'],
+    ['Ancona', 'Ascoli Piceno'], ['Pesaro Urbino', 'Fermo'], ['Fermo', 'Macerata']];
+  var REGION_TOWNS = {
+    'Fermo': ['Porto San Giorgio', "Porto Sant'Elpidio", 'Pedaso', 'Montegranaro'],
+    'Macerata': ['Civitanova Marche', 'Recanati', 'Tolentino', 'Potenza Picena'],
+    'Ancona': ['Senigallia', 'Jesi', 'Osimo', 'Falconara'],
+    'Ascoli Piceno': ['San Benedetto', 'Grottammare', 'Offida', 'Ripatransone'],
+    'Pesaro Urbino': ['Fano', 'Urbino', 'Fossombrone', 'Gabicce Mare'] };
+  var region = 'Fermo';
   function idxIn(id) { return id - [0, 1, 3, 6, 10][levelOf(id)]; }
   function childOf(id, right) { var L = levelOf(id), i = idxIn(id); return [0, 1, 3, 6, 10][L + 1] + i + (right ? 1 : 0); }
   var bgCache = {};
@@ -99,7 +109,7 @@
 
   function buildStage(id, first) {
     var lv = levelOf(id), th = TH[id], r = TR.rng(id * 977 + 13 + (first === 'demo' ? 5 : 0)), n, i;
-    B = { segs: [], id: id, lv: lv, gateIdx: -1, forkStart: -1, final: lv === 4 };
+    B = { segs: [], id: id, lv: lv, gateIdx: -1, forkStart: -1, final: lv === 3 };
     var gates = [];
     if (first) { addRoad(0, 50, 0, 0, 0); gates.push([10, 'START', '#1e64d0', 0]); }
     else {
@@ -135,13 +145,14 @@
         for (n = 0; n < 5; n++) addSpr(i - 20 + n * 6, right ? 'signR' : 'signL', right ? -1.3 : 1.3);
       }
     }
-    // indicazioni stradali: paesi del Fermano
-    var TW = G.TOWNS;
+    // indicazioni stradali: 4 paesi della zona in cui si sta andando; cartelli blu con le direzioni del prossimo bivio
+    var RT = REGION_TOWNS[region] || REGION_TOWNS.Fermo, tn = 0;
     for (i = bodyStart + 90, n = 0; i < bodyEnd - 60; i += 230 + ((r() * 120) | 0), n++) {
-      var t1 = TW[(r() * TW.length) | 0], t2 = TW[(r() * TW.length) | 0];
-      if (t2 === t1) t2 = TW[(TW.indexOf(t1) + 3) % TW.length];
-      var PV = G.PROVINCE, p1 = PV[(r() * 4) | 0], p2 = PV[(PV.indexOf(p1) + 1 + ((r() * 3) | 0)) % 4];
-      var sg = n % 2 ? G.dirSign(p1, (5 + r() * 40 | 0) + ' km', p2, (8 + r() * 60 | 0) + ' km') : G.townSign(t1);
+      var sg;
+      if (n % 2) {
+        var k1 = (5 + r() * 40 | 0) + ' km', k2 = (8 + r() * 60 | 0) + ' km';
+        sg = B.final ? G.dirSign(RT[tn % 4], k1, RT[(tn + 1) % 4], k2) : G.dirSign(FORK[id][0], k1, FORK[id][1], k2);
+      } else sg = G.townSign(RT[tn++ % 4]);
       for (var q = i - 30; q < i + 6; q++) if (B.segs[q]) B.segs[q].spr = B.segs[q].spr.filter(function (x) { return x.s !== S.signL && x.s !== S.signR && (q !== i || Math.abs(x.off) > 3); });
       addSpr(i, sg, (r() < 0.75 ? 1 : -1) * (1.45 + sg.ww / ROADW / 2));
     }
@@ -152,7 +163,7 @@
       B.gateIdx = B.segs.length;
       for (n = 0; n < 150; n++) addSeg(0, lastY(), easeInOut(1, 0, n / 150));
       for (n = 0; n < 130; n++) addSeg(0, lastY(), 0);
-      var PV = G.PROVINCE, pl = PV[(r() * 4) | 0], L = pl, Rn = PV[(PV.indexOf(pl) + 1 + ((r() * 3) | 0)) % 4];
+      var L = FORK[id][0], Rn = FORK[id][1];
       B.forkL = L; B.forkR = Rn;
       var fs = G.forkSign(L, Rn);
       addSpr(B.forkStart + 115, fs, 0); addSpr(B.forkStart + 175, fs, 0);
@@ -212,11 +223,11 @@
   }
 
   function startDemo() {
-    demo = true; stageId = 0; T = buildStage(0, 'demo'); prevTheme = 0; themeT = 1;
+    demo = true; stageId = 0; region = 'Fermo'; T = buildStage(0, 'demo'); prevTheme = 0; themeT = 1;
     position = 60 * SEG; speed = MAXS * 0.72; playerX = 0; cars = []; crashT = 0;
   }
   function startGame() {
-    demo = false; stageId = 0; path = [0]; T = buildStage(0, true); prevTheme = 0; themeT = 1;
+    demo = false; stageId = 0; region = 'Fermo'; path = [0]; T = buildStage(0, true); prevTheme = 0; themeT = 1;
     position = 0; speed = 0; playerX = -0.25; cars = []; crashT = 0; shake = 0; gearHi = false; gasOn = false; downT = 0;
     timeLeft = Math.ceil(stageSecs(T)) + 8; score = 0; stageTime = 0; totalTime = 0; lapTimes = [];
     var r = TR.rng(Date.now() & 0xffff);
@@ -229,6 +240,7 @@
 
   function checkpoint() {
     var right = playerX >= 0, next = childOf(stageId, right);
+    region = FORK[stageId][right ? 1 : 0];
     var old = T, gz = old.gateIdx * SEG;
     lapTimes.push(stageTime); stageTime = 0;
     prevTheme = stageId; stageId = next; themeT = 0; path.push(next);
@@ -450,7 +462,7 @@
         var rpm = gearHi ? 0.45 + (spd - 0.4) / 0.6 * 0.55 : spd / 0.52;
         A.engine(true, Math.max(0.12, rpm), skid, offroad, spd);
         if (position + PZ >= T.gateIdx * SEG) {
-          if (T.final) { lapTimes.push(stageTime); state = 'goal'; stateT = 0; A.sfx.goal(); A.playSong(3); endBonus = Math.max(0, Math.floor(timeLeft)) * 50000; showMsg('FINISH!', '#ffe14a', 4, 'big'); }
+          if (T.final) { lapTimes.push(stageTime); state = 'goal'; stateT = 0; A.sfx.goal(); A.playSong(3); endBonus = Math.max(0, Math.floor(timeLeft)) * 50000; showMsg('FINISH!', '#ffe14a', 4, 'big'); showMsg('WELCOME TO ' + region.toUpperCase(), '#ffffff', 6, 'stage'); }
           else checkpoint();
         }
         if (T.forkStart > 0 && position + PZ > (T.forkStart - 40) * SEG && position + PZ < T.gateIdx * SEG && Math.floor(stateT * 2) % 2 === 0 && !msg.some(function (m) { return m.k === 'fork'; }))
@@ -526,7 +538,7 @@
   }
   var LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!♥ ';
   function endGame() {
-    var st = TH[stageId].n, rec = { n: '???', s: Math.floor(score), st: st };
+    var st = region, rec = { n: '???', s: Math.floor(score), st: st };
     newRank = -1;
     for (var i = 0; i < scores.length; i++) if (rec.s > scores[i].s) { newRank = i; break; }
     if (newRank < 0 && scores.length < 5) newRank = scores.length;
@@ -756,7 +768,7 @@
     txt('SCORE', UW / 2, 70, 36, '#ff7ab0', 'center', true);
     txt(fmtN(score), UW / 2, 140, 64, '#ffffff', 'center', true);
     // giro
-    txt('STAGE ' + (levelOf(stageId) + 1) + ' / 5', UW - 70, 70, 36, '#4af0ff', 'right', true);
+    txt('STAGE ' + (levelOf(stageId) + 1) + ' / 4', UW - 70, 70, 36, '#4af0ff', 'right', true);
     txt(fmtT(stageTime), UW - 70, 140, 56, '#ffffff', 'right', true);
     // tachimetro
     var bx = 70, by = UH - 70;
@@ -785,7 +797,7 @@
       else if (m.k === 'stage') { if (a > 0.3) { txt(m.t, UW / 2, 290, 72, m.c, 'center', true, '#1a0f4a'); } }
       else if (m.k === 'fork') {
         txt(m.t, UW / 2, 300, 70, m.c, 'center', true);
-        var l = (T.forkL || TH[childOf(stageId, false)].n).toUpperCase(), r = (T.forkR || TH[childOf(stageId, true)].n).toUpperCase();
+        var l = (T.forkL || '').toUpperCase(), r = (T.forkR || '').toUpperCase();
         txt('◀ ' + l, UW / 2 - 60, 390, 48, '#ffffff', 'right', true); txt(r + ' ▶', UW / 2 + 60, 390, 48, '#ffffff', 'left', true);
       }
     });
@@ -793,11 +805,11 @@
   function drawMap(x0, y0, sc) {
     var pos = function (id) { var L = levelOf(id), i = idxIn(id); return [x0 + (i - L / 2) * 120 * sc, y0 + L * 70 * sc]; };
     ux.lineWidth = 6 * sc;
-    for (var id = 0; id < 10; id++) for (var r = 0; r < 2; r++) {
+    for (var id = 0; id < 6; id++) for (var r = 0; r < 2; r++) {
       var a = pos(id), b = pos(childOf(id, r)), onPath = path.indexOf(id) >= 0 && path.indexOf(childOf(id, r)) >= 0;
       ux.strokeStyle = onPath ? '#ffe14a' : 'rgba(255,255,255,0.35)'; ux.beginPath(); ux.moveTo(a[0], a[1]); ux.lineTo(b[0], b[1]); ux.stroke();
     }
-    for (id = 0; id < 15; id++) {
+    for (id = 0; id < 10; id++) {
       var p = pos(id), cur = id === stageId, vis = path.indexOf(id) >= 0;
       if (cur && state === 'play' && Math.floor(stateT * 2) % 2) continue;
       ux.fillStyle = cur ? '#ff4ae0' : vis ? '#ffe14a' : '#5a5a7a';
@@ -915,7 +927,7 @@
     ux.fillStyle = 'rgba(10,6,40,' + Math.min(0.75, stateT * 0.5) + ')'; ux.fillRect(0, 0, UW, UH);
     if (!logoCanvas) makeLogo();
     txt('CONGRATULATIONS!', UW / 2, 220, 140, '#ffe14a', 'center', true);
-    txt('You reached: ' + TH[stageId].n, UW / 2, 340, 64, '#ffffff', 'center', true);
+    txt('Welcome to ' + region + '!', UW / 2, 340, 64, '#ffffff', 'center', true);
     txt('Total time ' + fmtT(totalTime), UW / 2, 450, 56, '#4af0ff', 'center', true);
     txt('Score ' + fmtN(score), UW / 2, 560, 72, '#ff7ab0', 'center', true);
     drawMap(UW - 330, 620, 0.9);
