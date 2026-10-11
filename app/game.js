@@ -289,16 +289,12 @@
     var left = false, right = false, gas = false, brk = false;
     if (ctrl === 'player' && crashT <= 0) {
       left = keys.left; right = keys.right; brk = keys.down;
-      if (!autoGas) {
-        // manuale: ▲ (anche un solo tocco) inserisce l'acceleratore, che resta inserito;
-        // ▼ la prima volta lo disinserisce (velocità costante), le volte successive frena finché è premuto
-        // ▼: il primo terzo di secondo stacca l'acceleratore, se si continua a premere l'auto frena
-        if (pressed.up || keys.up) { gasOn = true; downT = 0; }
-        if (keys.down) { gasOn = false; downT += dt; } else downT = 0;
-        brk = downT > 1 / 3;
-      }
-      gas = !brk && (autoGas ? true : gasOn);
-      if (autoGas && keys.up) gas = true;
+      // ▲ (anche un solo tocco) inserisce l'acceleratore, che resta inserito (vale anche in automatico);
+      // ▼: il primo terzo di secondo stacca l'acceleratore (velocità costante), se si continua a premere l'auto frena
+      if (pressed.up || keys.up) { gasOn = true; downT = 0; }
+      if (keys.down) { gasOn = false; downT += dt; } else downT = 0;
+      brk = downT > 1 / 3;
+      gas = !brk && gasOn;
       // cambio manuale: OK alterna LO / HI
       if (!autoGas && pressed.ok) { gearHi = !gearHi; A.sfx.shift(); if (gearHi) flameT = 0.45; }
     } else if (ctrl === 'auto' || ctrl === 'stop') {
@@ -327,7 +323,7 @@
         if (manual && !gearHi && speed > MAXS * 0.56) speed = MAXS * 0.56;   // in LO la velocità ha un limite
       }
       else if (brk) speed -= MAXS * 0.9 * dt;
-      else if (!manual) speed -= MAXS * 0.18 * dt;   // in manuale, rilasciando i tasti la velocità resta costante
+      else if (ctrl !== 'player') speed -= MAXS * 0.18 * dt;   // il giocatore, rilasciando i tasti, mantiene la velocità
       if (manual && !gearHi && speed > MAXS * 0.56) speed -= MAXS * 0.25 * dt;   // freno motore se si scala in LO
     }
     offroad = !onRoadAt(pSeg, pPct, playerX);
@@ -463,7 +459,7 @@
         if (pressed.back) { state = 'pause'; pauseSel = 0; A.sfx.pause(); }
         if (pressed.red) nextStation(1);
         if (pressed.green) A.setMute(!A.isMuted());
-        if (pressed.yellow) { autoGas = !autoGas; store.set('tr_auto', autoGas); showMsg(autoGas ? 'AUTO THROTTLE' : 'MANUAL: ▲ GAS ON  ▼ TAP OFF / HOLD BRAKE  OK GEAR', '#ffffff', 2, 'small'); }
+        if (pressed.yellow) { autoGas = !autoGas; store.set('tr_auto', autoGas); showMsg(autoGas ? 'AUTO GEARS: ▲ GAS ON  ▼ TAP OFF / HOLD BRAKE' : 'MANUAL: ▲ GAS ON  ▼ TAP OFF / HOLD BRAKE  OK GEAR', '#ffffff', 2, 'small'); }
         break;
       case 'pause':
         A.engine(false, 0, false, false, 0);
@@ -551,12 +547,15 @@
   function poly(x1, y1, x2, y2, x3, y3, x4, y4, col) {
     cx.fillStyle = col; cx.beginPath(); cx.moveTo(x1, y1); cx.lineTo(x2, y2); cx.lineTo(x3, y3); cx.lineTo(x4, y4); cx.closePath(); cx.fill();
   }
-  function roadPoly(x1, y1, w1, x2, y2, w2, light, pal) {
-    var r1 = w1 / 7, r2 = w2 / 7;
-    poly(x1 - w1 - r1, y1, x1 - w1, y1, x2 - w2, y2, x2 - w2 - r2, y2, light ? pal.rumble0 : pal.rumble1);
-    poly(x1 + w1 + r1, y1, x1 + w1, y1, x2 + w2, y2, x2 + w2 + r2, y2, light ? pal.rumble0 : pal.rumble1);
-    poly(x1 - w1, y1, x1 + w1, y1, x2 + w2, y2, x2 - w2, y2, light ? pal.road0 : pal.road1);
-    if (light) {
+  // part: 0 cordoli, 1 asfalto, 2 strisce, 3 cordoli+asfalto; senza part disegna tutto. Ai bivi i due rami si disegnano per parti, così non si coprono a vicenda.
+  function roadPoly(x1, y1, w1, x2, y2, w2, light, pal, part) {
+    var all = part === undefined, r1 = w1 / 7, r2 = w2 / 7;
+    if (all || part === 0 || part === 3) {
+      poly(x1 - w1 - r1, y1, x1 - w1, y1, x2 - w2, y2, x2 - w2 - r2, y2, light ? pal.rumble0 : pal.rumble1);
+      poly(x1 + w1 + r1, y1, x1 + w1, y1, x2 + w2, y2, x2 + w2 + r2, y2, light ? pal.rumble0 : pal.rumble1);
+    }
+    if (all || part === 1 || part === 3) poly(x1 - w1, y1, x1 + w1, y1, x2 + w2, y2, x2 - w2, y2, light ? pal.road0 : pal.road1);
+    if (light && (all || part === 2)) {
       var l1 = w1 / 34, l2 = w2 / 34, lw1 = 2 * w1 / LANES, lw2 = 2 * w2 / LANES;
       for (var ln = 1; ln < LANES; ln++) {
         var a = x1 - w1 + lw1 * ln, b = x2 - w2 + lw2 * ln;
@@ -663,10 +662,14 @@
       // in lontananza la strada non deve assottigliarsi fino a sparire: larghezza minima
       var rp = seg.fog < 0.99 ? farPal(pal, Math.min(0.55, (1 - seg.fog) * 2)) : pal;
       var w1 = seg.fog < 0.99 ? Math.max(p1.sw, 6) : p1.sw, w2 = seg.fog < 0.99 ? Math.max(p2.sw, 6) : p2.sw;
-      if (c1 === 0 && c2 === 0) roadPoly(p1.sx, p1.sy, w1, p2.sx, p2.sy, w2, light, rp);
+      // meno rifinito: oltre 40 segmenti niente strisce di corsia
+      var np = n >= 40 ? 2 : 3;
+      if (c1 === 0 && c2 === 0) roadPoly(p1.sx, p1.sy, w1, p2.sx, p2.sy, w2, light, rp, n >= 40 ? 3 : undefined);
       else {
-        roadPoly(p1.sx - c1 * w1, p1.sy, w1, p2.sx - c2 * w2, p2.sy, w2, light, rp);
-        roadPoly(p1.sx + c1 * w1, p1.sy, w1, p2.sx + c2 * w2, p2.sy, w2, light, rp);
+        for (var part = 0; part < np; part++) {
+          roadPoly(p1.sx - c1 * w1, p1.sy, w1, p2.sx - c2 * w2, p2.sy, w2, light, rp, part);
+          roadPoly(p1.sx + c1 * w1, p1.sy, w1, p2.sx + c2 * w2, p2.sy, w2, light, rp, part);
+        }
       }
       if (seg.fog < 0.99) { cx.fillStyle = 'rgba(' + (fogR[0] | 0) + ',' + (fogR[1] | 0) + ',' + (fogR[2] | 0) + ',' + (1 - seg.fog).toFixed(3) + ')'; cx.fillRect(-10, p2.sy, W + 20, p1.sy - p2.sy); }
       maxy = p2.sy;
@@ -874,7 +877,7 @@
       if (sel) { ux.fillStyle = 'rgba(255,74,224,0.35)'; ux.fillRect(UW / 2 - 560, y - 70, 1120, 90); }
       txt(it, UW / 2, y, sel ? 64 : 54, sel ? '#ffe14a' : '#ffffff', 'center', true);
     });
-    txt('◀ ▶ steer   ▼ brake   ' + (autoGas ? 'auto throttle (no need for ▲ or OK)' : '▲ gas on   ▼ tap: hold speed, keep pressed: brake   OK gear') + '   YELLOW toggles throttle', UW / 2, UH - 50, 30, '#ffffff', 'center', false);
+    txt('◀ ▶ steer   ▼ brake   ' + (autoGas ? '▲ gas on   ▼ tap: hold speed, keep pressed: brake   (automatic gears)' : '▲ gas on   ▼ tap: hold speed, keep pressed: brake   OK gear') + '   YELLOW toggles throttle', UW / 2, UH - 50, 30, '#ffffff', 'center', false);
   }
   var CLIP_BURN = 1.4, CLIP_LEN = 7, clipSmoke = [], clipCar = null;
   function clipPos(t) {

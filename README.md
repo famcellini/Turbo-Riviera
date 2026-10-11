@@ -12,8 +12,8 @@ provinces and local businesses of the Fermo area (Marche, Italy).
 | Key | Action |
 |---|---|
 | ◀ ▶ | steer |
-| ▼ | brake (manual: tap for 1/3 s to cut the throttle, keep pressed to brake) |
-| ▲ | throttle on (manual mode; stays on) |
+| ▼ | tap for 1/3 s: cut the throttle and hold speed; keep pressed: brake |
+| ▲ | throttle on (a single tap is enough, it stays on) |
 | OK | gear LO / HI (manual mode) |
 | Red | change radio station |
 | Green | audio on/off |

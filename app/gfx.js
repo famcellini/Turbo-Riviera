@@ -387,8 +387,8 @@ var TR = window.TR = window.TR || {};
     R(g, 0, 0, 150, 54, '#ffffff'); R(g, 2, 2, 146, 50, '#1d4fb8');
     g.fillStyle = '#ffffff'; g.textBaseline = 'middle';
     [[a, ka, 15], [b, kb, 39]].forEach(function (r, j) {
-      g.textAlign = 'left'; fitText(g, r[0], 82, 13); g.fillText(r[0], 22, r[2]);
-      g.textAlign = 'right'; g.font = 'bold 12px Arial'; g.fillText(r[1], 144, r[2]);
+      g.textAlign = 'left'; tallText(g, r[0], 66, 22, 'bold', 22, r[2]);
+      g.textAlign = 'right'; tallText(g, r[1], 46, 20, 'bold', 144, r[2]);
       if (j === 0) P(g, [6, r[2], 14, r[2] - 6, 14, r[2] + 6], '#ffffff'); else P(g, [16, r[2], 8, r[2] - 6, 8, r[2] + 6], '#ffffff');
     });
     R(g, 4, 27, 142, 1, '#ffffff');
