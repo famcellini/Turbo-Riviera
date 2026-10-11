@@ -654,11 +654,13 @@
       cx.fillStyle = light ? pal.grass0 : pal.grass1; cx.fillRect(-10, p2.sy, W + 20, p1.sy - p2.sy + 1);
       var c1 = seg.f1 * FORKC, c2 = seg.f2 * FORKC;
       // strada lontana: più scura, così non si confonde con la sabbia
+      // in lontananza la strada non deve assottigliarsi fino a sparire: larghezza minima
       var rp = seg.fog < 0.99 ? farPal(pal, Math.min(0.85, (1 - seg.fog) * 2.6)) : pal;
-      if (c1 === 0 && c2 === 0) roadPoly(p1.sx, p1.sy, p1.sw, p2.sx, p2.sy, p2.sw, light, rp);
+      var w1 = seg.fog < 0.99 ? Math.max(p1.sw, 4) : p1.sw, w2 = seg.fog < 0.99 ? Math.max(p2.sw, 4) : p2.sw;
+      if (c1 === 0 && c2 === 0) roadPoly(p1.sx, p1.sy, w1, p2.sx, p2.sy, w2, light, rp);
       else {
-        roadPoly(p1.sx - c1 * p1.sw, p1.sy, p1.sw, p2.sx - c2 * p2.sw, p2.sy, p2.sw, light, rp);
-        roadPoly(p1.sx + c1 * p1.sw, p1.sy, p1.sw, p2.sx + c2 * p2.sw, p2.sy, p2.sw, light, rp);
+        roadPoly(p1.sx - c1 * w1, p1.sy, w1, p2.sx - c2 * w2, p2.sy, w2, light, rp);
+        roadPoly(p1.sx + c1 * w1, p1.sy, w1, p2.sx + c2 * w2, p2.sy, w2, light, rp);
       }
       if (seg.fog < 0.99) { cx.fillStyle = 'rgba(' + (fogR[0] | 0) + ',' + (fogR[1] | 0) + ',' + (fogR[2] | 0) + ',' + (1 - seg.fog).toFixed(3) + ')'; cx.fillRect(-10, p2.sy, W + 20, p1.sy - p2.sy + 1); }
       maxy = p2.sy;
