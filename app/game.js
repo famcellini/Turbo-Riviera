@@ -89,7 +89,7 @@
   function lastF() { var s = B.segs; return s.length ? s[s.length - 1].f2 : 0; }
   function addSeg(curve, y, f) {
     var n = B.segs.length;
-    B.segs.push({ i: n, p1: { y: lastY(), z: n * SEG }, p2: { y: y, z: (n + 1) * SEG }, curve: curve, f1: lastF(), f2: f || 0, spr: [], cars: [], clip: 0, fog: 1 });
+    B.segs.push({ i: n, p1: { y: lastY(), z: n * SEG }, p2: { y: y, z: (n + 1) * SEG }, curve: curve, f1: lastF(), f2: f || 0, fs: B.side || 0, spr: [], cars: [], clip: 0, fog: 1 });
   }
   function easeIn(a, b, p) { return a + (b - a) * p * p; }
   function easeInOut(a, b, p) { return a + (b - a) * ((-Math.cos(p * Math.PI) / 2) + 0.5); }
@@ -103,21 +103,23 @@
   function adName(nm) { return nm === 'ad' ? 'bill' + (adN++ % G.NADS) : nm === 'nad' ? 'neon' + (adN++ % G.NADS) : nm; }
   function addSpr(i, name, off) { var s = B.segs[i]; if (s) s.spr.push({ s: typeof name === 'string' ? S[name] : name, off: off }); }
   function lamps(from, to, night) {
-    for (var i = from; i < to; i += 8) { var s = B.segs[i]; if (!s) continue; var c = s.f1 * FORKC; addSpr(i, night ? 'nlamp' : 'lamp', -(c + 1.6)); addSpr(i, night ? 'nlamp' : 'lamp', c + 1.6); }
+    for (var i = from; i < to; i += 8) { var s = B.segs[i]; if (!s) continue; var c = s.f1 * FORKC, m = s.fs ? s.fs * c : 0, o = s.fs ? 1.6 : c + 1.6; addSpr(i, night ? 'nlamp' : 'lamp', m - o); addSpr(i, night ? 'nlamp' : 'lamp', m + o); }
   }
   function pick(list, r) { var t = 0, i; for (i = 0; i < list.length; i++) t += list[i][1]; var x = r() * t; for (i = 0; i < list.length; i++) { x -= list[i][1]; if (x <= 0) return list[i][0]; } return list[0][0]; }
 
-  function buildStage(id, first) {
+  function buildStage(id, first, side) {
     var lv = levelOf(id), th = TH[id], r = TR.rng(id * 977 + 13 + (first === 'demo' ? 5 : 0)), n, i;
-    B = { segs: [], id: id, lv: lv, gateIdx: -1, forkStart: -1, final: lv === 3 };
+    B = { segs: [], id: id, lv: lv, gateIdx: -1, forkStart: -1, final: lv === 3, side: 0 };
     var gates = [];
     if (first) { addRoad(0, 50, 0, 0, 0); gates.push([10, 'START', '#1e64d0', 0]); }
     else {
+      B.side = side || 0;
       for (n = 0; n < STUB; n++) addSeg(0, 0, 1);
       for (n = 0; n < 150; n++) addSeg(0, 0, easeInOut(1, 0, n / 150));
+      B.side = 0;
       addRoad(0, 40, 0, 0, 0);
       lamps(STUB + 8, STUB + 190, th.night);
-      gates.push([STUB, 'CHECKPOINT', '#e02020', -FORKC], [STUB, 'CHECKPOINT', '#e02020', FORKC]);
+      if (side) gates.push([STUB, 'CHECKPOINT', '#e02020', side * FORKC]); else gates.push([STUB, 'CHECKPOINT', '#e02020', -FORKC], [STUB, 'CHECKPOINT', '#e02020', FORKC]);
     }
     var bodyStart = B.segs.length, target = 2300 + lv * 180;
     var cmax = 2.2 + Math.min(lv, 2) * 0.9 + Math.max(0, lv - 2) * 0.35, hmax = 25 + lv * 10, curY = 0;
@@ -147,7 +149,7 @@
     }
     // indicazioni stradali: 4 paesi della zona in cui si sta andando; cartelli blu con le direzioni del prossimo bivio
     var RT = REGION_TOWNS[region] || REGION_TOWNS.Fermo, tn = 0;
-    for (i = bodyStart + 90, n = 0; i < bodyEnd - 60; i += 230 + ((r() * 120) | 0), n++) {
+    for (i = bodyStart + 90, n = 0; id > 0 && i < bodyEnd - 60; i += 230 + ((r() * 120) | 0), n++) {
       var sg;
       if (n % 2) {
         var k1 = (5 + r() * 40 | 0) + ' km', k2 = (8 + r() * 60 | 0) + ' km';
@@ -203,7 +205,7 @@
   var position = 0, speed = 0, playerX = 0, cars = [];
   var timeLeft = 0, score = 0, stageTime = 0, totalTime = 0, path = [0], stageId = 0;
   var prevTheme = 0, themeT = 1, bgOff = [0, 0, 0], cloudDrift = 0;
-  var gasOn = false, downT = 0, gearHi = false, crashT = 0, crashAng = 0, shake = 0, steerDir = 0, brakeOn = false, offroad = false, skid = false;
+  var forkSide = 0, gasOn = false, downT = 0, gearHi = false, crashT = 0, crashAng = 0, shake = 0, steerDir = 0, brakeOn = false, offroad = false, skid = false;
   var state = 'intro', stateT = 0, msg = [], menuSel = 0, pauseSel = 0;
   var autoGas = store.get('tr_auto', true), station = store.get('tr_station', 0);
   var lapTimes = [], countN = 3, demo = false, nameChars = [0, 0, 0], namePos = 0, newRank = -1, endBonus = 0;
@@ -227,7 +229,7 @@
     position = 60 * SEG; speed = MAXS * 0.72; playerX = 0; cars = []; crashT = 0;
   }
   function startGame() {
-    demo = false; stageId = 0; region = 'Fermo'; path = [0]; T = buildStage(0, true); prevTheme = 0; themeT = 1;
+    demo = false; stageId = 0; region = 'Fermo'; forkSide = 0; path = [0]; T = buildStage(0, true); prevTheme = 0; themeT = 1;
     position = 0; speed = 0; playerX = -0.25; cars = []; crashT = 0; shake = 0; gearHi = false; gasOn = false; downT = 0;
     timeLeft = Math.ceil(stageSecs(T)) + 8; score = 0; stageTime = 0; totalTime = 0; lapTimes = [];
     var r = TR.rng(Date.now() & 0xffff);
@@ -240,11 +242,11 @@
 
   function checkpoint() {
     var right = playerX >= 0, next = childOf(stageId, right);
-    region = FORK[stageId][right ? 1 : 0];
+    region = FORK[stageId][right ? 1 : 0]; forkSide = right ? 1 : -1;
     var old = T, gz = old.gateIdx * SEG;
     lapTimes.push(stageTime); stageTime = 0;
     prevTheme = stageId; stageId = next; themeT = 0; path.push(next);
-    T = buildStage(next, false);
+    T = buildStage(next, false, right ? 1 : -1);
     position = position - gz + STUB * SEG;
     // le auto già oltre il portale proseguono nel nuovo tratto
     var keep = [];
@@ -293,6 +295,7 @@
   function onRoadAt(seg, pct, x) {
     var c = (seg.f1 + (seg.f2 - seg.f1) * pct) * FORKC;
     if (c === 0) return Math.abs(x) <= 1;
+    if (seg.fs) return Math.abs(x - seg.fs * c) <= 1;
     return Math.abs(x + c) <= 1 || Math.abs(x - c) <= 1;
   }
   function drive(dt, ctrl) {
@@ -320,6 +323,10 @@
     steerDir = left ? -1 : right ? 1 : 0;
     if (left) playerX -= dx; else if (right) playerX += dx;
     playerX -= dx * spd * pSeg.curve * CENT;
+    // al bivio, una volta imboccata una strada non si passa nell'altra attraverso l'erba
+    if (cNow > 1.2 && !forkSide && Math.abs(playerX) > 0.5) forkSide = playerX < 0 ? -1 : 1;
+    if (cNow < 0.01) forkSide = 0;
+    else if (forkSide) { var mnx = Math.max(0, cNow - 1.15); if (playerX * forkSide < mnx) playerX = forkSide * mnx; }
     if (crashT > 0) {
       crashT -= dt; speed = Math.max(0, speed - MAXS * 1.1 * dt);
       if (crashT < 0.9) { var tgt = cNow > 1.1 ? (playerX < 0 ? -cNow : cNow) : Math.max(-0.75, Math.min(0.75, playerX)); playerX += (tgt - playerX) * Math.min(1, dt * 4); }
@@ -366,7 +373,7 @@
         var c = cars[i], dz = c.z - (position + PZ);
         // controllo "a tratto": a velocità alta l'auto può saltare la finestra di collisione in un solo frame
         if (speed > c.spd && dz < SEG * 0.8 && dz + (speed - c.spd) * dt > -SEG * 0.4) {
-          var cs = findSeg(c.z), cc = ((cs.f1 + cs.f2) / 2) * FORKC, co = c.off + (c.off < 0 ? -cc : cc);
+          var cs = findSeg(c.z), cc = ((cs.f1 + cs.f2) / 2) * FORKC, co = c.off + (cs.fs ? cs.fs * cc : (c.off < 0 ? -cc : cc));
           if (Math.abs(playerX - co) < (PW + c.v.ww / ROADW) / 2 * 0.85) {
             speed = c.spd * 0.6; position = c.z - PZ - SEG; shake = 0.35; A.sfx.bump(); score = Math.max(0, score - 5000);
             break;
@@ -679,8 +686,8 @@
       if (c1 === 0 && c2 === 0) roadPoly(p1.sx, p1.sy, w1, p2.sx, p2.sy, w2, light, rp, n >= 40 ? 3 : undefined);
       else {
         for (var part = 0; part < np; part++) {
-          roadPoly(p1.sx - c1 * w1, p1.sy, w1, p2.sx - c2 * w2, p2.sy, w2, light, rp, part);
-          roadPoly(p1.sx + c1 * w1, p1.sy, w1, p2.sx + c2 * w2, p2.sy, w2, light, rp, part);
+          if (seg.fs !== 1) roadPoly(p1.sx - c1 * w1, p1.sy, w1, p2.sx - c2 * w2, p2.sy, w2, light, rp, part);
+          if (seg.fs !== -1) roadPoly(p1.sx + c1 * w1, p1.sy, w1, p2.sx + c2 * w2, p2.sy, w2, light, rp, part);
         }
       }
       if (seg.fog < 0.99) { cx.fillStyle = 'rgba(' + (fogR[0] | 0) + ',' + (fogR[1] | 0) + ',' + (fogR[2] | 0) + ',' + (1 - seg.fog).toFixed(3) + ')'; cx.fillRect(-10, p2.sy, W + 20, p1.sy - p2.sy); }
@@ -692,11 +699,11 @@
       for (n = nStart; n < DRAW; n++) {
         seg = T.segs[base.i + n]; if (!seg) break;
         q1 = seg.p1; if (q1.cz <= DEPTH || q1.sy >= last || q1.sy < hz) continue;
-        cur = { c: seg.f1 * FORKC, sx: q1.sx, sy: q1.sy, sw: Math.max(q1.sw, 2), light: Math.floor(seg.i / RUMBLE) % 2 === 0, fog: seg.fog };
-        if (!prev) prev = { c: cur.c, sx: q1.sx, sy: yStart, sw: cur.sw, light: cur.light, fog: seg.fog };
+        cur = { c: seg.f1 * FORKC, fs: seg.fs, sx: q1.sx, sy: q1.sy, sw: Math.max(q1.sw, 2), light: Math.floor(seg.i / RUMBLE) % 2 === 0, fog: seg.fog };
+        if (!prev) prev = { c: cur.c, fs: cur.fs, sx: q1.sx, sy: yStart, sw: cur.sw, light: cur.light, fog: seg.fog };
         rpf = farPal(pal, Math.min(0.55, (1 - cur.fog) * 2));
         if (cur.c === 0 && prev.c === 0) roadPoly(prev.sx, prev.sy, prev.sw, cur.sx, cur.sy, cur.sw, cur.light, rpf);
-        else for (var pt = 0; pt < 3; pt++) { roadPoly(prev.sx - prev.c * prev.sw, prev.sy, prev.sw, cur.sx - cur.c * cur.sw, cur.sy, cur.sw, cur.light, rpf, pt); roadPoly(prev.sx + prev.c * prev.sw, prev.sy, prev.sw, cur.sx + cur.c * cur.sw, cur.sy, cur.sw, cur.light, rpf, pt); }
+        else for (var pt = 0; pt < 3; pt++) { if (cur.fs !== 1) roadPoly(prev.sx - prev.c * prev.sw, prev.sy, prev.sw, cur.sx - cur.c * cur.sw, cur.sy, cur.sw, cur.light, rpf, pt); if (cur.fs !== -1) roadPoly(prev.sx + prev.c * prev.sw, prev.sy, prev.sw, cur.sx + cur.c * cur.sw, cur.sy, cur.sw, cur.light, rpf, pt); }
         last = q1.sy; prev = cur;
       }
     }
@@ -707,7 +714,7 @@
       for (i = 0; i < seg.cars.length; i++) {
         var c = seg.cars[i]; if (c.z < pz - SEG * 0.3) continue;
         var pct = (c.z % SEG) / SEG; sc = seg.p1.sc + (seg.p2.sc - seg.p1.sc) * pct;
-        var cc = (seg.f1 + (seg.f2 - seg.f1) * pct) * FORKC, co = c.off + (c.off < 0 ? -cc : cc);
+        var cc = (seg.f1 + (seg.f2 - seg.f1) * pct) * FORKC, co = c.off + (seg.fs ? seg.fs * cc : (c.off < 0 ? -cc : cc));
         var swp = seg.p1.sw + (seg.p2.sw - seg.p1.sw) * pct;
         var cxp = seg.p1.sx + (seg.p2.sx - seg.p1.sx) * pct + co * swp;
         var cyp = seg.p1.sy + (seg.p2.sy - seg.p1.sy) * pct;
