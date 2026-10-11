@@ -8,7 +8,7 @@
   var cv = document.getElementById('game'), cx = cv.getContext('2d');
   var uv = document.getElementById('ui'), ux = uv.getContext('2d');
   // risoluzione di disegno del mondo (strada, sfondo, sprite): più bassa = più veloce; le coordinate restano 640x360
-  var RS = 0.8;
+  var RS = 0.96;
   cv.width = Math.round(W * RS); cv.height = Math.round(H * RS); uv.width = UW; uv.height = UH;
   cx.setTransform(RS, 0, 0, RS, 0, 0);
   cx.imageSmoothingEnabled = false;
@@ -699,7 +699,7 @@
       }
       for (i = 0; i < seg.spr.length; i++) {
         var sp = seg.spr[i]; sc = seg.p1.sc;
-        drawSprite(sp.s.img, sp.s.ww, sc, seg.p1.sx + sp.off * seg.p1.sw, seg.p1.sy, seg.clip);
+        drawSprite(sp.off > 0 && sp.s.imgR ? sp.s.imgR : sp.s.img, sp.s.ww, sc, seg.p1.sx + sp.off * seg.p1.sw, seg.p1.sy, seg.clip);
       }
     }
     // auto del giocatore

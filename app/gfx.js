@@ -278,6 +278,11 @@ var TR = window.TR = window.TR || {};
     R(g, 4, 6, 3, h - 6, '#5a5f68'); R(g, 4, 6, 18, 3, '#5a5f68'); RR(g, 16, 7, 12, 5, 2, '#3a3f48');
     E(g, 22, 13, 6, 3, '#fff6c0'); R(g, 1, h - 5, 9, 5, '#3a3f48');
   });
+  // lampioni: versione speculare per il lato destro (il braccio deve puntare verso la strada)
+  ['lamp', 'nlamp'].forEach(function (n) {
+    var o = S[n], m = mk(o.img.width, o.img.height), mg = m.getContext('2d');
+    mg.translate(m.width, 0); mg.scale(-1, 1); mg.drawImage(o.img, 0, 0); o.imgR = m;
+  });
   def('umbrella', 56, 52, 950, function (g, w, h) {
     R(g, 27, 12, 2, h - 12, '#eeeeee');
     for (var i = 0; i < 6; i++) P(g, [28, 2, 2 + i * 8.7, 18, 2 + (i + 1) * 8.7, 18], i % 2 ? '#ffffff' : '#e8242c');
