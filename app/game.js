@@ -189,7 +189,7 @@
   var position = 0, speed = 0, playerX = 0, cars = [];
   var timeLeft = 0, score = 0, stageTime = 0, totalTime = 0, path = [0], stageId = 0;
   var prevTheme = 0, themeT = 1, bgOff = [0, 0, 0], cloudDrift = 0;
-  var gearHi = false, crashT = 0, crashAng = 0, shake = 0, steerDir = 0, brakeOn = false, offroad = false, skid = false;
+  var gasOn = false, brakeHeld = false, gearHi = false, crashT = 0, crashAng = 0, shake = 0, steerDir = 0, brakeOn = false, offroad = false, skid = false;
   var state = 'intro', stateT = 0, msg = [], menuSel = 0, pauseSel = 0;
   var autoGas = store.get('tr_auto', true), station = store.get('tr_station', 0);
   var lapTimes = [], countN = 3, demo = false, nameChars = [0, 0, 0], namePos = 0, newRank = -1, endBonus = 0;
@@ -214,7 +214,7 @@
   }
   function startGame() {
     demo = false; stageId = 0; path = [0]; T = buildStage(0, true); prevTheme = 0; themeT = 1;
-    position = 0; speed = 0; playerX = -0.25; cars = []; crashT = 0; shake = 0; gearHi = false;
+    position = 0; speed = 0; playerX = -0.25; cars = []; crashT = 0; shake = 0; gearHi = false; gasOn = false; brakeHeld = false;
     timeLeft = Math.ceil(stageSecs(T)) + 8; score = 0; stageTime = 0; totalTime = 0; lapTimes = [];
     var r = TR.rng(Date.now() & 0xffff);
     spawnCars(T, 60 * SEG, T.forkStart * SEG - 20 * SEG, 34, r);
@@ -286,7 +286,15 @@
     var left = false, right = false, gas = false, brk = false;
     if (ctrl === 'player' && crashT <= 0) {
       left = keys.left; right = keys.right; brk = keys.down;
-      gas = !brk && (autoGas ? true : keys.up);
+      if (!autoGas) {
+        // manuale: ▲ (anche un solo tocco) inserisce l'acceleratore, che resta inserito;
+        // ▼ la prima volta lo disinserisce (velocità costante), le volte successive frena finché è premuto
+        if (pressed.up || keys.up) { gasOn = true; brakeHeld = false; }
+        if (pressed.down) { if (gasOn) { gasOn = false; brakeHeld = false; } else brakeHeld = true; }
+        if (!keys.down) brakeHeld = false;
+        brk = brakeHeld;
+      }
+      gas = !brk && (autoGas ? true : gasOn);
       if (autoGas && keys.up) gas = true;
       // cambio manuale: OK alterna LO / HI
       if (!autoGas && pressed.ok) { gearHi = !gearHi; A.sfx.shift(); if (gearHi) flameT = 0.45; }
@@ -310,6 +318,7 @@
       var manual = ctrl === 'player' && !autoGas;
       if (gas) {
         var acc = gearHi ? MAXS * 0.2 * (1.15 - spd) : MAXS * 0.42 * (1.1 - spd);
+        if (manual) acc *= 1.1;   // in manuale si accelera il 10% più in fretta
         if (manual && gearHi && spd < 0.4) acc *= 0.35 + spd;   // in HI da fermi si parte piano
         speed += Math.max(acc, MAXS * 0.03) * dt;
         if (manual && !gearHi && speed > MAXS * 0.56) speed = MAXS * 0.56;   // in LO la velocità ha un limite
@@ -450,7 +459,7 @@
         if (pressed.back) { state = 'pause'; pauseSel = 0; A.sfx.pause(); }
         if (pressed.red) nextStation(1);
         if (pressed.green) A.setMute(!A.isMuted());
-        if (pressed.yellow) { autoGas = !autoGas; store.set('tr_auto', autoGas); showMsg(autoGas ? 'AUTO THROTTLE' : 'MANUAL: ▲ GAS  ▼ BRAKE  OK GEAR', '#ffffff', 2, 'small'); }
+        if (pressed.yellow) { autoGas = !autoGas; store.set('tr_auto', autoGas); showMsg(autoGas ? 'AUTO THROTTLE' : 'MANUAL: ▲ GAS ON  ▼ HOLD / BRAKE  OK GEAR', '#ffffff', 2, 'small'); }
         break;
       case 'pause':
         A.engine(false, 0, false, false, 0);
@@ -830,7 +839,7 @@
       if (sel) { ux.fillStyle = 'rgba(255,74,224,0.35)'; ux.fillRect(UW / 2 - 560, y - 70, 1120, 90); }
       txt(it, UW / 2, y, sel ? 64 : 54, sel ? '#ffe14a' : '#ffffff', 'center', true);
     });
-    txt('◀ ▶ steer   ▼ brake   ' + (autoGas ? 'auto throttle (no need for ▲ or OK)' : '▲ accelerate   OK gear LO/HI') + '   YELLOW toggles throttle', UW / 2, UH - 50, 30, '#ffffff', 'center', false);
+    txt('◀ ▶ steer   ▼ brake   ' + (autoGas ? 'auto throttle (no need for ▲ or OK)' : '▲ gas on   ▼ hold speed, again to brake   OK gear') + '   YELLOW toggles throttle', UW / 2, UH - 50, 30, '#ffffff', 'center', false);
   }
   var CLIP_BURN = 1.4, CLIP_LEN = 7, clipSmoke = [], clipCar = null;
   function clipPos(t) {
@@ -842,12 +851,17 @@
     return { d: d, w: base * d, x: UW / 2 + shake, y: hy + (by - hy) * d + (t < CLIP_BURN ? Math.random() * 4 : 0) };
   }
   function drawClip(t) {
-    if (!clipCar) clipCar = G.playerCar(0, false, 'cheer', 6);
+    if (!clipCar) clipCar = G.carHD('cheer', 6);
     var cp = clipPos(t), h = cp.w * clipCar.height / clipCar.width;
     ux.save(); ux.imageSmoothingEnabled = true; ux.imageSmoothingQuality = 'high';
     // fumo dietro le gomme
     clipSmoke.forEach(function (m) { if (m.y > cp.y - h * 0.3) return; G.E(ux, m.x, m.y, m.r, m.r * 0.7, 'rgba(235,235,240,' + (m.a * 0.8) + ')'); });
+    var sg = ux.createRadialGradient(cp.x, cp.y - h * 0.04, cp.w * 0.05, cp.x, cp.y - h * 0.04, cp.w * 0.62);
+    sg.addColorStop(0, 'rgba(0,0,0,0.45)'); sg.addColorStop(1, 'rgba(0,0,0,0)');
+    ux.save(); ux.translate(cp.x, cp.y - h * 0.04); ux.scale(1, 0.18); ux.translate(-cp.x, -(cp.y - h * 0.04)); ux.fillStyle = sg; ux.fillRect(cp.x - cp.w, cp.y - h * 0.04 - cp.w, cp.w * 2, cp.w * 2); ux.restore();
     ux.drawImage(clipCar, cp.x - cp.w / 2, cp.y - h, cp.w, h);
+    // riflesso dell'auto sull'asfalto
+    ux.save(); ux.globalAlpha = 0.12; ux.translate(0, (cp.y) * 2); ux.scale(1, -1); ux.drawImage(clipCar, 0, clipCar.height * 0.62, clipCar.width, clipCar.height * 0.38, cp.x - cp.w / 2, cp.y - h * 0.38 - h * 0.02, cp.w, h * 0.38); ux.restore();
     // fiammate all'avvio
     if (t > CLIP_BURN && t < CLIP_BURN + 0.7 && Math.random() < 0.85) [37.5, 90.5].forEach(function (ex) {
       var k = cp.w / 132, fx = cp.x - cp.w / 2 + (ex + 2) * k, fy = cp.y - h + 66 * k, fl = (10 + Math.random() * 12) * k;

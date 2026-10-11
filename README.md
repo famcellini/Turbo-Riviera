@@ -12,8 +12,8 @@ provinces and local businesses of the Fermo area (Marche, Italy).
 | Key | Action |
 |---|---|
 | ◀ ▶ | steer |
-| ▼ | brake |
-| ▲ | accelerate (manual mode; speed holds when released) |
+| ▼ | brake (manual: first press holds speed, next press brakes) |
+| ▲ | throttle on (manual mode; stays on) |
 | OK | gear LO / HI (manual mode) |
 | Red | change radio station |
 | Green | audio on/off |

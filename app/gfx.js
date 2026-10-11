@@ -96,6 +96,53 @@ var TR = window.TR = window.TR || {};
     return c;
   }
 
+  // versione rifinita per il filmato finale: stessa auto, con sfumature, ombre e riflessi
+  function carHD(turned, hs) {
+    var c = playerCar(0, false, turned, hs), g = c.getContext('2d');
+    g.save(); g.setTransform(hs, 0, 0, hs, 2 * hs, 10 * hs);
+    function clipPath(pts) { g.beginPath(); g.moveTo(pts[0], pts[1]); for (var i = 2; i < pts.length; i += 2) g.lineTo(pts[i], pts[i + 1]); g.closePath(); }
+    var body = [2, 30, 8, 21, 120, 21, 126, 30, 126, 51, 2, 51], deck = [6, 22, 22, 12, 106, 12, 122, 22];
+    var gr;
+    // cofano posteriore: luce dall'alto e riflesso del cielo
+    g.save(); clipPath(deck); g.clip();
+    gr = g.createLinearGradient(0, 12, 0, 22); gr.addColorStop(0, 'rgba(255,190,180,0.55)'); gr.addColorStop(0.45, 'rgba(255,90,80,0.12)'); gr.addColorStop(1, 'rgba(60,0,0,0.35)');
+    g.fillStyle = gr; g.fillRect(0, 10, 132, 14);
+    gr = g.createLinearGradient(22, 0, 106, 0); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(0.3, 'rgba(255,255,255,0.45)'); gr.addColorStop(0.42, 'rgba(255,255,255,0)'); gr.addColorStop(0.7, 'rgba(255,255,255,0.18)'); gr.addColorStop(0.78, 'rgba(255,255,255,0)');
+    g.fillStyle = gr; g.fillRect(0, 12, 132, 4);
+    g.restore();
+    // carrozzeria: volume (bordi più scuri, centro più chiaro) e ombra verso terra
+    g.save(); clipPath(body); g.clip();
+    gr = g.createLinearGradient(2, 0, 126, 0); gr.addColorStop(0, 'rgba(40,0,0,0.45)'); gr.addColorStop(0.12, 'rgba(40,0,0,0)'); gr.addColorStop(0.88, 'rgba(40,0,0,0)'); gr.addColorStop(1, 'rgba(40,0,0,0.45)');
+    g.fillStyle = gr; g.fillRect(0, 20, 132, 32);
+    gr = g.createLinearGradient(0, 21, 0, 51); gr.addColorStop(0, 'rgba(255,170,160,0.35)'); gr.addColorStop(0.12, 'rgba(255,170,160,0)'); gr.addColorStop(0.75, 'rgba(0,0,0,0)'); gr.addColorStop(1, 'rgba(30,0,0,0.45)');
+    g.fillStyle = gr; g.fillRect(0, 20, 132, 32);
+    // spigolo lucido sopra la griglia
+    g.fillStyle = 'rgba(255,230,220,0.6)'; g.fillRect(10, 25.6, 108, 0.6);
+    g.restore();
+    // griglia: vetro scuro con riflesso
+    g.save(); g.beginPath(); g.rect(8, 28, 112, 15); g.clip();
+    gr = g.createLinearGradient(0, 28, 0, 43); gr.addColorStop(0, 'rgba(255,255,255,0.18)'); gr.addColorStop(0.35, 'rgba(255,255,255,0)'); gr.addColorStop(1, 'rgba(0,0,0,0.25)');
+    g.fillStyle = gr; g.fillRect(8, 28, 112, 15);
+    g.globalCompositeOperation = 'lighter';
+    [25, 103].forEach(function (x) { var rg = g.createRadialGradient(x, 35, 1, x, 35, 16); rg.addColorStop(0, 'rgba(255,60,40,0.55)'); rg.addColorStop(1, 'rgba(255,0,0,0)'); g.fillStyle = rg; g.fillRect(x - 16, 28, 32, 15); });
+    g.restore();
+    // terminali di scarico cromati
+    [34, 41, 87, 94].forEach(function (x) {
+      var rg = g.createRadialGradient(x - 1, 53.4, 0.3, x, 54, 3.2); rg.addColorStop(0, '#ffffff'); rg.addColorStop(0.45, '#b8bcc6'); rg.addColorStop(1, '#4a4e58');
+      g.fillStyle = rg; g.beginPath(); g.ellipse(x, 54, 3, 2, 0, 0, Math.PI * 2); g.fill();
+      g.fillStyle = '#151515'; g.beginPath(); g.ellipse(x, 54.3, 1.6, 1, 0, 0, Math.PI * 2); g.fill();
+    });
+    // paraurti e targa con riflesso
+    gr = g.createLinearGradient(0, 51, 0, 54); gr.addColorStop(0, 'rgba(255,255,255,0.25)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(4, 51, 120, 3);
+    gr = g.createLinearGradient(50, 44, 78, 51); gr.addColorStop(0, 'rgba(255,255,255,0.5)'); gr.addColorStop(0.5, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(50, 44, 28, 7);
+    // capelli di lei: lucentezza
+    g.globalCompositeOperation = 'source-atop';
+    var rg2 = g.createRadialGradient(84, -2, 0.5, 84, -2, 9); rg2.addColorStop(0, 'rgba(255,255,230,0.55)'); rg2.addColorStop(1, 'rgba(255,255,230,0)');
+    g.fillStyle = rg2; g.fillRect(74, -12, 22, 20);
+    g.restore();
+    return c;
+  }
+
   /* ================= AUTO DEL TRAFFICO ================= */
   var CARCOL = ['#2a5bd7', '#f0f0f0', '#ffd21f', '#1c9c4a', '#7a2fb5', '#e86a12', '#2b2f36', '#9aa3ad', '#18a4b8', '#c2185b'];
   function trafficCar(type, col) {
@@ -427,7 +474,7 @@ var TR = window.TR = window.TR || {};
   }
 
   TR.gfx = {
-    S: S, playerCar: playerCar, trafficCar: trafficCar, CARCOL: CARCOL, gate: gate, forkSign: forkSign,
+    S: S, playerCar: playerCar, carHD: carHD, trafficCar: trafficCar, CARCOL: CARCOL, gate: gate, forkSign: forkSign,
     townSign: townSign, dirSign: dirSign, TOWNS: TOWNS, PROVINCE: PROVINCE, NADS: ADS.length, background: background, sunStripes: sunStripes, icon: icon, R: R, P: P, E: E
   };
 })();

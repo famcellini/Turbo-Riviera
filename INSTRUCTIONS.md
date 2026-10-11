@@ -1,13 +1,13 @@
 # Turbo Riviera: install on the LG 27TQ615S-PZ monitor
 
-File to install: `com.cristian.turboriviera_1.0.10_all.ipk`
+File to install: `com.cristian.turboriviera_1.0.11_all.ipk`
 
 Turbo Riviera is a 90s-style arcade road racer (pseudo-3D road, red convertible, curves, hills, traffic, a countdown timer and forks). Name, graphics and music are original: no Sega material.
 
 ## Install
 The monitor is already set up (Developer Mode on, as for Super Eleonora).
 1. Open webOS Dev Manager on the PC (monitor and PC on the same network).
-2. **Apps** tab → **Install** (or drag the `.ipk` file into the window) and pick `com.cristian.turboriviera_1.0.10_all.ipk`.
+2. **Apps** tab → **Install** (or drag the `.ipk` file into the window) and pick `com.cristian.turboriviera_1.0.11_all.ipk`.
 3. Turbo Riviera appears among the monitor's apps with the convertible-at-sunset icon.
 
 Remember: Developer Mode expires after about 50 hours; to renew it open the Developer Mode app and press "Extend".
@@ -16,8 +16,8 @@ Remember: Developer Mode expires after about 50 hours; to renew it open the Deve
 | Key | Action |
 |---|---|
 | ◀ ▶ | steer |
-| ▼ | brake |
-| ▲ | accelerate (MANUAL mode) |
+| ▼ | brake (MANUAL: first press holds speed, next press brakes) |
+| ▲ | throttle on (MANUAL mode, stays on) |
 | OK | change gear LO / HI (MANUAL mode) |
 | RED button | change radio station |
 | GREEN button | sound on/off |
@@ -26,7 +26,7 @@ Remember: Developer Mode expires after about 50 hours; to renew it open the Deve
 
 **Auto throttle** is on by default, so you don't have to hold a key for minutes: the car accelerates by itself and you use ▼ to brake. Change it from the title menu, the pause menu or the yellow button. With auto throttle the LO/HI gearbox is automatic.
 
-**Manual mode**: ▲ accelerates and when you release it the speed stays where it is; ▼ brakes and when you release it the speed again stays constant. OK changes gear: LO pulls hard but tops out around half speed, HI reaches top speed but picks up slowly from low speed.
+**Manual mode**: press ▲ (holding it or a single tap) and the throttle stays on: the car keeps accelerating. Press ▼ once and the car stops accelerating and holds its speed; press ▼ again and it brakes for as long as you hold it, then holds the new speed. OK changes gear: LO pulls hard but tops out around half speed, HI reaches top speed but picks up slowly from low speed. In manual the car accelerates 10% faster than with auto throttle.
 
 ## The game
 - **Intro**: the game opens with the "Turbo Riviera" title sequence (sunset, neon grid, the convertible rising with exhaust flames). Any key skips it.
