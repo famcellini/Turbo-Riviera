@@ -663,7 +663,7 @@
       var rp = seg.fog < 0.99 ? farPal(pal, Math.min(0.55, (1 - seg.fog) * 2)) : pal;
       var w1 = seg.fog < 0.99 ? Math.max(p1.sw, 6) : p1.sw, w2 = seg.fog < 0.99 ? Math.max(p2.sw, 6) : p2.sw;
       // meno rifinito: oltre 40 segmenti niente strisce di corsia
-      var np = n >= 40 ? 2 : 3;
+      var np = n >= 40 && c1 === 0 && c2 === 0 ? 2 : 3;
       if (c1 === 0 && c2 === 0) roadPoly(p1.sx, p1.sy, w1, p2.sx, p2.sy, w2, light, rp, n >= 40 ? 3 : undefined);
       else {
         for (var part = 0; part < np; part++) {
@@ -680,10 +680,11 @@
       for (n = nStart; n < DRAW; n++) {
         seg = T.segs[base.i + n]; if (!seg) break;
         q1 = seg.p1; if (q1.cz <= DEPTH || q1.sy >= last || q1.sy < hz) continue;
-        cur = { sx: q1.sx, sy: q1.sy, sw: Math.max(q1.sw, 2), light: Math.floor(seg.i / RUMBLE) % 2 === 0, fog: seg.fog };
-        if (!prev) prev = { sx: q1.sx, sy: yStart, sw: cur.sw, light: cur.light, fog: seg.fog };
+        cur = { c: seg.f1 * FORKC, sx: q1.sx, sy: q1.sy, sw: Math.max(q1.sw, 2), light: Math.floor(seg.i / RUMBLE) % 2 === 0, fog: seg.fog };
+        if (!prev) prev = { c: cur.c, sx: q1.sx, sy: yStart, sw: cur.sw, light: cur.light, fog: seg.fog };
         rpf = farPal(pal, Math.min(0.55, (1 - cur.fog) * 2));
-        roadPoly(prev.sx, prev.sy, prev.sw, cur.sx, cur.sy, cur.sw, cur.light, rpf);
+        if (cur.c === 0 && prev.c === 0) roadPoly(prev.sx, prev.sy, prev.sw, cur.sx, cur.sy, cur.sw, cur.light, rpf);
+        else for (var pt = 0; pt < 3; pt++) { roadPoly(prev.sx - prev.c * prev.sw, prev.sy, prev.sw, cur.sx - cur.c * cur.sw, cur.sy, cur.sw, cur.light, rpf, pt); roadPoly(prev.sx + prev.c * prev.sw, prev.sy, prev.sw, cur.sx + cur.c * cur.sw, cur.sy, cur.sw, cur.light, rpf, pt); }
         last = q1.sy; prev = cur;
       }
     }

@@ -382,7 +382,8 @@ var TR = window.TR = window.TR || {};
   }
   function dirSign(a, ka, b, kb) {
     var k = 'D' + a + b; if (signCache[k]) return signCache[k];
-    var c = mk(150, 84), g = c.getContext('2d');
+    var c = mk(300, 168), g = c.getContext('2d');
+    g.scale(2, 2);
     R(g, 72, 52, 6, 32, '#8a8f98');
     R(g, 0, 0, 150, 54, '#ffffff'); R(g, 2, 2, 146, 50, '#1d4fb8');
     g.fillStyle = '#ffffff'; g.textBaseline = 'middle';
