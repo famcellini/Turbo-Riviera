@@ -77,7 +77,7 @@
     'Macerata': ['Civitanova', 'Potenza Picena', 'Tolentino', 'Treia'],
     'Ancona': ['Osimo', 'Castelfidardo', 'Falconara', 'Ostra'],
     'Ascoli Piceno': ['Grottammare', 'San Benedetto del Tronto', 'Castello di Lama', 'Comunanza'],
-    'Pesaro Urbino': ['Fano', 'Fossombrone', 'Urbino', 'Gabicce Mare'] };
+    'Pesaro Urbino': ['Fano', 'Fossombrone', 'Urbino', 'Cagli'] };
   var region = 'Fermo';
   function idxIn(id) { return id - [0, 1, 3, 6, 10][levelOf(id)]; }
   function childOf(id, right) { if (id >= 3) return 6 + (id - 3) * 2 + (right ? 1 : 0); var L = levelOf(id), i = idxIn(id); return [0, 1, 3, 6, 10][L + 1] + i + (right ? 1 : 0); }
