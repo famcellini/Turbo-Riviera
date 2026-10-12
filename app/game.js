@@ -73,11 +73,11 @@
   var FORK = [['Fermo', 'Macerata'], ['Ancona', 'Ascoli Piceno'], ['Ascoli Piceno', 'Pesaro Urbino'],
     ['Ancona', 'Ascoli Piceno'], ['Pesaro Urbino', 'Fermo'], ['Fermo', 'Macerata']];
   var REGION_TOWNS = {
-    'Fermo': ['Porto San Giorgio', "Porto Sant'Elpidio", 'Pedaso', 'Montegranaro'],
-    'Macerata': ['Civitanova Marche', 'Recanati', 'Tolentino', 'Potenza Picena'],
-    'Ancona': ['Senigallia', 'Jesi', 'Osimo', 'Falconara'],
-    'Ascoli Piceno': ['San Benedetto', 'Grottammare', 'Offida', 'Ripatransone'],
-    'Pesaro Urbino': ['Fano', 'Urbino', 'Fossombrone', 'Gabicce Mare'] };
+    'Fermo': ['Porto San Giorgio', "Porto Sant'Elpidio", 'Monte Urano', 'Montegranaro'],
+    'Macerata': ['Civitanova', 'Potenza Picena', 'Tolentino', 'Treia'],
+    'Ancona': ['Osimo', 'Castelfidardo', 'Falconara', 'Ostra'],
+    'Ascoli Piceno': ['Grottammare', 'San Benedetto del Tronto', 'Castello di Lama', 'Comunanza'],
+    'Pesaro Urbino': ['Fano', 'Fossombrone', 'Urbino', 'Gabicce Mare'] };
   var region = 'Fermo';
   function idxIn(id) { return id - [0, 1, 3, 6, 10][levelOf(id)]; }
   function childOf(id, right) { if (id >= 3) return 6 + (id - 3) * 2 + (right ? 1 : 0); var L = levelOf(id), i = idxIn(id); return [0, 1, 3, 6, 10][L + 1] + i + (right ? 1 : 0); }
@@ -160,7 +160,8 @@
       if (n % 2 && !B.final) {
         var k1 = (5 + r() * 40 | 0) + ' km', k2 = (8 + r() * 60 | 0) + ' km';
         sg = G.dirSign(FORK[id][0], k1, FORK[id][1], k2);
-      } else sg = G.townSign(RT[tn++ % 4]);
+      } else if (tn < 4) sg = G.townSign(RT[tn++]);
+      else continue;
       for (var q = i - 30; q < i + 6; q++) if (B.segs[q]) B.segs[q].spr = B.segs[q].spr.filter(function (x) { return x.s !== S.signL && x.s !== S.signR && (q !== i || Math.abs(x.off) > 3); });
       addSpr(i, sg, (r() < 0.75 ? 1 : -1) * (1.45 + sg.ww / ROADW / 2));
     }
@@ -261,7 +262,7 @@
     spawnCars(T, 60 * SEG, T.forkStart * SEG - 20 * SEG, 34, TR.rng(Date.now() & 0xffff));
     state = 'count'; stateT = 0; countN = 3; msg = [];
     A.playSong(station);
-    showMsg('LEVEL ' + round, '#ffe14a', 3.5, 'big');
+    showMsg('LEVEL ' + round, '#ffe14a', 3.5, 'level');
     showMsg(TH[0].n.toUpperCase(), '#ffffff', 3.5, 'stage');
   }
   function showMsg(text, col, dur, kind) { msg.push({ t: text, c: col, d: dur, a: 0, k: kind || '' }); }
@@ -504,7 +505,7 @@
         var rpm = gearHi ? 0.45 + (spd - 0.4) / 0.6 * 0.55 : spd / 0.52;
         A.engine(true, Math.max(0.12, rpm), skid, offroad, spd);
         if (position + PZ >= T.gateIdx * SEG) {
-          if (T.final) { lapTimes.push(stageTime); state = 'goal'; stateT = 0; A.sfx.goal(); A.playSong(3); endBonus = Math.max(0, Math.floor(timeLeft)) * 50000; showMsg('FINISH!', '#ffe14a', 4, 'big'); showMsg('WELCOME TO ' + region.toUpperCase(), '#ffffff', 6, 'stage'); }
+          if (T.final) { lapTimes.push(stageTime); state = 'goal'; stateT = 0; A.sfx.goal(); A.playSong(3); endBonus = Math.max(0, Math.floor(timeLeft)) * 50000; showMsg('FINISH!', '#ffe14a', 4, 'big'); showMsg('WELCOME TO ' + region.toUpperCase() + ' CITY', '#ffffff', 6, 'stage'); }
           else checkpoint();
         }
         if (T.forkStart > 0 && position + PZ > (T.forkStart - 40) * SEG && position + PZ < T.gateIdx * SEG && Math.floor(stateT * 2) % 2 === 0 && !msg.some(function (m) { return m.k === 'fork'; }))
@@ -814,7 +815,7 @@
     ux.fillStyle = col; ux.fillText(s, x, y);
   }
   function fmtT(t) { var m = Math.floor(t / 60), s = Math.floor(t % 60), c = Math.floor((t * 100) % 100); return m + "'" + (s < 10 ? '0' : '') + s + '"' + (c < 10 ? '0' : '') + c; }
-  function fmtN(n) { return String(Math.floor(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function fmtN(n) { return String(Math.floor(n)).replace(/\B(?=(\d{3})+(?!\d))/g, "'"); }
   function panel(x, y, w, h, a) { ux.fillStyle = 'rgba(10,8,30,' + (a == null ? 0.72 : a) + ')'; ux.fillRect(x, y, w, h); ux.strokeStyle = '#ff4ae0'; ux.lineWidth = 4; ux.strokeRect(x, y, w, h); }
 
   function hud() {
@@ -848,12 +849,13 @@
   function drawMsgs() {
     var yb = 420;
     msg.forEach(function (m) {
-      var a = m.a, blink = m.k === 'big' || m.k === 'fork';
+      var a = m.a, blink = m.k === 'big' || m.k === 'fork' || m.k === 'level';
       if (blink && Math.floor(a * 6) % 2 === 1 && a < m.d - 0.5) return;
       if (m.k === 'go') { txt(m.t, UW / 2, 470, 160, m.c, 'center', true); }
       else if (m.k === 'big') { txt(m.t, UW / 2, 470, 140, m.c, 'center', true); }
+      else if (m.k === 'level') { txt(m.t, UW / 2, 218, 84, m.c, 'center', true); }
       else if (m.k === 'small') { txt(m.t, UW / 2, 575, 60, m.c, 'center', true); }
-      else if (m.k === 'stage') { if (a > 0.3) { txt(m.t, UW / 2, 290, 72, m.c, 'center', true, '#1a0f4a'); } }
+      else if (m.k === 'stage') { if (a > 0.3) { txt(m.t, UW / 2, 328, 72, m.c, 'center', true, '#1a0f4a'); } }
       else if (m.k === 'fork') {
         txt(m.t, UW / 2, 300, 70, m.c, 'center', true);
         var l = (T.forkL || '').toUpperCase(), r = (T.forkR || '').toUpperCase();
