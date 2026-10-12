@@ -109,8 +109,8 @@ var TR = window.TR = window.TR || {};
   }
 
   // versione rifinita per il filmato finale: stessa auto, con sfumature, ombre e riflessi
-  function carHD(turned, hs) {
-    var c = playerCar(0, false, turned, hs), g = c.getContext('2d');
+  function carHD(turned, hs, dir, brake) {
+    var c = playerCar(dir || 0, !!brake, turned, hs), g = c.getContext('2d');
     g.save(); g.setTransform(hs, 0, 0, hs, 2 * hs, 10 * hs);
     function clipPath(pts) { g.beginPath(); g.moveTo(pts[0], pts[1]); for (var i = 2; i < pts.length; i += 2) g.lineTo(pts[i], pts[i + 1]); g.closePath(); }
     var body = [2, 30, 8, 21, 120, 21, 126, 30, 126, 51, 2, 51], deck = [6, 22, 22, 12, 106, 12, 122, 22];

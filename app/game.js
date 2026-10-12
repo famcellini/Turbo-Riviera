@@ -204,7 +204,7 @@
   /* ================= SPRITE AUTO ================= */
   var HS = 3, carFrames = {};
   var carTurned = {}, carCheer = {}, cheerT = 0;
-  [-1, 0, 1].forEach(function (d) { carFrames[d] = [G.playerCar(d, false, false, HS), G.playerCar(d, true, false, HS)]; carTurned[d] = [G.playerCar(d, false, true, HS), G.playerCar(d, true, true, HS)]; carCheer[d] = [G.playerCar(d, false, 'cheer', HS), G.playerCar(d, true, 'cheer', HS)]; });
+  [-1, 0, 1].forEach(function (d) { carFrames[d] = [G.carHD(false, HS, d, false), G.carHD(false, HS, d, true)]; carTurned[d] = [G.carHD(true, HS, d, false), G.carHD(true, HS, d, true)]; carCheer[d] = [G.carHD('cheer', HS, d, false), G.carHD('cheer', HS, d, true)]; });
   var lookT = 0, flameT = 0;
   var traffic = [];
   ['car', 'car', 'van', 'truck', 'sport', 'car', 'sport'].forEach(function (tp, k) {
@@ -401,7 +401,7 @@
         var sw = Math.min(sp.s.ww, 1600) / ROADW * 0.85;
         if (Math.abs(playerX - sp.off) < (PW + sw) / 2) {
           if (speed > MAXS * 0.45) { crashT = 2.4; crashAng = 0; shake = 0.6; A.sfx.crash(); lookT = 5; }
-          else { speed = MAXS / 10; position = pSeg.p1.z - PZ; shake = 0.25; A.sfx.bump(); }
+          else { speed = MAXS / 10; position = pSeg.p1.z - PZ; shake = 0.25; A.sfx.bump(); lookT = 3; }
           break;
         }
       }
@@ -411,7 +411,7 @@
         if (speed > c.spd && dz < SEG * 0.8 && dz + (speed - c.spd) * dt > -SEG * 0.4) {
           var cs = findSeg(c.z), cc = ((cs.f1 + cs.f2) / 2) * FORKC, co = c.off + (cs.fs ? cs.fs * cc : (c.off < 0 ? -cc : cc));
           if (Math.abs(playerX - co) < (PW + c.v.ww / ROADW) / 2 * 0.85) {
-            speed = c.spd * 0.6; position = c.z - PZ - SEG; shake = 0.35; A.sfx.bump(); score = Math.max(0, score - 5000);
+            speed = c.spd * 0.6; position = c.z - PZ - SEG; shake = 0.35; A.sfx.bump(); lookT = 3; score = Math.max(0, score - 5000);
             break;
           }
         }
@@ -423,7 +423,7 @@
     cloudDrift += dt * 0.002;
     if (shake > 0) shake -= dt;
     if (lookT > 0) lookT -= dt; if (flameT > 0) flameT -= dt;
-    if (ctrl === 'player' && speed > MAXS * 0.96 && crashT <= 0 && lookT <= 0) cheerT = 1.2; else if (cheerT > 0) cheerT -= dt;
+    if (ctrl === 'player' && speed > MAXS * 0.93 && crashT <= 0 && lookT <= 0) cheerT = 1.2; else if (cheerT > 0) cheerT -= dt;
     return pSeg;
   }
 
