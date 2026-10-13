@@ -78,9 +78,20 @@ var TR = window.TR = window.TR || {};
       });
     } else if (turned) {
       // lei si gira verso di lui e protesta: viso di profilo e braccio alzato
-      E(g, 80 + sh, 2, 4.5, 6, '#f0c09a'); P(g, [76.5 + sh, 0.8, 73.6 + sh, 1.4, 72.6 + sh, 2.6, 73.8 + sh, 3.5, 76.5 + sh, 4], '#f0c09a'); R(g, 73.4 + sh, 3.1, 1.6, 0.5, '#d8987a');
-      R(g, 77 + sh, 0, 2, 1, '#2a1a10'); R(g, 76 + sh, -1, 3, 1, '#8a5a2a');
-      R(g, 76 + sh, 5, 3, 2, '#a01830'); E(g, 80 + sh, 4, 1.5, 1, '#ff9aa8');
+      // viso di profilo piu' curato: collo, guancia, occhio con ciglia, sopracciglio imbronciato, labbra, orecchino
+      R(g, 79 + sh, 7, 4, 5, '#e8b088');
+      E(g, 80.4 + sh, 2, 4.4, 5.8, '#f6cfa8');
+      P(g, [76.4 + sh, 5.2, 77.4 + sh, 8.4, 80 + sh, 8.8, 83 + sh, 6.5, 80 + sh, 6], '#f6cfa8');
+      P(g, [76.8 + sh, 0.6, 74.2 + sh, 1.2, 73.2 + sh, 2.3, 74.3 + sh, 3.1, 76.8 + sh, 3.6], '#f6cfa8'); E(g, 73.7 + sh, 2.8, 0.5, 0.4, '#e9a98a');
+      E(g, 78.8 + sh, 3.9, 1.5, 1, 'rgba(255,110,130,0.45)');
+      E(g, 77.9 + sh, 1, 1.5, 1.15, '#ffffff'); E(g, 77.4 + sh, 1.05, 0.85, 0.85, '#3a86d8'); E(g, 77.3 + sh, 1.05, 0.4, 0.4, '#10202e'); R(g, 77.1 + sh, 0.6, 0.35, 0.35, '#ffffff');
+      R(g, 76.1 + sh, 0.2, 3.2, 0.5, '#2a1a10'); R(g, 76 + sh, 0.7, 0.5, 0.5, '#2a1a10');
+      P(g, [75.9 + sh, -1.3, 79.4 + sh, 0, 79.4 + sh, -0.7, 76.4 + sh, -2], '#b07a20');
+      E(g, 76.7 + sh, 5.6, 1.5, 1.2, '#8a1230'); P(g, [75.2 + sh, 4.7, 76.8 + sh, 4.9, 78.2 + sh, 4.7, 77.6 + sh, 5.4, 75.5 + sh, 5.4], '#e8386e');
+      R(g, 76.2 + sh, 5.2, 1.2, 0.4, '#ffffff');
+      E(g, 82.3 + sh, 4, 0.5, 0.6, '#ffd24a');
+      // frangia bionda sulla fronte
+      P(g, [76.3 + sh, 0.2, 77.2 + sh, -3.2, 80 + sh, -5.2, 84.6 + sh, -4.2, 85 + sh, 0.5, 82 + sh, -1.8, 79 + sh, -1.8], '#f2c640');
       E(g, 84 + sh, 0, 4, 7, '#ecbc44');
       P(g, [74 + sh, 12, 64 + sh, 2, 67 + sh, 1, 77 + sh, 11], '#e8b088'); E(g, 65 + sh, 0, 2.5, 2.5, '#f0c09a');
     }
