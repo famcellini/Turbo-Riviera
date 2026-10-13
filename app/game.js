@@ -6,13 +6,12 @@
   var TR = window.TR, A = TR.audio, G = TR.gfx, S = G.S;
   var W = 640, H = 360, UW = 1920, UH = 1080, K = UW / W;
   var FONT = '"Arial Black","Arial",Helvetica,sans-serif';
-  var cv = document.getElementById('game'), cx = cv.getContext('2d');
+  var cv = document.getElementById('game'), cx = cv.getContext('2d', { alpha: false });
   var uv = document.getElementById('ui'), ux = uv.getContext('2d');
   // risoluzione di disegno del mondo (strada, sfondo, sprite): più bassa = più veloce; le coordinate restano 640x360
-  var RS = 0.96;
-  cv.width = Math.round(W * RS); cv.height = Math.round(H * RS); uv.width = UW; uv.height = UH;
-  cx.setTransform(RS, 0, 0, RS, 0, 0);
-  cx.imageSmoothingEnabled = false;
+  var RS = 0.96, QRS = [0.96, 0.8, 0.68, 0.56];
+  function setRS(r) { RS = r; cv.width = Math.round(W * RS); cv.height = Math.round(H * RS); cx.setTransform(RS, 0, 0, RS, 0, 0); cx.imageSmoothingEnabled = false; }
+  uv.width = UW; uv.height = UH; setRS(RS);
   function fit() {
     var s = Math.min(window.innerWidth / W, window.innerHeight / H), w = Math.floor(W * s), h = Math.floor(H * s);
     [cv, uv].forEach(function (c) {
@@ -28,7 +27,7 @@
 
   /* ================= COSTANTI ================= */
   var SEG = 200, ROADW = 1800, LANES = 4, RUMBLE = 3, CAMH = 1500, DEPTH = 1 / Math.tan(50 * Math.PI / 180);
-  var DRAW = 162, PZ = CAMH * DEPTH, MAXS = SEG * 60, FORKC = 1.85, FK = 1.5, PW = 0.33, CENT = 0.3, FOGD = 1.56, STUB = 20;
+  var DRAW = 162, QL = 0, QDRAW = [162, 120, 90, 64], PZ = CAMH * DEPTH, MAXS = SEG * 60, FORKC = 1.85, FK = 1.5, PW = 0.33, CENT = 0.3, FOGD = 1.56, STUB = 20;
   var LANEX = [-0.75, -0.25, 0.25, 0.75];
 
   /* ================= TAPPE (15, a piramide come i bivi) ================= */
@@ -700,7 +699,7 @@
   var shakeX = 0, shakeY = 0;
   function drawPlayerCar() {
     var cx = ux;
-    cx.save(); cx.imageSmoothingEnabled = true; cx.imageSmoothingQuality = 'high';
+    cx.save(); cx.imageSmoothingEnabled = true; cx.imageSmoothingQuality = QL >= 2 ? 'low' : 'high';
     cx.scale(K, K); cx.translate(shakeX, shakeY);
     if (state !== 'title' && state !== 'radio' && state !== 'rank' && state !== 'clip') {
       var spd = speed / MAXS, bounce = (offroad && spd > 0.05 ? (Math.random() * 3) : (Math.random() * 1.2 * spd)) | 0;
@@ -735,6 +734,13 @@
     cx.restore();
   }
 
+  // stringhe di colore della nebbia in cache: evita migliaia di stringhe nuove al secondo (pause del garbage collector)
+  var fogMemo = { k: '', a: [] };
+  function fogStyle(f, fog) {
+    var k = (f[0] | 0) + ',' + (f[1] | 0) + ',' + (f[2] | 0), q = Math.round((1 - fog) * 200);
+    if (fogMemo.k !== k) { fogMemo.k = k; fogMemo.a = []; }
+    return fogMemo.a[q] || (fogMemo.a[q] = 'rgba(' + k + ',' + (q / 200).toFixed(3) + ')');
+  }
   function renderWorld() {
     var pal = palette();
     var base = findSeg(position), basePct = (position % SEG) / SEG;
@@ -748,7 +754,7 @@
     var maxy = H + 10, x = 0, dx = -(base.curve * basePct), n, seg;
     // assegna le auto ai segmenti visibili
     for (n = 0; n < DRAW; n++) { seg = T.segs[base.i + n]; if (seg) seg.cars.length = 0; }
-    cars.forEach(function (c) { var i = Math.floor(c.z / SEG); if (i >= base.i && i < base.i + DRAW) T.segs[i].cars.push(c); });
+    for (n = 0; n < cars.length; n++) { var i0 = Math.floor(cars[n].z / SEG); if (i0 >= base.i && i0 < base.i + DRAW) T.segs[i0].cars.push(cars[n]); }
     var fogR = pal.fogRGB, nStart = -1, yStart = 0;
     for (n = 0; n < DRAW; n++) {
       seg = T.segs[base.i + n]; if (!seg) break;
@@ -775,7 +781,7 @@
           if (seg.fs !== -1) roadPoly(p1.sx + c1 * w1, p1.sy, w1, p2.sx + c2 * w2, p2.sy, w2, light, rp, part);
         }
       }
-      if (seg.fog < 0.99) { cx.fillStyle = 'rgba(' + (fogR[0] | 0) + ',' + (fogR[1] | 0) + ',' + (fogR[2] | 0) + ',' + (1 - seg.fog).toFixed(3) + ')'; cx.fillRect(-10, p2.sy, W + 20, p1.sy - p2.sy); }
+      if (seg.fog < 0.99) { cx.fillStyle = fogStyle(fogR, seg.fog); cx.fillRect(-10, p2.sy, W + 20, p1.sy - p2.sy); }
       maxy = p2.sy;
     }
     // pezzi di strada mancanti: fasce di strada vera (cordoli, asfalto, strisce) proiettate fino all'orizzonte
@@ -1145,8 +1151,18 @@
   /* ================= CICLO PRINCIPALE ================= */
   var last = 0, errN = 0, lastErr = '';
   function noteErr(e) { errN++; lastErr = String(e && e.message || e).slice(0, 80); try { if (errN < 5 && window.console) console.error(e); } catch (x) { } }
+  // qualità adattiva: se il televisore non regge i 60 fps riduce la distanza di disegno; se torna fluido la riporta su
+  var qEma = 16.7, qSlow = 0, qFast = 0;
+  function governor(ms) {
+    if (state === 'intro' || ms > 200) return;
+    qEma += (ms - qEma) * 0.08;
+    if (qEma > 24) { qSlow += ms; qFast = 0; } else if (qEma < 18) { qFast += ms; qSlow = 0; } else { qSlow = 0; qFast = 0; }
+    if (qSlow > 1200 && QL < 3) { QL++; DRAW = QDRAW[QL]; setRS(QRS[QL]); qSlow = 0; qEma = 17; }
+    else if (qFast > 6000 && QL > 0) { QL--; DRAW = QDRAW[QL]; setRS(QRS[QL]); qFast = 0; qEma = 17; }
+  }
   function loop(ts) {
     requestAnimationFrame(loop);
+    if (last) governor(ts - last);
     var dt = last ? Math.min(0.05, (ts - last) / 1000) : 1 / 60; last = ts;
     // un errore in un fotogramma non deve mai fermare il gioco
     try { update(dt); } catch (e) { noteErr(e); }

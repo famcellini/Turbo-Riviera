@@ -316,7 +316,7 @@ var TR = window.TR = window.TR || {};
       try {
         var m = TR.MUSIC[i], bin = atob(m.d), n = m.n, f = new Float32Array(n), pos = 0;
         var step = function () {
-          var end = Math.min(n, pos + 120000);
+          var end = Math.min(n, pos + 24000);
           for (; pos < end; pos++) f[pos] = MU[bin.charCodeAt(pos)];
           if (pos < n) { setTimeout(step, 0); return; }
           var b = AC.createBuffer(1, n, m.sr); b.getChannelData(0).set(f);
