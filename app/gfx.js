@@ -67,14 +67,15 @@ var TR = window.TR = window.TR || {};
     // passeggeri a pixel, vista da dietro come nel riferimento: lui castano con giubbotto blu, lei bionda riccia con top rosa
     var lx = 46 + sh, rx0 = (turned === true ? 90 : 88) + sh;
     R(g, 32 + sh, 10, 28, 9, '#2a4fd0'); R(g, 33 + sh, 10, 26, 2, '#5a7ae8'); R(g, 32 + sh, 17, 28, 2, '#1a2f9a');
-    R(g, 43 + sh, 6, 6, 6, '#e8a878');
-    pixHair(g, lx + (turned === true ? 1 : 0), -0.5, 8.5, 8, ['#5a2e08', '#8a4e10', '#b06c16', '#d08a24'], 3, 0);
-    if (turned === true) {
-      // lui gira la testa verso di lei: guancia, occhio e orecchio sul lato destro
-      R(g, lx + 5, 1, 4, 7, '#e8a878'); R(g, lx + 5, 0, 3, 1, '#e8a878'); R(g, lx + 8, 3, 1, 2, '#e8a878');
-      R(g, lx + 6, 2, 2, 1, '#2a1a10'); R(g, lx + 7, 5, 2, 1, '#b06048'); R(g, lx + 4, 3, 1, 3, '#b06c16');
-      R(g, lx + 5, -1, 4, 2, '#8a4e10'); R(g, lx + 3, 0, 2, 3, '#8a4e10');
-    }
+    // lui: capelli castani che coprono la nuca e il collo (niente collo squadrato)
+    pixHair(g, lx, 0.2, 8.6, 8.8, ['#5a2e08', '#8a4e10', '#b06c16', '#d08a24'], 3, 0);
+    (function () {
+      var rn = rng(11), yy, w, xx, tn;
+      for (yy = 8; yy <= 12; yy++) {
+        w = Math.round(13 - (yy - 8) * 0.7);
+        for (xx = -Math.floor(w / 2); xx < Math.ceil(w / 2); xx++) { tn = rn(); R(g, lx + xx, yy, 1, 1, tn > 0.7 ? '#8a4e10' : tn > 0.25 ? '#6a3a0c' : '#5a2e08'); }
+      }
+    })();
     R(g, 71 + sh, 10, 28, 9, '#f0b890'); R(g, 72 + sh, 12, 26, 7, '#b0206c'); R(g, 72 + sh, 12, 26, 2, '#d83a92');
     R(g, 84 + sh, 6, 8, 6, '#f0b890');
     var HER = herSprite(turned === 'cheer' ? 'u' : turned ? 'c' : 'n');
