@@ -221,8 +221,7 @@ var TR = window.TR = window.TR || {};
     RR(g, 24 + sh, 12, 80, 2, 1, '#ff4a40');
     // carrozzeria
     RP(g, BODY, BODYR, '#d8141a');
-    if (dir > 0) { RP(g, [122, 22, 126.6, 28, 126.6, 51, 124.6, 51], [1.5, 3, 2, 1], '#8e0c0c'); for (i = 0; i < 4; i++) RR(g, 124.6, 29 + i * 4, 1.4, 1, 0.5, '#3a0606'); }
-    if (dir < 0) { RP(g, [6, 22, 1.4, 28, 1.4, 51, 3.4, 51], [1.5, 3, 2, 1], '#8e0c0c'); for (i = 0; i < 4; i++) RR(g, 2.0, 29 + i * 4, 1.4, 1, 0.5, '#3a0606'); }
+    sidePanel(g, dir);
     RR(g, 10, 22, 108, 2, 1, '#ff5040');
     // griglia nera a lamelle con i fanali dietro
     RR(g, 8, 28, 112, 15, 5, '#121212');
@@ -273,6 +272,12 @@ var TR = window.TR = window.TR || {};
     q.imageSmoothingEnabled = true; q.imageSmoothingQuality = 'high'; q.drawImage(s, 0, 0, o.width, o.height);
     return o;
   }
+  // pannello laterale della sterzata: dal lato verso cui si gira
+  function sidePanel(g, dir) {
+    var i;
+    if (dir > 0) { RP(g, [122, 22, 126.6, 28, 126.6, 51, 124.6, 51], [1.5, 3, 2, 1], '#8e0c0c'); for (i = 0; i < 4; i++) RR(g, 124.6, 29 + i * 4, 1.4, 1, 0.5, '#3a0606'); }
+    if (dir < 0) { RP(g, [6, 22, 1.4, 28, 1.4, 51, 3.4, 51], [1.5, 3, 2, 1], '#8e0c0c'); for (i = 0; i < 4; i++) RR(g, 2.0, 29 + i * 4, 1.4, 1, 0.5, '#3a0606'); }
+  }
   function carHD(turned, hs, dir, brake, noShadow) {
     var c = playerCar(dir || 0, !!brake, turned, hs, noShadow), g = c.getContext('2d');
     g.save(); g.setTransform(hs, 0, 0, hs, 2 * hs, 22 * hs);
@@ -316,7 +321,10 @@ var TR = window.TR = window.TR || {};
     var rg2 = g.createRadialGradient(84, -2, 0.5, 84, -2, 9); rg2.addColorStop(0, 'rgba(255,255,230,0.55)'); rg2.addColorStop(1, 'rgba(255,255,230,0)');
     g.fillStyle = rg2; g.fillRect(74, -12, 22, 20);
     g.restore();
-    return soften(c, 2);
+    // il pannello laterale torna disegnato sopra, a piena risoluzione, altrimenti il filtro lo cancella
+    var out = soften(c, 2), q = out.getContext('2d');
+    q.save(); q.setTransform(hs, 0, 0, hs, 2 * hs, 22 * hs); sidePanel(q, dir); q.restore();
+    return out;
   }
 
   /* ================= AUTO DEL TRAFFICO ================= */
