@@ -36,7 +36,14 @@ var TR = window.TR = window.TR || {};
     x.globalCompositeOperation = 'destination-out'; x.fillStyle = '#000';
     x.save(); x.beginPath(); x.rect(k === 'c' ? hc : hc - hw - 3, ht - 1, k === 'c' ? hw + 3 : 2 * hw + 6, R + 1); x.clip();
     x.beginPath(); x.rect(hc - hw - 4, ht - 2, 2 * hw + 8, R + 3); x.ellipse(hc, ht + R, hw, R, 0, 0, Math.PI * 2, true); x.fill('evenodd');
-    x.restore(); x.globalCompositeOperation = 'source-over';
+    x.restore();
+    if (k === 'c') {
+      // angolo alto-sinistro della chioma (lato viso): solo un raccordo morbido, il viso resta com'e'
+      var hl = d.hl, rc = 4.5;
+      x.save(); x.beginPath(); x.rect(hl - 1, ht - 1, rc + 1, rc + 1); x.clip();
+      x.beginPath(); x.rect(hl - 2, ht - 2, rc + 3, rc + 3); x.arc(hl + rc, ht + rc, rc, 0, Math.PI * 2, true); x.fill('evenodd'); x.restore();
+    }
+    x.globalCompositeOperation = 'source-over';
     return (herCache[k] = { c: c, cx: d.cx, top: d.top });
   }
   // capigliatura a pixel: ellisse con ciuffi, 4 toni sfumati dall'alto a sinistra
