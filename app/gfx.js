@@ -31,6 +31,7 @@ var TR = window.TR = window.TR || {};
     var d = TR.PASS[k], c = mk(d.w, d.h), x = c.getContext('2d'), im = x.createImageData(d.w, d.h), bin = atob(d.d), i;
     for (i = 0; i < bin.length; i++) im.data[i] = bin.charCodeAt(i);
     x.putImageData(im, 0, 0);
+    if (d.full) return (herCache[k] = { c: c, full: d });
     // sommita' della chioma arrotondata con una curva (il ritaglio era tagliato di netto)
     var R = 8.5, hc = d.hc, hw = d.hw, ht = d.ht;
     x.globalCompositeOperation = 'destination-out'; x.fillStyle = '#000';
@@ -114,8 +115,11 @@ var TR = window.TR = window.TR || {};
     R(g, 71 + sh, 10, 28, 9, '#f0b890'); R(g, 72 + sh, 12, 26, 7, '#b0206c'); R(g, 72 + sh, 12, 26, 2, '#d83a92');
     R(g, 84 + sh, 6, 8, 6, '#f0b890');
     var HER = herSprite(turned === 'cheer' ? 'u' : turned ? 'c' : 'n');
-    if (HER) { g.imageSmoothingEnabled = false; g.drawImage(HER.c, Math.round(88 + sh - HER.cx), -8 - HER.top); }
-    if (HER && turned === true) fistHand(g, sh);
+    if (HER && HER.full) {
+      // sprite di lei girata disegnato da Cristian, riportato in scala sull'ancora della bocca
+      var F = HER.full; g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
+      g.drawImage(HER.c, 77.5 + sh - F.mx * F.u, 5.5 - F.my * F.u, F.w * F.u, F.h * F.u);
+    } else if (HER) { g.imageSmoothingEnabled = false; g.drawImage(HER.c, Math.round(88 + sh - HER.cx), -8 - HER.top); }
     else pixHair(g, rx0, 2, 11.5, 10, ['#c89a00', '#f0c800', '#ffe616', '#fff47a'], 7, 1);
     if (!HER && turned === true) {
       // girata verso di lui, arrabbiata: viso piccolo di profilo, occhio, bocca aperta, braccio teso
