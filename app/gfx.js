@@ -46,16 +46,20 @@ var TR = window.TR = window.TR || {};
     x.globalCompositeOperation = 'source-over';
     return (herCache[k] = { c: c, cx: d.cx, top: d.top });
   }
-  // dopo il cappotto: avambraccio teso verso di lui con il pugno chiuso
+  // dopo il cappotto: mano alzata con l'indice dritto verso di lui, gesto "stai attento"
   function fistHand(g, sh) {
-    var SKIN = '#f6cfb0', SD = '#e2a888', i;
+    var SKIN = '#f6cfb0', SD = '#e2a888';
     g.lineCap = 'round';
-    g.strokeStyle = SKIN; g.lineWidth = 2.8; g.beginPath(); g.moveTo(78 + sh, 9.6); g.lineTo(68.5 + sh, 7.6); g.stroke();
-    E(g, 66.2 + sh, 7, 2.8, 2.5, SKIN);
-    E(g, 66.2 + sh, 8.3, 2.5, 1, SD);
-    g.strokeStyle = SD; g.lineWidth = 0.5;
-    for (i = 0; i < 3; i++) { g.beginPath(); g.moveTo(64.4 + sh + i * 1.2, 5.6 + i * 0.1); g.lineTo(64.4 + sh + i * 1.2, 7.6); g.stroke(); }
-    E(g, 67.8 + sh, 5.4, 1.5, 1, SKIN); E(g, 67.6 + sh, 6.2, 1.3, 0.5, SD);
+    g.strokeStyle = SKIN; g.lineWidth = 2.8; g.beginPath(); g.moveTo(78 + sh, 10); g.lineTo(69.5 + sh, 6.8); g.stroke();
+    E(g, 67.4 + sh, 5.9, 2.7, 2.4, SKIN);
+    E(g, 67.4 + sh, 7.2, 2.4, 0.9, SD);
+    // indice teso, leggermente inclinato verso di lui
+    g.strokeStyle = SKIN; g.lineWidth = 1.7; g.beginPath(); g.moveTo(66.2 + sh, 4.6); g.lineTo(64.8 + sh, -1.4); g.stroke();
+    E(g, 64.7 + sh, -1.6, 0.62, 0.62, '#d4143a');
+    // altre dita chiuse e pollice sopra
+    g.strokeStyle = SD; g.lineWidth = 0.45;
+    [0, 1, 2].forEach(function (n) { g.beginPath(); g.moveTo(66.4 + sh + n * 1.1, 6 + n * 0.1); g.lineTo(66.4 + sh + n * 1.1, 7.7); g.stroke(); });
+    E(g, 69.1 + sh, 4.9, 1.4, 0.9, SKIN);
   }
   // capigliatura a pixel: ellisse con ciuffi, 4 toni sfumati dall'alto a sinistra
   function pixHair(g, cx, cy, rx, ry, pal, seed, flare) {
