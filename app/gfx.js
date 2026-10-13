@@ -144,17 +144,17 @@ var TR = window.TR = window.TR || {};
         });
         herCache[pkey] = pk;
       }
-      // accenno di poggiatesta dietro la testa di lui e di lei (si vede ai lati del collo)
-      var hrx = [lx - 3.6 + (turned === true ? ANGRY_SHIFT : 0), lx + (turned === 'cheer' ? 36 : turned === true ? 37 : 34)];
-      hrx.forEach(function (hx) {
-        RR(g, hx - 8.2, 0.5, 16.4, 14, 3.2, '#3a1210');
-        RR(g, hx - 7.2, 1.2, 14.4, 3, 1.6, '#6c2a22');
-        R(g, hx - 6, 6, 12, 5, '#4c1a16');
-      });
       g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
       var spread = 36 * 0.2 / 2, pl = lx - PK.ax * PK.u, pt = 13 - PK.h * PK.u;   // distanziati del 20%
       var recoil = turned === true ? ANGRY_SHIFT : 0;   // arrabbiata: lui si sposta della larghezza del volante, poi torna al suo posto negli altri sprite
       g.drawImage(pk[0], pl - spread + recoil, pt, PK.w * PK.u, PK.h * PK.u); g.drawImage(pk[1], pl + spread, pt, PK.w * PK.u, PK.h * PK.u);
+      // poggiatesta grigi davanti ai due passeggeri (come nel riferimento di Cristian)
+      [lx - 3.6 + 2.5 + (turned === true ? ANGRY_SHIFT : 0), lx + (turned === 'cheer' ? 36 : turned === true ? 37 : 34) + 2.5].forEach(function (hx) {
+        RR(g, hx - 9.5, 7, 19, 5.8, 2.6, '#47474f');
+        RR(g, hx - 8.7, 7.7, 17.4, 4.4, 2.1, '#b4b4be');
+        RR(g, hx - 7.6, 8.1, 15.2, 1.6, 0.8, '#e4e4ec');
+        R(g, hx - 6.8, 10.6, 13.6, 0.9, '#8c8c98');
+      });
     } else {
     R(g, 32 + sh, 10, 28, 9, '#2a4fd0'); R(g, 33 + sh, 10, 26, 2, '#5a7ae8'); R(g, 32 + sh, 17, 28, 2, '#1a2f9a');
     // lui: capelli castani che coprono la nuca e il collo (niente collo squadrato)
