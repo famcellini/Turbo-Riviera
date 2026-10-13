@@ -706,9 +706,11 @@
       var spd = speed / MAXS, bounce = (offroad && spd > 0.05 ? (Math.random() * 3) : (Math.random() * 1.2 * spd)) | 0;
       var img = (lookT > 0 && crashT <= 0 ? carTurned : cheerOn ? carCheer : carFrames)[crashT > 0 ? 0 : steerDir][brakeOn ? 1 : 0];
       var iw = img.width / HS, ih = img.height / HS, px = W / 2, py = H - 6 - bounce;
-      // ombra a terra: resta sulla strada anche durante le piroette (si rimpicciolisce quando l'auto salta)
-      var shHop = crashT > 0 ? Math.sin((1 - Math.max(0, crashT - 1.2) / 1.2) * Math.PI) * (crashT > 1.2 ? 1 : 0) : 0;
-      cx.fillStyle = 'rgba(0,0,0,' + (0.4 * (1 - 0.5 * shHop)) + ')'; cx.beginPath(); cx.ellipse(px, py - 6, 64 * (1 - 0.25 * shHop), 6 * (1 - 0.25 * shHop), 0, 0, Math.PI * 2); cx.fill();
+      // ombra a terra: proiezione ortogonale della sagoma dell'auto sulla strada, allineata alla vettura mentre ruota
+      var shPh = Math.max(0, crashT - 1.2), shRot = crashT > 0 ? Math.sin(crashAng) * 0.5 + (shPh > 0 ? crashAng : 0) : 0;
+      var shHop = crashT > 1.2 ? Math.sin((1 - shPh / 1.2) * Math.PI) : 0;
+      var shW = (128 * Math.abs(Math.cos(shRot)) + 70 * Math.abs(Math.sin(shRot))) / 2 * (1 - 0.25 * shHop);
+      cx.fillStyle = 'rgba(0,0,0,' + (0.4 * (1 - 0.5 * shHop)) + ')'; cx.beginPath(); cx.ellipse(px, py - 6, shW, 6 * (1 - 0.25 * shHop), 0, 0, Math.PI * 2); cx.fill();
       if (crashT > 0) {
         var ph = Math.max(0, crashT - 1.2), hop = ph > 0 ? Math.sin((1 - ph / 1.2) * Math.PI) * 40 : 0;
         cx.save(); cx.translate(px, py - ih / 2 - hop); cx.rotate(Math.sin(crashAng) * 0.5 + (ph > 0 ? crashAng : 0));
