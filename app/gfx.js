@@ -116,12 +116,10 @@ var TR = window.TR = window.TR || {};
     R(g, 8, 22, 112, 2, '#ff5040');
     // griglia nera a lamelle con i fanali dietro
     RR(g, 8, 28, 112, 15, 2, '#121212');
-    for (i = 0; i < 4; i++) {
-      var y = 30 + i * 3;
-      R(g, 11, y, 106, 1, '#3c3c3c');
-      R(g, 11, y + 1, 28, 2, brake ? '#ff4030' : '#a01018'); R(g, 89, y + 1, 28, 2, brake ? '#ff4030' : '#a01018');
-      R(g, 11, y + 1, 4, 2, '#ff9a00'); R(g, 113, y + 1, 4, 2, '#ff9a00');
-    }
+    // fanali come in Out Run: fascia nera con, alle estremita', lampada rosso scuro con blocco arancio esterno e bianco interno
+    R(g, 9, 30, 36, 11, brake ? '#e01a14' : '#7a0a0e'); R(g, 83, 30, 36, 11, brake ? '#e01a14' : '#7a0a0e');
+    R(g, 11, 32, 18, 6, brake ? '#ffb030' : '#ff9a10'); R(g, 29, 32, 13, 6, '#f6f6f6');
+    R(g, 86, 32, 13, 6, '#f6f6f6'); R(g, 99, 32, 18, 6, brake ? '#ffb030' : '#ff9a10');
     // cavallino rampante giallo al centro della griglia
     P(g, [61, 33.1, 59, 34.0, 59.5, 35.2, 61.5, 34.8, 62.5, 36.4, 61, 37.9, 60, 37.1, 59.5, 37.9, 61.2, 39.0, 63.2, 38.3, 64.5, 39.8, 64, 42.1, 65.5, 42.1, 66, 39.8, 66.3, 37.9, 68, 39.3, 67.5, 36.9, 66.6, 36.1, 64, 34.0, 63, 32.1, 62.3, 32.3], '#ffd21f');
     if (brake) { E(g, 25, 35, 20, 9, 'rgba(255,70,40,0.35)'); E(g, 103, 35, 20, 9, 'rgba(255,70,40,0.35)'); }
