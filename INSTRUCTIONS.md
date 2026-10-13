@@ -55,7 +55,7 @@ Ways that work:
 
 ## Update and modify
 - To update just install the new `.ipk`: it replaces the old version and the high scores are kept.
-- Sources are in `turbo-riviera-sorgenti.zip` and on https://github.com/famcellini/Turbo-Riviera (`app` folder: `index.html`, `game.js` road and rules, `gfx.js` drawings, `audio.js` sound effects and music composition, `music.js` pre-recorded tracks, `appinfo.json`, icons). You can also try it in a browser by opening `index.html` (arrows, Enter, R = radio, M = sound, Esc = pause).
+- Sources are in `turbo-riviera-sorgenti.zip` and on https://github.com/famcellini/turboRiviera.v01.0 (`app` folder: `index.html`, `game.js` road and rules, `gfx.js` drawings, `audio.js` sound effects and music composition, `music.js` pre-recorded tracks, `appinfo.json`, icons). You can also try it in a browser by opening `index.html` (arrows, Enter, R = radio, M = sound, Esc = pause).
 - To rebuild the package: `npm install -g @webos-tools/cli` then `ares-package app`.
 
 
