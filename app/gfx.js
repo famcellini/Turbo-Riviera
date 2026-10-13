@@ -60,24 +60,32 @@ var TR = window.TR = window.TR || {};
     R(g, 82 + sh, -5, 5, 2, '#fff0a8'); R(g, 84 + sh, -1, 2, 7, '#ffe07a'); R(g, 88 + sh, 0, 1, 8, '#c48a2a'); R(g, 81 + sh, 1, 1, 7, '#c48a2a');
     R(g, 96 + sh, 1, 10, 1, '#ffe07a'); R(g, 100 + sh, 5, 9, 1, '#fff0a8');
     RR(g, 82 + sh, -7, 7, 3, 1, '#ff5aa0');
-    if (!turned) {
-      // lei si volta sorridendo: riccioli biondi, occhi azzurri, orecchino di perla
+    function lei(mood) {
+      var an = mood === 'angry';
+      // viso a tre quarti come nel disegno di riferimento: lei si volta indietro
       E(g, 85 + sh, 3, 4.7, 5.9, '#f6cfa8'); P(g, [81 + sh, 5, 82.5 + sh, 8.8, 85 + sh, 9.4, 87.5 + sh, 8.8, 89 + sh, 5], '#f6cfa8');
-      E(g, 83.2 + sh, 2.4, 1.05, 0.85, '#ffffff'); E(g, 87.1 + sh, 2.4, 1.05, 0.85, '#ffffff');
+      E(g, 83.2 + sh, 2.4, 1.05, an ? 0.6 : 0.85, '#ffffff'); E(g, 87.1 + sh, 2.4, 1.05, an ? 0.6 : 0.85, '#ffffff');
       E(g, 83.3 + sh, 2.45, 0.6, 0.6, '#3a86d8'); E(g, 87.2 + sh, 2.45, 0.6, 0.6, '#3a86d8');
       E(g, 83.3 + sh, 2.45, 0.28, 0.28, '#10202e'); E(g, 87.2 + sh, 2.45, 0.28, 0.28, '#10202e');
-      R(g, 82 + sh, 1.4, 2.4, 0.45, '#2a1a10'); R(g, 86 + sh, 1.4, 2.4, 0.45, '#2a1a10');
-      R(g, 82 + sh, 0.2, 2.6, 0.4, '#b07a20'); R(g, 86 + sh, 0.2, 2.6, 0.4, '#b07a20');
+      R(g, 82 + sh, 1.6, 2.4, 0.45, '#2a1a10'); R(g, 86 + sh, 1.6, 2.4, 0.45, '#2a1a10');
+      if (an) {
+        P(g, [81.6 + sh, -0.3, 84.8 + sh, 1.2, 84.8 + sh, 0.4, 82 + sh, -1.1], '#8a5a14'); P(g, [88.4 + sh, -0.3, 85.2 + sh, 1.2, 85.2 + sh, 0.4, 88 + sh, -1.1], '#8a5a14');
+        R(g, 84.7 + sh, 0.2, 0.6, 1.2, '#d98a70');
+      } else { R(g, 82 + sh, 0.2, 2.6, 0.4, '#b07a20'); R(g, 86 + sh, 0.2, 2.6, 0.4, '#b07a20'); }
       R(g, 84.6 + sh, 3.3, 0.7, 1.4, '#e9a98a');
-      E(g, 82.2 + sh, 4.6, 1.2, 0.8, 'rgba(255,110,130,0.45)'); E(g, 88 + sh, 4.6, 1.2, 0.8, 'rgba(255,110,130,0.45)');
-      g.fillStyle = '#e8386e'; g.beginPath(); g.moveTo(82.6 + sh, 6.1); g.quadraticCurveTo(85.1 + sh, 8.4, 87.6 + sh, 6.1); g.quadraticCurveTo(85.1 + sh, 6.7, 82.6 + sh, 6.1); g.fill();
-      R(g, 83.8 + sh, 6.6, 2.6, 0.5, '#ffffff');
+      E(g, 82.2 + sh, 4.6, 1.3, 0.9, an ? 'rgba(255,60,70,0.6)' : 'rgba(255,110,130,0.45)'); E(g, 88 + sh, 4.6, 1.3, 0.9, an ? 'rgba(255,60,70,0.6)' : 'rgba(255,110,130,0.45)');
+      if (an) {
+        E(g, 85.1 + sh, 6.8, 1.9, 1.5, '#8a1230'); P(g, [83 + sh, 5.9, 85.1 + sh, 5.5, 87.2 + sh, 5.9, 86.4 + sh, 6.4, 83.8 + sh, 6.4], '#e8386e'); R(g, 84 + sh, 6.4, 2.2, 0.6, '#ffffff');
+      } else {
+        g.fillStyle = '#e8386e'; g.beginPath(); g.moveTo(82.6 + sh, 6.1); g.quadraticCurveTo(85.1 + sh, 8.4, 87.6 + sh, 6.1); g.quadraticCurveTo(85.1 + sh, 6.7, 82.6 + sh, 6.1); g.fill();
+        R(g, 83.8 + sh, 6.6, 2.6, 0.5, '#ffffff');
+      }
       E(g, 80.4 + sh, 5.2, 0.8, 0.8, '#ffffff'); E(g, 80.1 + sh, 4.9, 0.3, 0.3, '#ffffff');
-      // riccioli sulla fronte e ai lati
       [[79.5, -0.5, 3.2], [82.5, -4, 3.4], [86.5, -4.6, 3.6], [90.2, -2.5, 3.2], [91.6, 1.8, 2.8], [79.4, 4.2, 2.6], [90.8, 6, 2.2]].forEach(function (c) {
         E(g, c[0] + sh, c[1], c[2], c[2] * 0.95, '#f2c640'); E(g, c[0] - 0.6 + sh, c[1] - 0.7, c[2] * 0.5, c[2] * 0.4, '#ffe888');
       });
     }
+    if (!turned) lei('smile');
     if (turned === 'cheer') {
       // lei felice: tutte e due le braccia in alto
       P(g, [74 + sh, 12, 66 + sh, -2, 69 + sh, -3, 78 + sh, 11], '#e8b088'); E(g, 67 + sh, -4, 2.6, 2.6, '#f0c09a');
@@ -96,21 +104,7 @@ var TR = window.TR = window.TR || {};
       });
     } else if (turned) {
       // lei si gira verso di lui e protesta: viso di profilo e braccio alzato
-      // viso di profilo piu' curato: collo, guancia, occhio con ciglia, sopracciglio imbronciato, labbra, orecchino
-      R(g, 79 + sh, 7, 4, 5, '#e8b088');
-      E(g, 80.4 + sh, 2, 4.4, 5.8, '#f6cfa8');
-      P(g, [76.4 + sh, 5.2, 77.4 + sh, 8.4, 80 + sh, 8.8, 83 + sh, 6.5, 80 + sh, 6], '#f6cfa8');
-      P(g, [76.8 + sh, 0.6, 74.2 + sh, 1.2, 73.2 + sh, 2.3, 74.3 + sh, 3.1, 76.8 + sh, 3.6], '#f6cfa8'); E(g, 73.7 + sh, 2.8, 0.5, 0.4, '#e9a98a');
-      E(g, 78.8 + sh, 3.9, 1.5, 1, 'rgba(255,110,130,0.45)');
-      E(g, 77.9 + sh, 1, 1.5, 1.15, '#ffffff'); E(g, 77.4 + sh, 1.05, 0.85, 0.85, '#3a86d8'); E(g, 77.3 + sh, 1.05, 0.4, 0.4, '#10202e'); R(g, 77.1 + sh, 0.6, 0.35, 0.35, '#ffffff');
-      R(g, 76.1 + sh, 0.2, 3.2, 0.5, '#2a1a10'); R(g, 76 + sh, 0.7, 0.5, 0.5, '#2a1a10');
-      P(g, [75.9 + sh, -1.3, 79.4 + sh, 0, 79.4 + sh, -0.7, 76.4 + sh, -2], '#b07a20');
-      E(g, 76.7 + sh, 5.6, 1.5, 1.2, '#8a1230'); P(g, [75.2 + sh, 4.7, 76.8 + sh, 4.9, 78.2 + sh, 4.7, 77.6 + sh, 5.4, 75.5 + sh, 5.4], '#e8386e');
-      R(g, 76.2 + sh, 5.2, 1.2, 0.4, '#ffffff');
-      E(g, 82.3 + sh, 4, 0.5, 0.6, '#ffd24a');
-      // frangia bionda sulla fronte
-      P(g, [76.3 + sh, 0.2, 77.2 + sh, -3.2, 80 + sh, -5.2, 84.6 + sh, -4.2, 85 + sh, 0.5, 82 + sh, -1.8, 79 + sh, -1.8], '#f2c640');
-      E(g, 84 + sh, 0, 4, 7, '#ecbc44');
+      lei('angry');
       P(g, [74 + sh, 12, 64 + sh, 2, 67 + sh, 1, 77 + sh, 11], '#e8b088'); E(g, 65 + sh, 0, 2.5, 2.5, '#f0c09a');
     }
     // cofano posteriore
