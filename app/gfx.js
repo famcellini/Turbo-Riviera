@@ -68,13 +68,12 @@ var TR = window.TR = window.TR || {};
     var lx = 46 + sh, rx0 = (turned === true ? 90 : 88) + sh;
     R(g, 32 + sh, 10, 28, 9, '#2a4fd0'); R(g, 33 + sh, 10, 26, 2, '#5a7ae8'); R(g, 32 + sh, 17, 28, 2, '#1a2f9a');
     // lui: capelli castani che coprono la nuca e il collo (niente collo squadrato)
-    pixHair(g, lx, 0.2, 8.6, 8.8, ['#5a2e08', '#8a4e10', '#b06c16', '#d08a24'], 3, 0);
+    pixHair(g, lx, -0.5, 8.5, 8, ['#5a2e08', '#8a4e10', '#b06c16', '#d08a24'], 3, 0);
+    // collo: poca nuca coperta dai capelli, collo stretto e arrotondato
+    R(g, lx - 3, 8, 7, 5, '#e8a878'); R(g, lx - 3, 8, 1, 5, '#c98a5c');
     (function () {
-      var rn = rng(11), yy, w, xx, tn;
-      for (yy = 8; yy <= 12; yy++) {
-        w = Math.round(13 - (yy - 8) * 0.7);
-        for (xx = -Math.floor(w / 2); xx < Math.ceil(w / 2); xx++) { tn = rn(); R(g, lx + xx, yy, 1, 1, tn > 0.7 ? '#8a4e10' : tn > 0.25 ? '#6a3a0c' : '#5a2e08'); }
-      }
+      var rn = rng(11), yy, xx, tn;
+      for (yy = 7; yy <= 9; yy++) { for (xx = -4 + (yy - 7); xx < 5 - (yy - 7); xx++) { tn = rn(); R(g, lx + xx, yy, 1, 1, tn > 0.7 ? '#8a4e10' : tn > 0.3 ? '#6a3a0c' : '#5a2e08'); } }
     })();
     R(g, 71 + sh, 10, 28, 9, '#f0b890'); R(g, 72 + sh, 12, 26, 7, '#b0206c'); R(g, 72 + sh, 12, 26, 2, '#d83a92');
     R(g, 84 + sh, 6, 8, 6, '#f0b890');
