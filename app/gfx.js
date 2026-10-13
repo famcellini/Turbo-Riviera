@@ -40,7 +40,7 @@ var TR = window.TR = window.TR || {};
     // poggiatesta
     RR(g, 36 + sh, 3, 17, 13, 5, '#2a1a12'); RR(g, 75 + sh, 3, 17, 13, 5, '#2a1a12');
     // lui: capelli corti scuri, nuca e orecchie scoperte, polo azzurra
-    RR(g, 32 + sh, 10, 28, 9, 4, '#7ec8f0'); R(g, 33 + sh, 10, 26, 1, '#a8dcff');
+    RR(g, 32 + sh, 10, 28, 9, 4, '#27468a'); R(g, 33 + sh, 10, 26, 1, '#4a6cb0'); R(g, 43 + sh, 9, 6, 2, '#f2f2f2');
     R(g, 43 + sh, 6, 6, 5, '#e0a070');
     E(g, 39.5 + sh, 2, 1.6, 2.4, '#d08a5a'); E(g, 52.5 + sh, 2, 1.6, 2.4, '#d08a5a');
     E(g, 46 + sh, 1, 6.5, 7, '#e0a070');
@@ -60,6 +60,24 @@ var TR = window.TR = window.TR || {};
     R(g, 82 + sh, -5, 5, 2, '#fff0a8'); R(g, 84 + sh, -1, 2, 7, '#ffe07a'); R(g, 88 + sh, 0, 1, 8, '#c48a2a'); R(g, 81 + sh, 1, 1, 7, '#c48a2a');
     R(g, 96 + sh, 1, 10, 1, '#ffe07a'); R(g, 100 + sh, 5, 9, 1, '#fff0a8');
     RR(g, 82 + sh, -7, 7, 3, 1, '#ff5aa0');
+    if (!turned) {
+      // lei si volta sorridendo: riccioli biondi, occhi azzurri, orecchino di perla
+      E(g, 85 + sh, 3, 4.7, 5.9, '#f6cfa8'); P(g, [81 + sh, 5, 82.5 + sh, 8.8, 85 + sh, 9.4, 87.5 + sh, 8.8, 89 + sh, 5], '#f6cfa8');
+      E(g, 83.2 + sh, 2.4, 1.05, 0.85, '#ffffff'); E(g, 87.1 + sh, 2.4, 1.05, 0.85, '#ffffff');
+      E(g, 83.3 + sh, 2.45, 0.6, 0.6, '#3a86d8'); E(g, 87.2 + sh, 2.45, 0.6, 0.6, '#3a86d8');
+      E(g, 83.3 + sh, 2.45, 0.28, 0.28, '#10202e'); E(g, 87.2 + sh, 2.45, 0.28, 0.28, '#10202e');
+      R(g, 82 + sh, 1.4, 2.4, 0.45, '#2a1a10'); R(g, 86 + sh, 1.4, 2.4, 0.45, '#2a1a10');
+      R(g, 82 + sh, 0.2, 2.6, 0.4, '#b07a20'); R(g, 86 + sh, 0.2, 2.6, 0.4, '#b07a20');
+      R(g, 84.6 + sh, 3.3, 0.7, 1.4, '#e9a98a');
+      E(g, 82.2 + sh, 4.6, 1.2, 0.8, 'rgba(255,110,130,0.45)'); E(g, 88 + sh, 4.6, 1.2, 0.8, 'rgba(255,110,130,0.45)');
+      g.fillStyle = '#e8386e'; g.beginPath(); g.moveTo(82.6 + sh, 6.1); g.quadraticCurveTo(85.1 + sh, 8.4, 87.6 + sh, 6.1); g.quadraticCurveTo(85.1 + sh, 6.7, 82.6 + sh, 6.1); g.fill();
+      R(g, 83.8 + sh, 6.6, 2.6, 0.5, '#ffffff');
+      E(g, 80.4 + sh, 5.2, 0.8, 0.8, '#ffffff'); E(g, 80.1 + sh, 4.9, 0.3, 0.3, '#ffffff');
+      // riccioli sulla fronte e ai lati
+      [[79.5, -0.5, 3.2], [82.5, -4, 3.4], [86.5, -4.6, 3.6], [90.2, -2.5, 3.2], [91.6, 1.8, 2.8], [79.4, 4.2, 2.6], [90.8, 6, 2.2]].forEach(function (c) {
+        E(g, c[0] + sh, c[1], c[2], c[2] * 0.95, '#f2c640'); E(g, c[0] - 0.6 + sh, c[1] - 0.7, c[2] * 0.5, c[2] * 0.4, '#ffe888');
+      });
+    }
     if (turned === 'cheer') {
       // lei felice: tutte e due le braccia in alto
       P(g, [74 + sh, 12, 66 + sh, -2, 69 + sh, -3, 78 + sh, 11], '#e8b088'); E(g, 67 + sh, -4, 2.6, 2.6, '#f0c09a');
