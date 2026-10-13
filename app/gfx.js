@@ -46,6 +46,17 @@ var TR = window.TR = window.TR || {};
     x.globalCompositeOperation = 'source-over';
     return (herCache[k] = { c: c, cx: d.cx, top: d.top });
   }
+  // dopo il cappotto: avambraccio teso verso di lui con il pugno chiuso
+  function fistHand(g, sh) {
+    var SKIN = '#f6cfb0', SD = '#e2a888', i;
+    g.lineCap = 'round';
+    g.strokeStyle = SKIN; g.lineWidth = 2.8; g.beginPath(); g.moveTo(78 + sh, 9.6); g.lineTo(68.5 + sh, 7.6); g.stroke();
+    E(g, 66.2 + sh, 7, 2.8, 2.5, SKIN);
+    E(g, 66.2 + sh, 8.3, 2.5, 1, SD);
+    g.strokeStyle = SD; g.lineWidth = 0.5;
+    for (i = 0; i < 3; i++) { g.beginPath(); g.moveTo(64.4 + sh + i * 1.2, 5.6 + i * 0.1); g.lineTo(64.4 + sh + i * 1.2, 7.6); g.stroke(); }
+    E(g, 67.8 + sh, 5.4, 1.5, 1, SKIN); E(g, 67.6 + sh, 6.2, 1.3, 0.5, SD);
+  }
   // capigliatura a pixel: ellisse con ciuffi, 4 toni sfumati dall'alto a sinistra
   function pixHair(g, cx, cy, rx, ry, pal, seed, flare) {
     var rnd = rng(seed), x, y, u, v, r, lim, l, t;
@@ -99,6 +110,7 @@ var TR = window.TR = window.TR || {};
     R(g, 84 + sh, 6, 8, 6, '#f0b890');
     var HER = herSprite(turned === 'cheer' ? 'u' : turned ? 'c' : 'n');
     if (HER) { g.imageSmoothingEnabled = false; g.drawImage(HER.c, Math.round(88 + sh - HER.cx), -8 - HER.top); }
+    if (HER && turned === true) fistHand(g, sh);
     else pixHair(g, rx0, 2, 11.5, 10, ['#c89a00', '#f0c800', '#ffe616', '#fff47a'], 7, 1);
     if (!HER && turned === true) {
       // girata verso di lui, arrabbiata: viso piccolo di profilo, occhio, bocca aperta, braccio teso
