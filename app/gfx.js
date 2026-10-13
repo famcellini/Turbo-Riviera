@@ -47,13 +47,14 @@ var TR = window.TR = window.TR || {};
     E(g, 46 + sh, -0.5, 8.4, 8, '#6a3e1c'); R(g, 38.5 + sh, 2, 15, 4, '#6a3e1c'); R(g, 40 + sh, 5, 12, 2, '#55300f');
     E(g, 43 + sh, -3, 4.2, 3.2, '#8a5a2a'); E(g, 49 + sh, -3.5, 3.6, 2.6, '#9a6830');
     R(g, 41 + sh, -5, 2, 1, '#b07a3c'); R(g, 47 + sh, -6, 3, 1, '#b07a3c');
-    R(g, 40 + sh, -1, 1, 6, '#4a280c'); R(g, 44 + sh, -3, 1, 8, '#4a280c'); R(g, 48 + sh, -3, 1, 8, '#4a280c'); R(g, 52 + sh, -1, 1, 6, '#4a280c');
+    R(g, 46 + sh, -4, 1, 5, '#55300f');
     // lei: lunghi capelli biondi mossi dal vento, top rosa
     RR(g, 71 + sh, 10, 28, 9, 4, '#e8b088'); R(g, 74 + sh, 10, 3, 9, '#ff5aa0'); R(g, 93 + sh, 10, 3, 9, '#ff5aa0'); R(g, 72 + sh, 15, 26, 4, '#ff5aa0');
-    P(g, [78 + sh, -6, 92 + sh, -8, 106 + sh, -4, 120 + sh, 0, 112 + sh, 3, 123 + sh, 8, 108 + sh, 8, 112 + sh, 14, 92 + sh, 12, 78 + sh, 13], '#e0a830');
-    P(g, [84 + sh, -6, 100 + sh, -6, 118 + sh, -1, 104 + sh, 0], '#f8dc58'); P(g, [90 + sh, 3, 108 + sh, 3, 119 + sh, 7, 100 + sh, 7], '#f2c640');
-    R(g, 96 + sh, -3, 14, 1, '#fff2a0'); R(g, 100 + sh, 1, 14, 1, '#fff2a0'); R(g, 98 + sh, 5, 15, 1, '#d09a28'); R(g, 102 + sh, 9, 12, 1, '#d09a28');
-    P(g, [82 + sh, -5, 94 + sh, -4, 106 + sh, 0, 112 + sh, 3, 100 + sh, 2, 92 + sh, 4], '#f2c84a');
+    // lei: chioma bionda morbida, ondulata e svolazzante ma senza punte
+    g.fillStyle = '#e0a830'; g.beginPath(); g.moveTo(78 + sh, -4); g.bezierCurveTo(90 + sh, -10, 106 + sh, -6, 112 + sh, 2); g.bezierCurveTo(116 + sh, 7, 110 + sh, 11, 104 + sh, 10); g.bezierCurveTo(98 + sh, 14, 86 + sh, 13, 78 + sh, 13); g.closePath(); g.fill();
+    g.fillStyle = '#f2c640'; g.beginPath(); g.moveTo(84 + sh, -6); g.bezierCurveTo(96 + sh, -8, 106 + sh, -3, 108 + sh, 2); g.bezierCurveTo(100 + sh, 0, 92 + sh, 0, 84 + sh, 0); g.closePath(); g.fill();
+    g.strokeStyle = 'rgba(255,242,160,0.8)'; g.lineWidth = 0.8; g.beginPath(); g.moveTo(92 + sh, -3); g.quadraticCurveTo(102 + sh, -3, 108 + sh, 2); g.moveTo(92 + sh, 3); g.quadraticCurveTo(102 + sh, 3, 108 + sh, 7); g.stroke();
+    g.strokeStyle = 'rgba(190,140,30,0.8)'; g.beginPath(); g.moveTo(92 + sh, 6); g.quadraticCurveTo(102 + sh, 7, 106 + sh, 10); g.stroke();
     E(g, 85 + sh, 1.5, 9, 10.5, '#f4cc48'); E(g, 83 + sh, -2, 4, 4, '#ffd866');
     P(g, [78 + sh, 4, 80 + sh, 12, 84 + sh, 13, 83 + sh, 5], '#d49a2c'); P(g, [92 + sh, 4, 91 + sh, 12, 87 + sh, 13, 88 + sh, 5], '#d49a2c');
     R(g, 82 + sh, -5, 5, 2, '#fff0a8'); R(g, 84 + sh, -1, 2, 7, '#ffe07a'); R(g, 88 + sh, 0, 1, 8, '#c48a2a'); R(g, 81 + sh, 1, 1, 7, '#c48a2a');
