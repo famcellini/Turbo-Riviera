@@ -54,8 +54,8 @@ var TR = window.TR = window.TR || {};
     E(g, 67.4 + sh, 5.9, 2.7, 2.4, SKIN);
     E(g, 67.4 + sh, 7.2, 2.4, 0.9, SD);
     // indice teso, leggermente inclinato verso di lui
-    g.strokeStyle = SKIN; g.lineWidth = 1.7; g.beginPath(); g.moveTo(66.2 + sh, 4.6); g.lineTo(64.8 + sh, -1.4); g.stroke();
-    E(g, 64.7 + sh, -1.6, 0.62, 0.62, '#d4143a');
+    g.strokeStyle = SKIN; g.lineWidth = 1.8; g.beginPath(); g.moveTo(66.3 + sh, 4.6); g.lineTo(65.2 + sh, 0.2); g.stroke();
+    E(g, 65.15 + sh, -0.05, 0.6, 0.6, '#d4143a');
     // altre dita chiuse e pollice sopra
     g.strokeStyle = SD; g.lineWidth = 0.45;
     [0, 1, 2].forEach(function (n) { g.beginPath(); g.moveTo(66.4 + sh + n * 1.1, 6 + n * 0.1); g.lineTo(66.4 + sh + n * 1.1, 7.7); g.stroke(); });
