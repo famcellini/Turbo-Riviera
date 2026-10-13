@@ -47,7 +47,7 @@ var TR = window.TR = window.TR || {};
     E(g, 46 + sh, -0.5, 8.4, 8, '#6a3e1c'); R(g, 38.5 + sh, 2, 15, 4, '#6a3e1c'); R(g, 40 + sh, 5, 12, 2, '#55300f');
     E(g, 43 + sh, -3, 4.2, 3.2, '#8a5a2a'); E(g, 49 + sh, -3.5, 3.6, 2.6, '#9a6830');
     R(g, 41 + sh, -5, 2, 1, '#b07a3c'); R(g, 47 + sh, -6, 3, 1, '#b07a3c');
-    R(g, 46 + sh, -4, 1, 5, '#55300f');
+    R(g, 40 + sh, -1, 1, 6, '#4a280c'); R(g, 44 + sh, -3, 1, 8, '#4a280c'); R(g, 48 + sh, -3, 1, 8, '#4a280c'); R(g, 52 + sh, -1, 1, 6, '#4a280c');
     // lei: lunghi capelli biondi mossi dal vento, top rosa
     RR(g, 71 + sh, 10, 28, 9, 4, '#e8b088'); R(g, 74 + sh, 10, 3, 9, '#ff5aa0'); R(g, 93 + sh, 10, 3, 9, '#ff5aa0'); R(g, 72 + sh, 15, 26, 4, '#ff5aa0');
     // lei: chioma bionda morbida, ondulata e svolazzante ma senza punte
@@ -78,7 +78,7 @@ var TR = window.TR = window.TR || {};
       });
     } else if (turned) {
       // lei si gira verso di lui e protesta: viso di profilo e braccio alzato
-      E(g, 80 + sh, 2, 4.5, 6, '#f0c09a'); P(g, [76 + sh, 1, 73.5 + sh, 3, 76 + sh, 4], '#f0c09a');
+      E(g, 80 + sh, 2, 4.5, 6, '#f0c09a'); P(g, [76.5 + sh, 0.8, 73.6 + sh, 1.4, 72.6 + sh, 2.6, 73.8 + sh, 3.5, 76.5 + sh, 4], '#f0c09a'); R(g, 73.4 + sh, 3.1, 1.6, 0.5, '#d8987a');
       R(g, 77 + sh, 0, 2, 1, '#2a1a10'); R(g, 76 + sh, -1, 3, 1, '#8a5a2a');
       R(g, 76 + sh, 5, 3, 2, '#a01830'); E(g, 80 + sh, 4, 1.5, 1, '#ff9aa8');
       E(g, 84 + sh, 0, 4, 7, '#ecbc44');
