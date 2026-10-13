@@ -94,14 +94,14 @@ var TR = window.TR = window.TR || {};
       }
     }
   }
-  function playerCar(dir, brake, turned, hs) {
+  function playerCar(dir, brake, turned, hs, noShadow) {
     // sportiva italiana anni '80 scoperta: larga e bassa, griglia a lamelle sopra i fanali
     // hs: fattore di risoluzione (per il filmato finale l'auto è disegnata più grande e più definita)
     hs = hs || 1;
     var c = mk(132 * hs, 90 * hs), g = c.getContext('2d'), sh = dir * 3, i;
     g.scale(hs, hs);
     g.translate(2, 22);
-    E(g, 64, 62, 64, 6, 'rgba(0,0,0,0.4)');
+    if (!noShadow) E(g, 64, 62, 64, 6, 'rgba(0,0,0,0.4)');
     // ruote larghe
     RR(g, 4 - (dir > 0 ? 2 : 0), 38, 25, 24, 5, '#101010'); RR(g, 99 + (dir < 0 ? 2 : 0), 38, 25, 24, 5, '#101010');
     for (i = 0; i < 4; i++) { R(g, 7 - (dir > 0 ? 2 : 0), 42 + i * 5, 19, 1, '#2a2a2a'); R(g, 102 + (dir < 0 ? 2 : 0), 42 + i * 5, 19, 1, '#2a2a2a'); }
@@ -191,8 +191,8 @@ var TR = window.TR = window.TR || {};
   }
 
   // versione rifinita per il filmato finale: stessa auto, con sfumature, ombre e riflessi
-  function carHD(turned, hs, dir, brake) {
-    var c = playerCar(dir || 0, !!brake, turned, hs), g = c.getContext('2d');
+  function carHD(turned, hs, dir, brake, noShadow) {
+    var c = playerCar(dir || 0, !!brake, turned, hs, noShadow), g = c.getContext('2d');
     g.save(); g.setTransform(hs, 0, 0, hs, 2 * hs, 22 * hs);
     function clipPath(pts) { g.beginPath(); g.moveTo(pts[0], pts[1]); for (var i = 2; i < pts.length; i += 2) g.lineTo(pts[i], pts[i + 1]); g.closePath(); }
     var body = [2, 30, 8, 21, 120, 21, 126, 30, 126, 51, 2, 51], deck = [6, 22, 22, 12, 106, 12, 122, 22];

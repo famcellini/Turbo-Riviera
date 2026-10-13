@@ -203,8 +203,8 @@
 
   /* ================= SPRITE AUTO ================= */
   var HS = 3, carFrames = {};
-  var carTurned = {}, carCheer = {}, cheerT = 0;
-  [-1, 0, 1].forEach(function (d) { carFrames[d] = [G.carHD(false, HS, d, false), G.carHD(false, HS, d, true)]; carTurned[d] = [G.carHD(true, HS, d, false), G.carHD(true, HS, d, true)]; carCheer[d] = [G.carHD('cheer', HS, d, false), G.carHD('cheer', HS, d, true)]; });
+  var carTurned = {}, carCheer = {}, cheerT = 0, cheerOn = false;
+  [-1, 0, 1].forEach(function (d) { carFrames[d] = [G.carHD(false, HS, d, false, true), G.carHD(false, HS, d, true, true)]; carTurned[d] = [G.carHD(true, HS, d, false, true), G.carHD(true, HS, d, true, true)]; carCheer[d] = [G.carHD('cheer', HS, d, false, true), G.carHD('cheer', HS, d, true, true)]; });
   var lookT = 0, flameT = 0;
   var traffic = [];
   ['car', 'car', 'van', 'truck', 'sport', 'car', 'sport'].forEach(function (tp, k) {
@@ -423,7 +423,9 @@
     cloudDrift += dt * 0.002;
     if (shake > 0) shake -= dt;
     if (lookT > 0) lookT -= dt; if (flameT > 0) flameT -= dt;
-    if (ctrl === 'player' && speed > MAXS * 0.93 && crashT <= 0 && lookT <= 0) cheerT = 1.2; else if (cheerT > 0) cheerT -= dt;
+    // lei alza le mani sopra i 292 km/h e le abbassa sotto i 290 (isteresi); mai durante il cappotto o quando e' arrabbiata
+    var kv = speed / MAXS * 293;
+    if (ctrl !== 'player' || crashT > 0 || lookT > 0) cheerOn = false; else if (kv > 292) cheerOn = true; else if (kv < 290) cheerOn = false;
     return pSeg;
   }
 
@@ -702,8 +704,11 @@
     cx.scale(K, K); cx.translate(shakeX, shakeY);
     if (state !== 'title' && state !== 'radio' && state !== 'rank' && state !== 'clip') {
       var spd = speed / MAXS, bounce = (offroad && spd > 0.05 ? (Math.random() * 3) : (Math.random() * 1.2 * spd)) | 0;
-      var img = (lookT > 0 && crashT <= 0 ? carTurned : cheerT > 0 ? carCheer : carFrames)[crashT > 0 ? 0 : steerDir][brakeOn ? 1 : 0];
+      var img = (lookT > 0 && crashT <= 0 ? carTurned : cheerOn ? carCheer : carFrames)[crashT > 0 ? 0 : steerDir][brakeOn ? 1 : 0];
       var iw = img.width / HS, ih = img.height / HS, px = W / 2, py = H - 6 - bounce;
+      // ombra a terra: resta sulla strada anche durante le piroette (si rimpicciolisce quando l'auto salta)
+      var shHop = crashT > 0 ? Math.sin((1 - Math.max(0, crashT - 1.2) / 1.2) * Math.PI) * (crashT > 1.2 ? 1 : 0) : 0;
+      cx.fillStyle = 'rgba(0,0,0,' + (0.4 * (1 - 0.5 * shHop)) + ')'; cx.beginPath(); cx.ellipse(px, py - 6, 64 * (1 - 0.25 * shHop), 6 * (1 - 0.25 * shHop), 0, 0, Math.PI * 2); cx.fill();
       if (crashT > 0) {
         var ph = Math.max(0, crashT - 1.2), hop = ph > 0 ? Math.sin((1 - ph / 1.2) * Math.PI) * 40 : 0;
         cx.save(); cx.translate(px, py - ih / 2 - hop); cx.rotate(Math.sin(crashAng) * 0.5 + (ph > 0 ? crashAng : 0));
