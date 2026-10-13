@@ -202,7 +202,7 @@
   }
 
   /* ================= SPRITE AUTO ================= */
-  var HS = 2, carFrames = {};
+  var HS = 3, carFrames = {};
   var carTurned = {}, carCheer = {}, cheerT = 0;
   [-1, 0, 1].forEach(function (d) { carFrames[d] = [G.carHD(false, HS, d, false), G.carHD(false, HS, d, true)]; carTurned[d] = [G.carHD(true, HS, d, false), G.carHD(true, HS, d, true)]; carCheer[d] = [G.carHD('cheer', HS, d, false), G.carHD('cheer', HS, d, true)]; });
   var lookT = 0, flameT = 0;
