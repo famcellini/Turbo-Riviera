@@ -33,29 +33,6 @@ var TR = window.TR = window.TR || {};
     x.putImageData(im, 0, 0);
     return (herCache[k] = { c: c, cx: d.cx, top: d.top });
   }
-  var SKIN = '#f6cfb0', SKIN_D = '#e2a888', NAIL = '#d4143a';
-  function limb(g, x0, y0, x1, y1, w, c) { g.strokeStyle = c; g.lineWidth = w; g.lineCap = 'round'; g.beginPath(); g.moveTo(x0, y0); g.lineTo(x1, y1); g.stroke(); }
-  // mano alzata con le cinque dita ben aperte a ventaglio e unghie rosse (s: lato, rot: inclinazione del braccio)
-  function handOpen(g, x, y, s, rot) {
-    var fing = [[62, 3.1], [31, 4.5], [6, 5.0], [-18, 4.6], [-40, 3.6]], k, a, L;
-    g.save(); g.translate(x, y); g.rotate(rot);
-    limb(g, 0, 3, 0, -0.6, 3.2, SKIN);
-    for (k = 0; k < fing.length; k++) {
-      a = fing[k][0] * s * Math.PI / 180; L = fing[k][1];
-      limb(g, Math.sin(a) * 1.2, -1.4 - Math.cos(a) * 0.4, Math.sin(a) * L, -1.4 - Math.cos(a) * L, k === 0 ? 1.7 : 1.5, SKIN);
-      E(g, Math.sin(a) * (L + 0.1), -1.4 - Math.cos(a) * (L + 0.1), 0.62, 0.62, NAIL);
-    }
-    E(g, 0, -1.2, 2.5, 2.1, SKIN); E(g, 0.7 * s, -0.4, 1.2, 0.7, SKIN_D);
-    g.restore();
-  }
-  // dopo il cappotto: pugno con l'indice puntato verso di lui
-  function pointHand(g, sh) {
-    limb(g, 78 + sh, 9.5, 67 + sh, 7.2, 2.8, SKIN);
-    E(g, 65.6 + sh, 6.6, 2.5, 2.2, SKIN); E(g, 66 + sh, 7.6, 1.8, 0.8, SKIN_D);
-    limb(g, 64.2 + sh, 5.9, 58.6 + sh, 5.1, 1.5, SKIN); E(g, 58.2 + sh, 5.1, 0.62, 0.62, NAIL);
-    limb(g, 65.8 + sh, 4.8, 66.4 + sh, 2.6, 1.3, SKIN);
-    limb(g, 64 + sh, 7.2, 62.6 + sh, 7.6, 1.1, SKIN_D);
-  }
   // capigliatura a pixel: ellisse con ciuffi, 4 toni sfumati dall'alto a sinistra
   function pixHair(g, cx, cy, rx, ry, pal, seed, flare) {
     var rnd = rng(seed), x, y, u, v, r, lim, l, t;
@@ -108,8 +85,6 @@ var TR = window.TR = window.TR || {};
     R(g, 84 + sh, 6, 8, 6, '#f0b890');
     var HER = herSprite(turned === 'cheer' ? 'u' : turned ? 'c' : 'n');
     if (HER) { g.imageSmoothingEnabled = false; g.drawImage(HER.c, Math.round(88 + sh - HER.cx), -8 - HER.top); }
-    if (HER && turned === 'cheer') { handOpen(g, 72 + sh, 3, -1, -0.34); handOpen(g, 109 + sh, 3, 1, 0.34); }
-    if (HER && turned === true) pointHand(g, sh);
     else pixHair(g, rx0, 2, 11.5, 10, ['#c89a00', '#f0c800', '#ffe616', '#fff47a'], 7, 1);
     if (!HER && turned === true) {
       // girata verso di lui, arrabbiata: viso piccolo di profilo, occhio, bocca aperta, braccio teso
