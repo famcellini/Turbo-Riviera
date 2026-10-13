@@ -105,22 +105,48 @@ var TR = window.TR = window.TR || {};
     // ruote larghe
     RR(g, 4 - (dir > 0 ? 2 : 0), 38, 25, 24, 5, '#101010'); RR(g, 99 + (dir < 0 ? 2 : 0), 38, 25, 24, 5, '#101010');
     for (i = 0; i < 4; i++) { R(g, 7 - (dir > 0 ? 2 : 0), 42 + i * 5, 19, 1, '#2a2a2a'); R(g, 102 + (dir < 0 ? 2 : 0), 42 + i * 5, 19, 1, '#2a2a2a'); }
-    // parabrezza basso e inclinato
-    P(g, [30 + sh, 14, 35 + sh, -3, 93 + sh, -3, 98 + sh, 14], 'rgba(170,225,255,0.4)');
-    R(g, 34 + sh, -4, 60, 2, '#1e1e1e'); P(g, [30 + sh, 14, 34 + sh, -4, 36 + sh, -4, 33 + sh, 14], '#1e1e1e'); P(g, [98 + sh, 14, 94 + sh, -4, 92 + sh, -4, 95 + sh, 14], '#1e1e1e');
+    // parabrezza basso e inclinato, piu' largo del 20% per far stare i passeggeri
+    var wc = 64 + sh, wx = function (o) { return wc + 1.2 * o; };
+    P(g, [wx(-34), 14, wx(-29), -3, wx(29), -3, wx(34), 14], 'rgba(170,225,255,0.4)');
+    R(g, wx(-30), -4, 72, 2, '#1e1e1e'); P(g, [wx(-34), 14, wx(-30), -4, wx(-28), -4, wx(-31), 14], '#1e1e1e'); P(g, [wx(34), 14, wx(30), -4, wx(28), -4, wx(31), 14], '#1e1e1e');
     // poggiatesta
     // passeggeri a pixel, vista da dietro come nel riferimento: lui castano con giubbotto blu, lei bionda riccia con top rosa
     var lx = 46 + sh, rx0 = (turned === true ? 90 : 88) + sh;
     var PK = TR.PASS && TR.PASS[turned === 'cheer' ? 'P2' : turned === true ? 'P3' : 'P1'];
     if (PK) {
       // passeggeri disegnati da Cristian (immagine unica: lui e lei), appoggiati sul bordo della scocca
-      if (!herCache['P' + (turned === 'cheer' ? 2 : turned === true ? 3 : 1)]) {
-        var pc = mk(PK.w, PK.h), px2 = pc.getContext('2d'), pim = px2.createImageData(PK.w, PK.h), pb = atob(PK.d), pi;
+      var pkey = 'P' + (turned === 'cheer' ? 2 : turned === true ? 3 : 1), pk = herCache[pkey];
+      if (!pk) {
+        // sprite unico di Cristian: lo divido lungo il percorso a minore opacita' tra i due passeggeri
+        var pc = mk(PK.w, PK.h), px2 = pc.getContext('2d'), pim = px2.createImageData(PK.w, PK.h), pb = atob(PK.d), pi, r, o, n, l, bi, bn;
         for (pi = 0; pi < pb.length; pi++) pim.data[pi] = pb.charCodeAt(pi);
-        px2.putImageData(pim, 0, 0); herCache['P' + (turned === 'cheer' ? 2 : turned === true ? 3 : 1)] = pc;
+        px2.putImageData(pim, 0, 0);
+        var src = pim.data, x0 = Math.round(PK.w * 0.3), sw = Math.round(PK.w * 0.65) - x0, cost = [], from = [];
+        for (r = 0; r < PK.h; r++) {
+          cost[r] = new Float64Array(sw); from[r] = new Int16Array(sw);
+          for (o = 0; o < sw; o++) {
+            var al = src[4 * (r * PK.w + x0 + o) + 3];
+            if (r === 0) { cost[r][o] = al; continue; }
+            bn = 1e18; bi = o;
+            for (l = -2; l <= 2; l++) { n = o + l; if (n >= 0 && n < sw && cost[r - 1][n] + 0.5 * Math.abs(l) < bn) { bn = cost[r - 1][n] + 0.5 * Math.abs(l); bi = n; } }
+            cost[r][o] = bn + al; from[r][o] = bi;
+          }
+        }
+        bn = 1e18; bi = 0;
+        for (o = 0; o < sw; o++) if (cost[PK.h - 1][o] < bn) { bn = cost[PK.h - 1][o]; bi = o; }
+        var seam = new Int16Array(PK.h);
+        for (r = PK.h - 1; r >= 0; r--) { seam[r] = x0 + bi; bi = from[r][bi]; }
+        pk = [mk(PK.w, PK.h), mk(PK.w, PK.h)];
+        pk.forEach(function (cv, side) {
+          var cx2 = cv.getContext('2d'), im2 = cx2.createImageData(PK.w, PK.h), x, y2, k;
+          for (y2 = 0; y2 < PK.h; y2++) for (x = 0; x < PK.w; x++) if ((x < seam[y2]) === (side === 0)) { k = 4 * (y2 * PK.w + x); im2.data[k] = src[k]; im2.data[k + 1] = src[k + 1]; im2.data[k + 2] = src[k + 2]; im2.data[k + 3] = src[k + 3]; }
+          cx2.putImageData(im2, 0, 0);
+        });
+        herCache[pkey] = pk;
       }
       g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
-      g.drawImage(herCache['P' + (turned === 'cheer' ? 2 : turned === true ? 3 : 1)], lx - PK.ax * PK.u, 13 - PK.h * PK.u, PK.w * PK.u, PK.h * PK.u);
+      var spread = 36 * 0.2 / 2, pl = lx - PK.ax * PK.u, pt = 13 - PK.h * PK.u;   // distanziati del 20%
+      g.drawImage(pk[0], pl - spread, pt, PK.w * PK.u, PK.h * PK.u); g.drawImage(pk[1], pl + spread, pt, PK.w * PK.u, PK.h * PK.u);
     } else {
     R(g, 32 + sh, 10, 28, 9, '#2a4fd0'); R(g, 33 + sh, 10, 26, 2, '#5a7ae8'); R(g, 32 + sh, 17, 28, 2, '#1a2f9a');
     // lui: capelli castani che coprono la nuca e il collo (niente collo squadrato)
