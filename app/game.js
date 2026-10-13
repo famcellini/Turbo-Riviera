@@ -366,7 +366,7 @@
     if (crashT > 0) {
       crashT -= dt; speed = Math.max(0, speed - MAXS * 1.1 * dt);
       if (crashT < 0.9) { var tgt = cNow > 1.1 ? (playerX < 0 ? -cNow : cNow) : Math.max(-0.75, Math.min(0.75, playerX)); playerX += (tgt - playerX) * Math.min(1, dt * 4); }
-      if (crashT <= 0) { crashT = 0; crashAng = 0; }
+      if (crashT <= 0) { crashT = 0; crashAng = 0; lookT = 4; }  // lei punta il dito solo a piroette finite
       else crashAng += dt * 14 * Math.min(1, crashT);
     } else {
       var manual = ctrl === 'player' && !autoGas;
@@ -400,8 +400,8 @@
         if (sp.s.nc) continue;
         var sw = Math.min(sp.s.ww, 1600) / ROADW * 0.85;
         if (Math.abs(playerX - sp.off) < (PW + sw) / 2) {
-          if (speed > MAXS * 0.45) { crashT = 2.4; crashAng = 0; shake = 0.6; A.sfx.crash(); lookT = 5; }
-          else { speed = MAXS / 10; position = pSeg.p1.z - PZ; shake = 0.25; A.sfx.bump(); lookT = 3; }
+          if (speed > MAXS * 0.45) { crashT = 2.4; crashAng = 0; shake = 0.6; A.sfx.crash(); lookT = 0; }
+          else { speed = MAXS / 10; position = pSeg.p1.z - PZ; shake = 0.25; A.sfx.bump(); }
           break;
         }
       }
@@ -411,7 +411,7 @@
         if (speed > c.spd && dz < SEG * 0.8 && dz + (speed - c.spd) * dt > -SEG * 0.4) {
           var cs = findSeg(c.z), cc = ((cs.f1 + cs.f2) / 2) * FORKC, co = c.off + (cs.fs ? cs.fs * cc : (c.off < 0 ? -cc : cc));
           if (Math.abs(playerX - co) < (PW + c.v.ww / ROADW) / 2 * 0.85) {
-            speed = c.spd * 0.6; position = c.z - PZ - SEG; shake = 0.35; A.sfx.bump(); lookT = 3; score = Math.max(0, score - 5000);
+            speed = c.spd * 0.6; position = c.z - PZ - SEG; shake = 0.35; A.sfx.bump(); score = Math.max(0, score - 5000);
             break;
           }
         }
@@ -702,7 +702,7 @@
     cx.scale(K, K); cx.translate(shakeX, shakeY);
     if (state !== 'title' && state !== 'radio' && state !== 'rank' && state !== 'clip') {
       var spd = speed / MAXS, bounce = (offroad && spd > 0.05 ? (Math.random() * 3) : (Math.random() * 1.2 * spd)) | 0;
-      var img = (lookT > 0 ? carTurned : cheerT > 0 ? carCheer : carFrames)[crashT > 0 ? 0 : steerDir][brakeOn ? 1 : 0];
+      var img = (lookT > 0 && crashT <= 0 ? carTurned : cheerT > 0 ? carCheer : carFrames)[crashT > 0 ? 0 : steerDir][brakeOn ? 1 : 0];
       var iw = img.width / HS, ih = img.height / HS, px = W / 2, py = H - 6 - bounce;
       if (crashT > 0) {
         var ph = Math.max(0, crashT - 1.2), hop = ph > 0 ? Math.sin((1 - ph / 1.2) * Math.PI) * 40 : 0;
