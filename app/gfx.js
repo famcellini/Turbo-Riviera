@@ -33,7 +33,7 @@ var TR = window.TR = window.TR || {};
         lim = 1 + (flare ? 0.07 : 0.03) * Math.sin(Math.atan2(v, u) * (flare ? 7 : 5) + seed);
         r = Math.sqrt(u * u + v * v);
         if (r > lim) continue;
-        l = -(u * 0.45 + v * 0.75) + (rnd() - 0.5) * 0.8 - (r > 0.82 ? 0.35 : 0);
+        l = -(u * 0.45 + v * 0.75) + (rnd() - 0.5) * 0.5 - (r > 0.82 ? 0.35 : 0);
         t = l > 0.5 ? 3 : l > 0.05 ? 2 : l > -0.45 ? 1 : 0;
         R(g, Math.round(cx + x), Math.round(cy + y), 1, 1, pal[t]);
       }
@@ -58,7 +58,13 @@ var TR = window.TR = window.TR || {};
     var lx = 46 + sh, rx0 = (turned === true ? 90 : 88) + sh;
     R(g, 32 + sh, 10, 28, 9, '#2a4fd0'); R(g, 33 + sh, 10, 26, 2, '#5a7ae8'); R(g, 32 + sh, 17, 28, 2, '#1a2f9a');
     R(g, 43 + sh, 6, 6, 6, '#e8a878');
-    pixHair(g, lx, -0.5, 8.5, 8, ['#5a2e08', '#8a4e10', '#b06c16', '#d08a24'], 3, 0);
+    pixHair(g, lx + (turned === true ? 1 : 0), -0.5, 8.5, 8, ['#5a2e08', '#8a4e10', '#b06c16', '#d08a24'], 3, 0);
+    if (turned === true) {
+      // lui gira la testa verso di lei: guancia, occhio e orecchio sul lato destro
+      R(g, lx + 5, 1, 4, 7, '#e8a878'); R(g, lx + 5, 0, 3, 1, '#e8a878'); R(g, lx + 8, 3, 1, 2, '#e8a878');
+      R(g, lx + 6, 2, 2, 1, '#2a1a10'); R(g, lx + 7, 5, 2, 1, '#b06048'); R(g, lx + 4, 3, 1, 3, '#b06c16');
+      R(g, lx + 5, -1, 4, 2, '#8a4e10'); R(g, lx + 3, 0, 2, 3, '#8a4e10');
+    }
     R(g, 71 + sh, 10, 28, 9, '#f0b890'); R(g, 72 + sh, 12, 26, 7, '#b0206c'); R(g, 72 + sh, 12, 26, 2, '#d83a92');
     R(g, 84 + sh, 6, 8, 6, '#f0b890');
     pixHair(g, rx0, 2, 11.5, 10, ['#c89a00', '#f0c800', '#ffe616', '#fff47a'], 7, 1);
