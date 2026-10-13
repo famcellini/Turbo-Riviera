@@ -23,6 +23,17 @@ var TR = window.TR = window.TR || {};
   TR.mk = mk; TR.rng = rng; TR.shade = shade; TR.RR = RR;
 
   /* ================= AUTO DEL GIOCATORE (cabriolet rossa, vista da dietro) ================= */
+  var passCache = {};
+  function passSprite(k) {
+    if (passCache[k]) return passCache[k];
+    var o = {};
+    ['h', 's'].forEach(function (w) {
+      var d = TR.PASS[k + w], c = mk(d.w, d.h), x = c.getContext('2d'), im = x.createImageData(d.w, d.h), bin = atob(d.d), i;
+      for (i = 0; i < bin.length; i++) im.data[i] = bin.charCodeAt(i);
+      x.putImageData(im, 0, 0); o[w] = { c: c, cx: d.cx, top: d.top };
+    });
+    return (passCache[k] = o);
+  }
   function playerCar(dir, brake, turned, hs) {
     // sportiva italiana anni '80 scoperta: larga e bassa, griglia a lamelle sopra i fanali
     // hs: fattore di risoluzione (per il filmato finale l'auto è disegnata più grande e più definita)
@@ -38,7 +49,14 @@ var TR = window.TR = window.TR || {};
     P(g, [30 + sh, 14, 35 + sh, -3, 93 + sh, -3, 98 + sh, 14], 'rgba(170,225,255,0.4)');
     R(g, 34 + sh, -4, 60, 2, '#1e1e1e'); P(g, [30 + sh, 14, 34 + sh, -4, 36 + sh, -4, 33 + sh, 14], '#1e1e1e'); P(g, [98 + sh, 14, 94 + sh, -4, 92 + sh, -4, 95 + sh, 14], '#1e1e1e');
     // poggiatesta
-    RR(g, 36 + sh, 3, 17, 13, 5, '#2a1a12'); RR(g, 75 + sh, 3, 17, 13, 5, '#2a1a12');
+    if (!(TR.PASS)) { RR(g, 36 + sh, 3, 17, 13, 5, '#2a1a12'); RR(g, 75 + sh, 3, 17, 13, 5, '#2a1a12'); }
+    // passeggeri: sprite disegnati da Cristian (pass.js); se mancano si usa il disegno a codice
+    var PS = TR.PASS && passSprite(turned === 'cheer' ? 'u' : turned ? 'c' : 'n');
+    if (PS) {
+      g.imageSmoothingEnabled = false;
+      g.drawImage(PS.h.c, Math.round(46 + sh - PS.h.cx), -8 - PS.h.top);
+      g.drawImage(PS.s.c, Math.round(93 + sh - PS.s.cx), -8 - PS.s.top);
+    } else {
     // lui: capelli corti scuri, nuca e orecchie scoperte, polo azzurra
     RR(g, 32 + sh, 10, 28, 9, 4, '#27468a'); R(g, 33 + sh, 10, 26, 1, '#4a6cb0'); R(g, 43 + sh, 9, 6, 2, '#f2f2f2');
     R(g, 43 + sh, 6, 6, 5, '#e0a070');
@@ -101,6 +119,7 @@ var TR = window.TR = window.TR || {};
     } else if (turned) {
       // lei si gira verso di lui e protesta: viso di profilo e braccio alzato
       P(g, [75 + sh, 13, 62 + sh, 7.5, 62.5 + sh, 5.2, 76 + sh, 10.5], '#f2b896'); E(g, 62 + sh, 6.3, 1.8, 1.4, '#f6c4a2');
+    }
     }
     // cofano posteriore
     P(g, [6, 22, 22 + sh, 12, 106 + sh, 12, 122, 22], '#c01016');
