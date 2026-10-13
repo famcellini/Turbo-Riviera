@@ -713,7 +713,7 @@
         cx.drawImage(img, px - iw / 2, py - ih, iw, ih);
         if (flameT > 0 && Math.random() < 0.85) {
           // fiammata dagli scarichi al cambio marcia
-          var fx0 = Math.round(px - iw / 2) + 2, fy = Math.round(py - ih) + 64, k2 = Math.min(1, flameT * 3), fl = (8 + Math.random() * 10) * k2;
+          var fx0 = Math.round(px - iw / 2) + 2, fy = Math.round(py - ih) + 76, k2 = Math.min(1, flameT * 3), fl = (8 + Math.random() * 10) * k2;
           [37.5, 90.5].forEach(function (ex) {
             G.E(cx, fx0 + ex, fy + 2, 10 * k2, 7 * k2, 'rgba(255,120,30,0.35)');
             G.E(cx, fx0 + ex + (Math.random() - 0.5) * 3, fy + fl * 0.4, 7 * k2, fl * 0.55, 'rgba(255,80,20,0.95)');

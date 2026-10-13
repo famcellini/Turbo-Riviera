@@ -98,9 +98,9 @@ var TR = window.TR = window.TR || {};
     // sportiva italiana anni '80 scoperta: larga e bassa, griglia a lamelle sopra i fanali
     // hs: fattore di risoluzione (per il filmato finale l'auto è disegnata più grande e più definita)
     hs = hs || 1;
-    var c = mk(132 * hs, 78 * hs), g = c.getContext('2d'), sh = dir * 3, i;
+    var c = mk(132 * hs, 90 * hs), g = c.getContext('2d'), sh = dir * 3, i;
     g.scale(hs, hs);
-    g.translate(2, 10);
+    g.translate(2, 22);
     E(g, 64, 62, 64, 6, 'rgba(0,0,0,0.4)');
     // ruote larghe
     RR(g, 4 - (dir > 0 ? 2 : 0), 38, 25, 24, 5, '#101010'); RR(g, 99 + (dir < 0 ? 2 : 0), 38, 25, 24, 5, '#101010');
@@ -111,6 +111,17 @@ var TR = window.TR = window.TR || {};
     // poggiatesta
     // passeggeri a pixel, vista da dietro come nel riferimento: lui castano con giubbotto blu, lei bionda riccia con top rosa
     var lx = 46 + sh, rx0 = (turned === true ? 90 : 88) + sh;
+    var PK = TR.PASS && TR.PASS[turned === 'cheer' ? 'P2' : turned === true ? 'P3' : 'P1'];
+    if (PK) {
+      // passeggeri disegnati da Cristian (immagine unica: lui e lei), appoggiati sul bordo della scocca
+      if (!herCache['P' + (turned === 'cheer' ? 2 : turned === true ? 3 : 1)]) {
+        var pc = mk(PK.w, PK.h), px2 = pc.getContext('2d'), pim = px2.createImageData(PK.w, PK.h), pb = atob(PK.d), pi;
+        for (pi = 0; pi < pb.length; pi++) pim.data[pi] = pb.charCodeAt(pi);
+        px2.putImageData(pim, 0, 0); herCache['P' + (turned === 'cheer' ? 2 : turned === true ? 3 : 1)] = pc;
+      }
+      g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
+      g.drawImage(herCache['P' + (turned === 'cheer' ? 2 : turned === true ? 3 : 1)], lx - PK.ax * PK.u, 13 - PK.h * PK.u, PK.w * PK.u, PK.h * PK.u);
+    } else {
     R(g, 32 + sh, 10, 28, 9, '#2a4fd0'); R(g, 33 + sh, 10, 26, 2, '#5a7ae8'); R(g, 32 + sh, 17, 28, 2, '#1a2f9a');
     // lui: capelli castani che coprono la nuca e il collo (niente collo squadrato)
     pixHair(g, lx, -0.5, 8.5, 8, ['#5a2e08', '#8a4e10', '#b06c16', '#d08a24'], 3, 0);
@@ -126,7 +137,8 @@ var TR = window.TR = window.TR || {};
       g.drawImage(HER.c, 77.5 + sh - F.mx * F.u, 5.5 - F.my * F.u, F.w * F.u, F.h * F.u);
     } else if (HER) { g.imageSmoothingEnabled = false; g.drawImage(HER.c, Math.round(88 + sh - HER.cx), -8 - HER.top); }
     else pixHair(g, rx0, 2, 11.5, 10, ['#c89a00', '#f0c800', '#ffe616', '#fff47a'], 7, 1);
-    if (!HER && turned === true) {
+    }
+    if (!PK && !HER && turned === true) {
       // girata verso di lui, arrabbiata: viso piccolo di profilo, occhio, bocca aperta, braccio teso
       var fy, fw;
       for (fy = -3; fy <= 8; fy++) { fw = Math.round(4.5 * Math.sqrt(Math.max(0, 1 - Math.pow((fy - 2.5) / 5.8, 2)))); R(g, 79 + sh - fw, fy, fw * 2 + 1, 1, '#f2b896'); }
@@ -136,7 +148,7 @@ var TR = window.TR = window.TR || {};
       R(g, 76 + sh, -1, 4, 1, '#e8b000'); R(g, 77 + sh, -3, 8, 2, '#ffe616');
       P(g, [75 + sh, 13, 62 + sh, 7.5, 62.5 + sh, 5.2, 76 + sh, 10.5], '#f2b896'); E(g, 62 + sh, 6.3, 1.8, 1.4, '#f6c4a2');
     }
-    if (!HER && turned === 'cheer') {
+    if (!PK && !HER && turned === 'cheer') {
       // lei felice: tutte e due le braccia in alto
       P(g, [74 + sh, 12, 66 + sh, -2, 69 + sh, -3, 78 + sh, 11], '#f0b890'); E(g, 67 + sh, -4, 2.6, 2.6, '#f6c4a2');
       P(g, [100 + sh, 12, 108 + sh, -2, 105 + sh, -3, 96 + sh, 11], '#f0b890'); E(g, 107 + sh, -4, 2.6, 2.6, '#f6c4a2');
@@ -181,7 +193,7 @@ var TR = window.TR = window.TR || {};
   // versione rifinita per il filmato finale: stessa auto, con sfumature, ombre e riflessi
   function carHD(turned, hs, dir, brake) {
     var c = playerCar(dir || 0, !!brake, turned, hs), g = c.getContext('2d');
-    g.save(); g.setTransform(hs, 0, 0, hs, 2 * hs, 10 * hs);
+    g.save(); g.setTransform(hs, 0, 0, hs, 2 * hs, 22 * hs);
     function clipPath(pts) { g.beginPath(); g.moveTo(pts[0], pts[1]); for (var i = 2; i < pts.length; i += 2) g.lineTo(pts[i], pts[i + 1]); g.closePath(); }
     var body = [2, 30, 8, 21, 120, 21, 126, 30, 126, 51, 2, 51], deck = [6, 22, 22, 12, 106, 12, 122, 22];
     var gr;
