@@ -202,7 +202,7 @@
 
   /* ================= SPRITE AUTO ================= */
   var HS = 3, carFrames = {};
-  var carTurned = {}, carCheer = {}, cheerT = 0, cheerOn = false;
+  var carTurned = {}, carCheer = {}, cheerT = 0, cheerOn = false, cycOn = false, cycT = 0;
   [-1, 0, 1].forEach(function (d) { carFrames[d] = [G.carHD(false, HS, d, false, true), G.carHD(false, HS, d, true, true)]; carTurned[d] = [G.carHD(true, HS, d, false, true), G.carHD(true, HS, d, true, true)]; carCheer[d] = [G.carHD('cheer', HS, d, false, true), G.carHD('cheer', HS, d, true, true)]; });
   var lookT = 0, flameT = 0;
   var traffic = [];
@@ -365,7 +365,7 @@
     if (crashT > 0) {
       crashT -= dt; speed = Math.max(0, speed - MAXS * 1.1 * dt);
       if (crashT < 0.9) { var tgt = cNow > 1.1 ? (playerX < 0 ? -cNow : cNow) : Math.max(-0.75, Math.min(0.75, playerX)); playerX += (tgt - playerX) * Math.min(1, dt * 4); }
-      if (crashT <= 0) { crashT = 0; crashAng = 0; lookT = 4; }  // lei punta il dito solo a piroette finite
+      if (crashT <= 0) { crashT = 0; crashAng = 0; lookT = 2; }  // lei punta il dito solo a piroette finite
       else crashAng += dt * 14 * Math.min(1, crashT);
     } else {
       var manual = ctrl === 'player' && !autoGas;
@@ -424,7 +424,11 @@
     if (lookT > 0) lookT -= dt; if (flameT > 0) flameT -= dt;
     // lei alza le mani sopra i 292 km/h e le abbassa sotto i 290 (isteresi); mai durante il cappotto o quando e' arrabbiata
     var kv = speed / MAXS * 293;
-    if (ctrl !== 'player' || crashT > 0 || lookT > 0) cheerOn = false; else if (kv > 292) cheerOn = true; else if (kv < 290) cheerOn = false;
+    // ciclo: braccia su per 2 s, giu' per 8 s, e cosi' via finche' la velocita' resta sopra 290; sotto soglia il ciclo si ferma
+    if (ctrl !== 'player' || crashT > 0 || lookT > 0) { cycOn = false; }
+    else if (!cycOn && kv > 292) { cycOn = true; cycT = 0; }
+    else if (cycOn && kv < 290) { cycOn = false; }
+    if (cycOn) { cycT = (cycT + dt) % 10; cheerOn = cycT < 2; } else cheerOn = false;
     return pSeg;
   }
 
@@ -506,7 +510,7 @@
         var rpm = gearHi ? 0.45 + (spd - 0.4) / 0.6 * 0.55 : spd / 0.52;
         A.engine(true, Math.max(0.12, rpm), skid, offroad, spd);
         if (position + PZ >= T.gateIdx * SEG) {
-          if (T.final) { lapTimes.push(stageTime); state = 'goal'; stateT = 0; A.sfx.goal(); A.playSong(3); endBonus = Math.max(0, Math.floor(timeLeft)) * 50000; showMsg('FINISH!', '#ffe14a', 4, 'big'); showMsg('WELCOME TO ' + region.toUpperCase() + ' CITY', '#ffffff', 6, 'stage'); }
+          if (T.final) { lapTimes.push(stageTime); state = 'goal'; stateT = 0; A.sfx.goal(); A.playSong(3); endBonus = Math.max(0, Math.floor(timeLeft)) * 50000; showMsg('FINISH!', '#ffe14a', 4, 'big'); showMsg('WELCOME TO THE PROVINCE OF\n' + region.toUpperCase(), '#ffffff', 6, 'stage'); }
           else checkpoint();
         }
         if (T.forkStart > 0 && position + PZ > (T.forkStart - 40) * SEG && position + PZ < T.gateIdx * SEG && Math.floor(stateT * 2) % 2 === 0 && !msg.some(function (m) { return m.k === 'fork'; }))
@@ -868,7 +872,7 @@
       else if (m.k === 'big') { txt(m.t, UW / 2, 470, 140, m.c, 'center', true); }
       else if (m.k === 'level') { txt(m.t, UW / 2, 218, 84, m.c, 'center', true); }
       else if (m.k === 'small') { txt(m.t, UW / 2, 575, 60, m.c, 'center', true); }
-      else if (m.k === 'stage') { if (a > 0.3) { txt(m.t, UW / 2, 328, 72, m.c, 'center', true, '#1a0f4a'); } }
+      else if (m.k === 'stage') { if (a > 0.3) { var sl = m.t.split('\n'); txt(sl[0], UW / 2, sl.length > 1 ? 296 : 328, 72, m.c, 'center', true, '#1a0f4a'); if (sl[1]) txt(sl[1], UW / 2, 392, 72, m.c, 'center', true, '#1a0f4a'); } }
       else if (m.k === 'fork') {
         txt(m.t, UW / 2, 300, 70, m.c, 'center', true);
         var l = (T.forkL || '').toUpperCase(), r = (T.forkR || '').toUpperCase();

@@ -265,6 +265,14 @@ var TR = window.TR = window.TR || {};
   }
 
   // versione rifinita per il filmato finale: stessa auto, con sfumature, ombre e riflessi
+  // stessa risoluzione morbida dei passeggeri: scende di risoluzione e risale con filtro, così l'auto non sembra disegnata a parte
+  function soften(c, k) {
+    var s = mk(Math.round(c.width / k), Math.round(c.height / k)), t = s.getContext('2d');
+    t.imageSmoothingEnabled = true; t.imageSmoothingQuality = 'high'; t.drawImage(c, 0, 0, s.width, s.height);
+    var o = mk(c.width, c.height), q = o.getContext('2d');
+    q.imageSmoothingEnabled = true; q.imageSmoothingQuality = 'high'; q.drawImage(s, 0, 0, o.width, o.height);
+    return o;
+  }
   function carHD(turned, hs, dir, brake, noShadow) {
     var c = playerCar(dir || 0, !!brake, turned, hs, noShadow), g = c.getContext('2d');
     g.save(); g.setTransform(hs, 0, 0, hs, 2 * hs, 22 * hs);
@@ -308,7 +316,7 @@ var TR = window.TR = window.TR || {};
     var rg2 = g.createRadialGradient(84, -2, 0.5, 84, -2, 9); rg2.addColorStop(0, 'rgba(255,255,230,0.55)'); rg2.addColorStop(1, 'rgba(255,255,230,0)');
     g.fillStyle = rg2; g.fillRect(74, -12, 22, 20);
     g.restore();
-    return c;
+    return soften(c, 2);
   }
 
   /* ================= AUTO DEL TRAFFICO ================= */
