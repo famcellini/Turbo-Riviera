@@ -15,6 +15,23 @@ var TR = window.TR = window.TR || {};
     g.lineTo(x + r, y + h); g.quadraticCurveTo(x, y + h, x, y + h - r);
     g.lineTo(x, y + r); g.quadraticCurveTo(x, y, x + r, y); g.closePath(); g.fill();
   }
+  // poligono con angoli arrotondati (r: raggio unico o uno per vertice)
+  function rpPath(g, pts, r) {
+    var n = pts.length / 2, i, o, k, ax, ay, bx, by, cx, cy, rr, l1, l2, m;
+    g.beginPath();
+    for (i = 0; i <= n; i++) {
+      o = i % n; k = (o + 1) % n; m = (o + n - 1) % n;
+      ax = pts[2 * m]; ay = pts[2 * m + 1]; bx = pts[2 * o]; by = pts[2 * o + 1]; cx = pts[2 * k]; cy = pts[2 * k + 1];
+      rr = typeof r === 'number' ? r : r[o];
+      l1 = Math.hypot(ax - bx, ay - by) / 2; l2 = Math.hypot(cx - bx, cy - by) / 2;
+      if (i === 0) g.moveTo((bx + cx) / 2, (by + cy) / 2);
+      else g.arcTo(bx, by, (bx + cx) / 2, (by + cy) / 2, Math.min(rr, l1, l2));
+    }
+    g.closePath();
+  }
+  function RP(g, pts, r, c) { g.fillStyle = c; rpPath(g, pts, r); g.fill(); }
+  var BODY = [2, 30, 8, 21, 120, 21, 126, 30, 126, 51, 2, 51], BODYR = [5, 7, 7, 5, 3, 3];
+  var DECK = [6, 22, 22, 12, 106, 12, 122, 22], DECKR = [2, 6, 6, 2];
   function shade(hex, k) {
     var n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255;
     function f(v) { return Math.max(0, Math.min(255, Math.round(k > 0 ? v + (255 - v) * k : v * (1 + k)))); }
@@ -105,10 +122,11 @@ var TR = window.TR = window.TR || {};
     // ruote larghe
     RR(g, 4 - (dir > 0 ? 2 : 0), 38, 25, 24, 5, '#101010'); RR(g, 99 + (dir < 0 ? 2 : 0), 38, 25, 24, 5, '#101010');
     for (i = 0; i < 4; i++) { R(g, 7 - (dir > 0 ? 2 : 0), 42 + i * 5, 19, 1, '#2a2a2a'); R(g, 102 + (dir < 0 ? 2 : 0), 42 + i * 5, 19, 1, '#2a2a2a'); }
-    // parabrezza basso e inclinato, piu' largo del 20% per far stare i passeggeri
+    // parabrezza basso e inclinato, piu' largo del 20% e con gli angoli arrotondati
     var wc = 64 + sh, wx = function (o) { return wc + 1.2 * o; };
-    P(g, [wx(-34), 14, wx(-29), -3, wx(29), -3, wx(34), 14], 'rgba(170,225,255,0.4)');
-    R(g, wx(-30), -4, 72, 2, '#1e1e1e'); P(g, [wx(-34), 14, wx(-30), -4, wx(-28), -4, wx(-31), 14], '#1e1e1e'); P(g, [wx(34), 14, wx(30), -4, wx(28), -4, wx(31), 14], '#1e1e1e');
+    var wpts = [wx(-34), 14.5, wx(-29), -3.5, wx(29), -3.5, wx(34), 14.5];
+    RP(g, wpts, [1.5, 6, 6, 1.5], 'rgba(170,225,255,0.4)');
+    g.save(); g.strokeStyle = '#1e1e1e'; g.lineWidth = 2.4; g.lineJoin = 'round'; rpPath(g, wpts, [1.5, 6, 6, 1.5]); g.stroke(); g.restore();
     // poggiatesta
     // passeggeri a pixel, vista da dietro come nel riferimento: lui castano con giubbotto blu, lei bionda riccia con top rosa
     var lx = 46 + sh, rx0 = (turned === true ? 90 : 88) + sh;
@@ -149,7 +167,7 @@ var TR = window.TR = window.TR || {};
       var recoil = turned === true ? ANGRY_SHIFT : 0;   // arrabbiata: lui si sposta della larghezza del volante, poi torna al suo posto negli altri sprite
       g.drawImage(pk[0], pl - spread + recoil, pt, PK.w * PK.u, PK.h * PK.u); g.drawImage(pk[1], pl + spread, pt, PK.w * PK.u, PK.h * PK.u);
       // poggiatesta grigi davanti ai due passeggeri (come nel riferimento di Cristian)
-      [lx - 3.6 + 2.5 + (turned === true ? ANGRY_SHIFT : 0), lx + (turned === 'cheer' ? 36 : turned === true ? 37 : 34) + 2.5].forEach(function (hx) {
+      [lx - 3.6 + 2.5, lx + (turned === 'cheer' ? 36 : turned === true ? 37 : 34) + 2.5].forEach(function (hx) {
         RR(g, hx - 9.5, 7, 19, 5.8, 2.6, '#47474f');
         RR(g, hx - 8.7, 7.7, 17.4, 4.4, 2.1, '#b4b4be');
         RR(g, hx - 7.6, 8.1, 15.2, 1.6, 0.8, '#e4e4ec');
@@ -199,21 +217,43 @@ var TR = window.TR = window.TR || {};
       });
     }
     // cofano posteriore
-    P(g, [6, 22, 22 + sh, 12, 106 + sh, 12, 122, 22], '#c01016');
-    R(g, 22 + sh, 12, 84, 2, '#ff4a40');
+    RP(g, [6, 22, 22 + sh, 12, 106 + sh, 12, 122, 22], DECKR, '#c01016');
+    RR(g, 24 + sh, 12, 80, 2, 1, '#ff4a40');
     // carrozzeria
-    P(g, [2, 30, 8, 21, 120, 21, 126, 30, 126, 51, 2, 51], '#d8141a');
+    RP(g, BODY, BODYR, '#d8141a');
     if (dir < 0) { P(g, [121, 21, 129, 29, 129, 51, 124, 51], '#8e0c0c'); for (i = 0; i < 4; i++) R(g, 124, 27 + i * 4, 5, 2, '#3a0606'); }
     if (dir > 0) { P(g, [7, 21, -1, 29, -1, 51, 4, 51], '#8e0c0c'); for (i = 0; i < 4; i++) R(g, -1, 27 + i * 4, 5, 2, '#3a0606'); }
-    R(g, 8, 22, 112, 2, '#ff5040');
+    RR(g, 10, 22, 108, 2, 1, '#ff5040');
     // griglia nera a lamelle con i fanali dietro
-    RR(g, 8, 28, 112, 15, 2, '#121212');
+    RR(g, 8, 28, 112, 15, 5, '#121212');
     // fanali come in Out Run: fascia nera con, alle estremita', lampada rosso scuro con blocco arancio esterno e bianco interno
-    R(g, 9, 30, 36, 11, brake ? '#e01a14' : '#7a0a0e'); R(g, 83, 30, 36, 11, brake ? '#e01a14' : '#7a0a0e');
-    R(g, 11, 32, 18, 6, brake ? '#ffb030' : '#ff9a10'); R(g, 29, 32, 13, 6, '#f6f6f6');
-    R(g, 86, 32, 13, 6, '#f6f6f6'); R(g, 99, 32, 18, 6, brake ? '#ffb030' : '#ff9a10');
+    RR(g, 9, 30, 36, 11, 4.5, brake ? '#e01a14' : '#7a0a0e'); RR(g, 83, 30, 36, 11, 4.5, brake ? '#e01a14' : '#7a0a0e');
+    RR(g, 11, 32, 18, 6, 2.6, brake ? '#ffb030' : '#ff9a10'); RR(g, 29, 32, 13, 6, 2, '#f6f6f6');
+    RR(g, 86, 32, 13, 6, 2, '#f6f6f6'); RR(g, 99, 32, 18, 6, 2.6, brake ? '#ffb030' : '#ff9a10');
     // cavallino rampante giallo al centro della griglia
-    P(g, [61, 33.1, 59, 34.0, 59.5, 35.2, 61.5, 34.8, 62.5, 36.4, 61, 37.9, 60, 37.1, 59.5, 37.9, 61.2, 39.0, 63.2, 38.3, 64.5, 39.8, 64, 42.1, 65.5, 42.1, 66, 39.8, 66.3, 37.9, 68, 39.3, 67.5, 36.9, 66.6, 36.1, 64, 34.0, 63, 32.1, 62.3, 32.3], '#ffd21f');
+    g.save(); g.translate(59, 32.8); g.scale(0.78, 0.78); g.fillStyle = '#ffd21f';
+    (function () {
+      function tube(P, w0, w1) {
+        var n = 40, t, u, x, y, k;
+        for (k = 0; k <= n; k++) {
+          t = k / n; u = 1 - t;
+          if (P.length === 6) { x = u * u * P[0] + 2 * u * t * P[2] + t * t * P[4]; y = u * u * P[1] + 2 * u * t * P[3] + t * t * P[5]; }
+          else { x = u * u * u * P[0] + 3 * u * u * t * P[2] + 3 * u * t * t * P[4] + t * t * t * P[6]; y = u * u * u * P[1] + 3 * u * u * t * P[3] + 3 * u * t * t * P[5] + t * t * t * P[7]; }
+          g.beginPath(); g.arc(x, y, (w0 + (w1 - w0) * t) / 2, 0, 7); g.fill();
+        }
+      }
+      tube([9.0, 7.8, 7.4, 6.6, 6.2, 5.0], 2.6, 2.6);
+      tube([6.2, 5.0, 5.8, 3.4, 5.0, 1.8], 2.2, 1.5);
+      tube([5.0, 1.8, 4.0, 1.3, 2.0, 2.7], 1.6, 0.8);
+      g.beginPath(); g.moveTo(4.5, 1.2); g.lineTo(4.9, -0.6); g.lineTo(5.6, 1.2); g.fill();
+      tube([5.8, 1.6, 6.9, 2.6, 7.0, 4.0], 0.8, 0.5);
+      tube([5.8, 5.4, 4.6, 5.5, 3.6, 5.0, 2.6, 5.6], 1.1, 0.6);
+      tube([6.0, 6.0, 5.0, 7.1, 4.2, 7.0, 3.6, 8.2], 1.1, 0.6);
+      tube([8.6, 8.0, 9.0, 9.6, 8.7, 10.6, 8.9, 11.8], 1.8, 0.9);
+      tube([8.2, 8.4, 7.2, 9.6, 7.0, 10.6, 6.5, 11.8], 1.5, 0.9);
+      tube([9.6, 6.8, 11.8, 6.0, 12.8, 8.0, 11.4, 10.8], 1.2, 0.3);
+    })();
+    g.restore();
     if (brake) { E(g, 25, 35, 20, 9, 'rgba(255,70,40,0.35)'); E(g, 103, 35, 20, 9, 'rgba(255,70,40,0.35)'); }
     // targa e paraurti
     R(g, 50, 44, 28, 7, '#f4f4f4'); R(g, 50, 44, 3, 7, '#2a4ad0');
@@ -228,8 +268,8 @@ var TR = window.TR = window.TR || {};
   function carHD(turned, hs, dir, brake, noShadow) {
     var c = playerCar(dir || 0, !!brake, turned, hs, noShadow), g = c.getContext('2d');
     g.save(); g.setTransform(hs, 0, 0, hs, 2 * hs, 22 * hs);
-    function clipPath(pts) { g.beginPath(); g.moveTo(pts[0], pts[1]); for (var i = 2; i < pts.length; i += 2) g.lineTo(pts[i], pts[i + 1]); g.closePath(); }
-    var body = [2, 30, 8, 21, 120, 21, 126, 30, 126, 51, 2, 51], deck = [6, 22, 22, 12, 106, 12, 122, 22];
+    function clipPath(pts) { rpPath(g, pts, pts === BODY ? BODYR : DECKR); }
+    var body = BODY, deck = DECK;
     var gr;
     // cofano posteriore: luce dall'alto e riflesso del cielo
     g.save(); clipPath(deck); g.clip();
@@ -248,7 +288,7 @@ var TR = window.TR = window.TR || {};
     g.fillStyle = 'rgba(255,230,220,0.6)'; g.fillRect(10, 25.6, 108, 0.6);
     g.restore();
     // griglia: vetro scuro con riflesso
-    g.save(); g.beginPath(); g.rect(8, 28, 112, 15); g.clip();
+    g.save(); rpPath(g, [8, 28, 120, 28, 120, 43, 8, 43], 5); g.clip();
     gr = g.createLinearGradient(0, 28, 0, 43); gr.addColorStop(0, 'rgba(255,255,255,0.18)'); gr.addColorStop(0.35, 'rgba(255,255,255,0)'); gr.addColorStop(1, 'rgba(0,0,0,0.25)');
     g.fillStyle = gr; g.fillRect(8, 28, 112, 15);
     g.globalCompositeOperation = 'lighter';
