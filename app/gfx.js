@@ -33,6 +33,29 @@ var TR = window.TR = window.TR || {};
     x.putImageData(im, 0, 0);
     return (herCache[k] = { c: c, cx: d.cx, top: d.top });
   }
+  var SKIN = '#f6cfb0', SKIN_D = '#e2a888', NAIL = '#d4143a';
+  function limb(g, x0, y0, x1, y1, w, c) { g.strokeStyle = c; g.lineWidth = w; g.lineCap = 'round'; g.beginPath(); g.moveTo(x0, y0); g.lineTo(x1, y1); g.stroke(); }
+  // mano alzata con le cinque dita ben aperte a ventaglio e unghie rosse (s: lato, rot: inclinazione del braccio)
+  function handOpen(g, x, y, s, rot) {
+    var fing = [[62, 3.1], [31, 4.5], [6, 5.0], [-18, 4.6], [-40, 3.6]], k, a, L;
+    g.save(); g.translate(x, y); g.rotate(rot);
+    limb(g, 0, 3, 0, -0.6, 3.2, SKIN);
+    for (k = 0; k < fing.length; k++) {
+      a = fing[k][0] * s * Math.PI / 180; L = fing[k][1];
+      limb(g, Math.sin(a) * 1.2, -1.4 - Math.cos(a) * 0.4, Math.sin(a) * L, -1.4 - Math.cos(a) * L, k === 0 ? 1.7 : 1.5, SKIN);
+      E(g, Math.sin(a) * (L + 0.1), -1.4 - Math.cos(a) * (L + 0.1), 0.62, 0.62, NAIL);
+    }
+    E(g, 0, -1.2, 2.5, 2.1, SKIN); E(g, 0.7 * s, -0.4, 1.2, 0.7, SKIN_D);
+    g.restore();
+  }
+  // dopo il cappotto: pugno con l'indice puntato verso di lui
+  function pointHand(g, sh) {
+    limb(g, 78 + sh, 9.5, 67 + sh, 7.2, 2.8, SKIN);
+    E(g, 65.6 + sh, 6.6, 2.5, 2.2, SKIN); E(g, 66 + sh, 7.6, 1.8, 0.8, SKIN_D);
+    limb(g, 64.2 + sh, 5.9, 58.6 + sh, 5.1, 1.5, SKIN); E(g, 58.2 + sh, 5.1, 0.62, 0.62, NAIL);
+    limb(g, 65.8 + sh, 4.8, 66.4 + sh, 2.6, 1.3, SKIN);
+    limb(g, 64 + sh, 7.2, 62.6 + sh, 7.6, 1.1, SKIN_D);
+  }
   // capigliatura a pixel: ellisse con ciuffi, 4 toni sfumati dall'alto a sinistra
   function pixHair(g, cx, cy, rx, ry, pal, seed, flare) {
     var rnd = rng(seed), x, y, u, v, r, lim, l, t;
@@ -69,16 +92,24 @@ var TR = window.TR = window.TR || {};
     R(g, 32 + sh, 10, 28, 9, '#2a4fd0'); R(g, 33 + sh, 10, 26, 2, '#5a7ae8'); R(g, 32 + sh, 17, 28, 2, '#1a2f9a');
     // lui: capelli castani che coprono la nuca e il collo (niente collo squadrato)
     pixHair(g, lx, -0.5, 8.5, 8, ['#5a2e08', '#8a4e10', '#b06c16', '#d08a24'], 3, 0);
-    // collo: poca nuca coperta dai capelli, collo stretto e arrotondato
-    R(g, lx - 3, 8, 7, 5, '#e8a878'); R(g, lx - 3, 8, 1, 5, '#c98a5c');
+    // lui: capelli lunghi fino a meta' schiena, lisci con ciocche, che coprono nuca, collo e spalle
     (function () {
-      var rn = rng(11), yy, xx, tn;
-      for (yy = 7; yy <= 9; yy++) { for (xx = -4 + (yy - 7); xx < 5 - (yy - 7); xx++) { tn = rn(); R(g, lx + xx, yy, 1, 1, tn > 0.7 ? '#8a4e10' : tn > 0.3 ? '#6a3a0c' : '#5a2e08'); } }
+      var rn = rng(11), yy, xx, hw, tn, pal = ['#5a2e08', '#6a3a0c', '#8a4e10', '#b06c16'];
+      for (yy = 5; yy <= 13; yy++) {
+        hw = 8.2 + Math.min(yy - 5, 4) * 0.7;
+        for (xx = -Math.floor(hw); xx <= Math.floor(hw); xx++) {
+          tn = rn() * 0.18 + (((xx + 20) % 5 === 0) ? -0.12 : 0.18) + (xx < -2 ? 0.1 : -0.06) - (yy - 5) * 0.02;
+          R(g, lx + xx, yy, 1, 1, pal[tn > 0.55 ? 3 : tn > 0.3 ? 2 : tn > 0.05 ? 1 : 0]);
+        }
+      }
     })();
+    pixHair(g, lx, -0.5, 8.5, 8, ['#5a2e08', '#8a4e10', '#b06c16', '#d08a24'], 3, 0);
     R(g, 71 + sh, 10, 28, 9, '#f0b890'); R(g, 72 + sh, 12, 26, 7, '#b0206c'); R(g, 72 + sh, 12, 26, 2, '#d83a92');
     R(g, 84 + sh, 6, 8, 6, '#f0b890');
     var HER = herSprite(turned === 'cheer' ? 'u' : turned ? 'c' : 'n');
     if (HER) { g.imageSmoothingEnabled = false; g.drawImage(HER.c, Math.round(88 + sh - HER.cx), -8 - HER.top); }
+    if (HER && turned === 'cheer') { handOpen(g, 72 + sh, 3, -1, -0.34); handOpen(g, 109 + sh, 3, 1, 0.34); }
+    if (HER && turned === true) pointHand(g, sh);
     else pixHair(g, rx0, 2, 11.5, 10, ['#c89a00', '#f0c800', '#ffe616', '#fff47a'], 7, 1);
     if (!HER && turned === true) {
       // girata verso di lui, arrabbiata: viso piccolo di profilo, occhio, bocca aperta, braccio teso
