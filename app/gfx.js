@@ -23,6 +23,16 @@ var TR = window.TR = window.TR || {};
   TR.mk = mk; TR.rng = rng; TR.shade = shade; TR.RR = RR;
 
   /* ================= AUTO DEL GIOCATORE (cabriolet rossa, vista da dietro) ================= */
+  // sprite di lei disegnati da Cristian (pass.js), decodificati una volta sola
+  var herCache = {};
+  function herSprite(k) {
+    if (!TR.PASS || !TR.PASS[k]) return null;
+    if (herCache[k]) return herCache[k];
+    var d = TR.PASS[k], c = mk(d.w, d.h), x = c.getContext('2d'), im = x.createImageData(d.w, d.h), bin = atob(d.d), i;
+    for (i = 0; i < bin.length; i++) im.data[i] = bin.charCodeAt(i);
+    x.putImageData(im, 0, 0);
+    return (herCache[k] = { c: c, cx: d.cx, top: d.top });
+  }
   // capigliatura a pixel: ellisse con ciuffi, 4 toni sfumati dall'alto a sinistra
   function pixHair(g, cx, cy, rx, ry, pal, seed, flare) {
     var rnd = rng(seed), x, y, u, v, r, lim, l, t;
@@ -67,8 +77,10 @@ var TR = window.TR = window.TR || {};
     }
     R(g, 71 + sh, 10, 28, 9, '#f0b890'); R(g, 72 + sh, 12, 26, 7, '#b0206c'); R(g, 72 + sh, 12, 26, 2, '#d83a92');
     R(g, 84 + sh, 6, 8, 6, '#f0b890');
-    pixHair(g, rx0, 2, 11.5, 10, ['#c89a00', '#f0c800', '#ffe616', '#fff47a'], 7, 1);
-    if (turned === true) {
+    var HER = herSprite(turned === 'cheer' ? 'u' : turned ? 'c' : 'n');
+    if (HER) { g.imageSmoothingEnabled = false; g.drawImage(HER.c, Math.round(88 + sh - HER.cx), -8 - HER.top); }
+    else pixHair(g, rx0, 2, 11.5, 10, ['#c89a00', '#f0c800', '#ffe616', '#fff47a'], 7, 1);
+    if (!HER && turned === true) {
       // girata verso di lui, arrabbiata: viso piccolo di profilo, occhio, bocca aperta, braccio teso
       var fy, fw;
       for (fy = -3; fy <= 8; fy++) { fw = Math.round(4.5 * Math.sqrt(Math.max(0, 1 - Math.pow((fy - 2.5) / 5.8, 2)))); R(g, 79 + sh - fw, fy, fw * 2 + 1, 1, '#f2b896'); }
@@ -78,7 +90,7 @@ var TR = window.TR = window.TR || {};
       R(g, 76 + sh, -1, 4, 1, '#e8b000'); R(g, 77 + sh, -3, 8, 2, '#ffe616');
       P(g, [75 + sh, 13, 62 + sh, 7.5, 62.5 + sh, 5.2, 76 + sh, 10.5], '#f2b896'); E(g, 62 + sh, 6.3, 1.8, 1.4, '#f6c4a2');
     }
-    if (turned === 'cheer') {
+    if (!HER && turned === 'cheer') {
       // lei felice: tutte e due le braccia in alto
       P(g, [74 + sh, 12, 66 + sh, -2, 69 + sh, -3, 78 + sh, 11], '#f0b890'); E(g, 67 + sh, -4, 2.6, 2.6, '#f6c4a2');
       P(g, [100 + sh, 12, 108 + sh, -2, 105 + sh, -3, 96 + sh, 11], '#f0b890'); E(g, 107 + sh, -4, 2.6, 2.6, '#f6c4a2');
