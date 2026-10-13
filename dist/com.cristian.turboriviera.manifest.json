@@ -7,7 +7,7 @@
   "iconUri": "https://raw.githubusercontent.com/famcellini/Turbo-Riviera/main/app/largeIcon.png",
   "sourceUrl": "https://github.com/famcellini/Turbo-Riviera",
   "rootRequired": false,
-  "ipkUrl": "https://raw.githubusercontent.com/famcellini/Turbo-Riviera/main/dist/com.cristian.turboriviera_4.3.5_all.ipk",
+  "ipkUrl": "https://raw.githubusercontent.com/famcellini/Turbo-Riviera/main/dist/turboRiviera.v01.0.ipk",
   "ipkHash": {
     "sha256": "6e3968fd8c75ed793e8a7ceed661c34bf8c47d7798cd50fd0fa061f2113d0668"
   }
