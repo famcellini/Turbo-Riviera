@@ -34,7 +34,7 @@ var TR = window.TR = window.TR || {};
     // sommita' della chioma arrotondata con una curva (il ritaglio era tagliato di netto)
     var R = 8.5, hc = d.hc, hw = d.hw, ht = d.ht;
     x.globalCompositeOperation = 'destination-out'; x.fillStyle = '#000';
-    x.save(); x.beginPath(); x.rect(hc - hw - 3, ht - 1, 2 * hw + 6, R + 1); x.clip();
+    x.save(); x.beginPath(); x.rect(k === 'c' ? hc : hc - hw - 3, ht - 1, k === 'c' ? hw + 3 : 2 * hw + 6, R + 1); x.clip();
     x.beginPath(); x.rect(hc - hw - 4, ht - 2, 2 * hw + 8, R + 3); x.ellipse(hc, ht + R, hw, R, 0, 0, Math.PI * 2, true); x.fill('evenodd');
     x.restore(); x.globalCompositeOperation = 'source-over';
     return (herCache[k] = { c: c, cx: d.cx, top: d.top });
