@@ -44,7 +44,7 @@ var TR = window.TR = window.TR || {};
     R(g, 43 + sh, 6, 6, 5, '#e0a070');
     E(g, 39.5 + sh, 2, 1.6, 2.4, '#d08a5a'); E(g, 52.5 + sh, 2, 1.6, 2.4, '#d08a5a');
     E(g, 46 + sh, 1, 6.5, 7, '#e0a070');
-    E(g, 46 + sh, -0.5, 8.4, 8, '#6a3e1c'); R(g, 38.5 + sh, 2, 15, 4, '#6a3e1c'); R(g, 40 + sh, 5, 12, 2, '#55300f');
+    var hg = g.createLinearGradient(0, -8, 0, 7); hg.addColorStop(0, '#a8742f'); hg.addColorStop(0.5, '#7a4a20'); hg.addColorStop(1, '#4e2a0e'); E(g, 46 + sh, -0.5, 8.4, 8, hg); R(g, 38.5 + sh, 2, 15, 4, '#5e3516'); R(g, 40 + sh, 5, 12, 2, '#55300f');
     E(g, 43 + sh, -3, 4.2, 3.2, '#8a5a2a'); E(g, 49 + sh, -3.5, 3.6, 2.6, '#9a6830');
     R(g, 41 + sh, -5, 2, 1, '#b07a3c'); R(g, 47 + sh, -6, 3, 1, '#b07a3c');
     R(g, 40 + sh, -1, 1, 6, '#4a280c'); R(g, 44 + sh, -3, 1, 8, '#4a280c'); R(g, 48 + sh, -3, 1, 8, '#4a280c'); R(g, 52 + sh, -1, 1, 6, '#4a280c');
@@ -52,9 +52,18 @@ var TR = window.TR = window.TR || {};
     RR(g, 71 + sh, 10, 28, 9, 4, '#e8b088'); R(g, 74 + sh, 10, 3, 9, '#ff5aa0'); R(g, 93 + sh, 10, 3, 9, '#ff5aa0'); R(g, 72 + sh, 15, 26, 4, '#ff5aa0');
     function lei(mood) {
       var an = mood === 'angry', i;
+      if (mood === 'back') {
+        // vista da dietro come nel riferimento: chioma bionda sfumata sulle spalle, nuca
+        var bg = g.createLinearGradient(0, -8, 0, 14); bg.addColorStop(0, '#fbe27a'); bg.addColorStop(0.55, '#e6b83e'); bg.addColorStop(1, '#bd852c');
+        R(g, 82 + sh, 7, 6, 5, '#eec29c');
+        g.fillStyle = bg; g.beginPath(); g.moveTo(75 + sh, 12); g.bezierCurveTo(72 + sh, 4, 74 + sh, -7, 85 + sh, -7.5); g.bezierCurveTo(96 + sh, -7, 99 + sh, 4, 96 + sh, 12); g.closePath(); g.fill();
+        g.strokeStyle = 'rgba(255,244,170,0.9)'; g.lineWidth = 0.6; g.beginPath(); g.moveTo(80 + sh, -4); g.bezierCurveTo(77 + sh, 1, 77 + sh, 6, 78 + sh, 10); g.moveTo(88 + sh, -5); g.bezierCurveTo(92 + sh, -1, 93 + sh, 5, 92 + sh, 10); g.stroke();
+        g.strokeStyle = 'rgba(176,124,30,0.9)'; g.beginPath(); g.moveTo(84 + sh, -3); g.bezierCurveTo(83 + sh, 2, 84 + sh, 7, 85 + sh, 11); g.stroke();
+        return;
+      }
       // lei di profilo, girata verso di lui: tratti eleganti da modella bionda
       // capelli lisci e ondulati che scendono sulla schiena
-      g.fillStyle = '#d9a431'; g.beginPath(); g.moveTo(77 + sh, -1.6); g.bezierCurveTo(78 + sh, -7.5, 88 + sh, -7.5, 93 + sh, -2); g.bezierCurveTo(98 + sh, 3, 101 + sh, 8, 98 + sh, 13); g.bezierCurveTo(93 + sh, 11.5, 90 + sh, 13, 86 + sh, 11.5); g.bezierCurveTo(84 + sh, 9, 83 + sh, 6, 82.2 + sh, 3.5); g.lineTo(80.6 + sh, 0.2); g.closePath(); g.fill();
+      var lg = g.createLinearGradient(0, -7, 0, 13); lg.addColorStop(0, '#f8dc62'); lg.addColorStop(0.5, '#e2b43a'); lg.addColorStop(1, '#b9812a'); g.fillStyle = lg; g.beginPath(); g.moveTo(77 + sh, -1.6); g.bezierCurveTo(78 + sh, -7.5, 88 + sh, -7.5, 93 + sh, -2); g.bezierCurveTo(98 + sh, 3, 101 + sh, 8, 98 + sh, 13); g.bezierCurveTo(93 + sh, 11.5, 90 + sh, 13, 86 + sh, 11.5); g.bezierCurveTo(84 + sh, 9, 83 + sh, 6, 82.2 + sh, 3.5); g.lineTo(80.6 + sh, 0.2); g.closePath(); g.fill();
       g.fillStyle = '#f0c445'; g.beginPath(); g.moveTo(77.6 + sh, -2); g.bezierCurveTo(79 + sh, -6.6, 87 + sh, -6.6, 91 + sh, -2.4); g.bezierCurveTo(88 + sh, -3.2, 84 + sh, -2.6, 80.4 + sh, -0.4); g.closePath(); g.fill();
       g.lineWidth = 0.55; g.lineCap = 'round';
       g.strokeStyle = 'rgba(255,240,170,0.9)'; g.beginPath(); g.moveTo(83 + sh, -5.2); g.bezierCurveTo(89 + sh, -5.4, 93 + sh, -1, 95 + sh, 5); g.moveTo(86 + sh, -3.8); g.bezierCurveTo(91 + sh, -2, 94 + sh, 3, 94.5 + sh, 9); g.stroke();
@@ -77,7 +86,7 @@ var TR = window.TR = window.TR || {};
       E(g, 82 + sh, 5, 0.7, 0.7, '#ffffff');
       g.strokeStyle = '#f0c445'; g.lineWidth = 0.6; g.beginPath(); g.moveTo(79.6 + sh, -4); g.quadraticCurveTo(77.4 + sh, -2.4, 77.6 + sh, 0); g.stroke();
     }
-    lei(turned === true ? 'angry' : 'calm');
+    lei(turned === true ? 'angry' : 'back');
     if (turned === 'cheer') {
       // lei felice: tutte e due le braccia in alto
       P(g, [74 + sh, 12, 66 + sh, -2, 69 + sh, -3, 78 + sh, 11], '#e8b088'); E(g, 67 + sh, -4, 2.6, 2.6, '#f0c09a');
