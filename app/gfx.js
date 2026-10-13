@@ -56,11 +56,12 @@ var TR = window.TR = window.TR || {};
     // indice teso, leggermente inclinato verso di lui
     g.strokeStyle = SKIN; g.lineWidth = 1.8; g.beginPath(); g.moveTo(66.3 + sh, 4.6); g.lineTo(65.2 + sh, 0.2); g.stroke();
     E(g, 65.15 + sh, -0.05, 0.6, 0.6, '#d4143a');
-    // altre dita chiuse e pollice sopra
-    g.strokeStyle = SD; g.lineWidth = 0.45;
-    [0, 1, 2].forEach(function (n) { g.beginPath(); g.moveTo(66.4 + sh + n * 1.1, 6 + n * 0.1); g.lineTo(66.4 + sh + n * 1.1, 7.7); g.stroke(); });
-    E(g, 69.1 + sh, 4.9, 1.4, 0.9, SKIN);
+    // mano sinistra vista da dietro (palmo verso di lui): dorso della mano, pollice nascosto, dita chiuse solo accennate
+    E(g, 67.6 + sh, 7.3, 2.2, 0.7, SD);
+    g.strokeStyle = SD; g.lineWidth = 0.4; g.beginPath(); g.moveTo(65.2 + sh, 7.2); g.lineTo(65.2 + sh, 8.2); g.stroke();
+    E(g, 66.2 + sh, 4.9, 0.9, 0.5, '#fbe0c8');
   }
+
   // capigliatura a pixel: ellisse con ciuffi, 4 toni sfumati dall'alto a sinistra
   function pixHair(g, cx, cy, rx, ry, pal, seed, flare) {
     var rnd = rng(seed), x, y, u, v, r, lim, l, t;
