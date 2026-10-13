@@ -50,6 +50,7 @@ var TR = window.TR = window.TR || {};
     R(g, 40 + sh, -1, 1, 6, '#4a280c'); R(g, 44 + sh, -3, 1, 8, '#4a280c'); R(g, 48 + sh, -3, 1, 8, '#4a280c'); R(g, 52 + sh, -1, 1, 6, '#4a280c');
     // lei: lunghi capelli biondi mossi dal vento, top rosa
     RR(g, 71 + sh, 10, 28, 9, 4, '#e8b088'); R(g, 74 + sh, 10, 3, 9, '#ff5aa0'); R(g, 93 + sh, 10, 3, 9, '#ff5aa0'); R(g, 72 + sh, 15, 26, 4, '#ff5aa0');
+    if (turned === 'cheer') {
     // lei: chioma bionda morbida, ondulata e svolazzante ma senza punte
     g.fillStyle = '#e0a830'; g.beginPath(); g.moveTo(78 + sh, -4); g.bezierCurveTo(90 + sh, -10, 106 + sh, -6, 112 + sh, 2); g.bezierCurveTo(116 + sh, 7, 110 + sh, 11, 104 + sh, 10); g.bezierCurveTo(98 + sh, 14, 86 + sh, 13, 78 + sh, 13); g.closePath(); g.fill();
     g.fillStyle = '#f2c640'; g.beginPath(); g.moveTo(84 + sh, -6); g.bezierCurveTo(96 + sh, -8, 106 + sh, -3, 108 + sh, 2); g.bezierCurveTo(100 + sh, 0, 92 + sh, 0, 84 + sh, 0); g.closePath(); g.fill();
@@ -60,32 +61,41 @@ var TR = window.TR = window.TR || {};
     R(g, 82 + sh, -5, 5, 2, '#fff0a8'); R(g, 84 + sh, -1, 2, 7, '#ffe07a'); R(g, 88 + sh, 0, 1, 8, '#c48a2a'); R(g, 81 + sh, 1, 1, 7, '#c48a2a');
     R(g, 96 + sh, 1, 10, 1, '#ffe07a'); R(g, 100 + sh, 5, 9, 1, '#fff0a8');
     RR(g, 82 + sh, -7, 7, 3, 1, '#ff5aa0');
-    function lei(mood) {
-      var an = mood === 'angry';
-      // viso a tre quarti come nel disegno di riferimento: lei si volta indietro
-      E(g, 85 + sh, 3, 4.7, 5.9, '#f6cfa8'); P(g, [81 + sh, 5, 82.5 + sh, 8.8, 85 + sh, 9.4, 87.5 + sh, 8.8, 89 + sh, 5], '#f6cfa8');
-      E(g, 83.2 + sh, 2.4, 1.05, an ? 0.6 : 0.85, '#ffffff'); E(g, 87.1 + sh, 2.4, 1.05, an ? 0.6 : 0.85, '#ffffff');
-      E(g, 83.3 + sh, 2.45, 0.6, 0.6, '#3a86d8'); E(g, 87.2 + sh, 2.45, 0.6, 0.6, '#3a86d8');
-      E(g, 83.3 + sh, 2.45, 0.28, 0.28, '#10202e'); E(g, 87.2 + sh, 2.45, 0.28, 0.28, '#10202e');
-      R(g, 82 + sh, 1.6, 2.4, 0.45, '#2a1a10'); R(g, 86 + sh, 1.6, 2.4, 0.45, '#2a1a10');
-      if (an) {
-        P(g, [81.6 + sh, -0.3, 84.8 + sh, 1.2, 84.8 + sh, 0.4, 82 + sh, -1.1], '#8a5a14'); P(g, [88.4 + sh, -0.3, 85.2 + sh, 1.2, 85.2 + sh, 0.4, 88 + sh, -1.1], '#8a5a14');
-        R(g, 84.7 + sh, 0.2, 0.6, 1.2, '#d98a70');
-      } else { R(g, 82 + sh, 0.2, 2.6, 0.4, '#b07a20'); R(g, 86 + sh, 0.2, 2.6, 0.4, '#b07a20'); }
-      R(g, 84.6 + sh, 3.3, 0.7, 1.4, '#e9a98a');
-      E(g, 82.2 + sh, 4.6, 1.3, 0.9, an ? 'rgba(255,60,70,0.6)' : 'rgba(255,110,130,0.45)'); E(g, 88 + sh, 4.6, 1.3, 0.9, an ? 'rgba(255,60,70,0.6)' : 'rgba(255,110,130,0.45)');
-      if (an) {
-        E(g, 85.1 + sh, 6.8, 1.9, 1.5, '#8a1230'); P(g, [83 + sh, 5.9, 85.1 + sh, 5.5, 87.2 + sh, 5.9, 86.4 + sh, 6.4, 83.8 + sh, 6.4], '#e8386e'); R(g, 84 + sh, 6.4, 2.2, 0.6, '#ffffff');
-      } else {
-        g.fillStyle = '#e8386e'; g.beginPath(); g.moveTo(82.6 + sh, 6.1); g.quadraticCurveTo(85.1 + sh, 8.4, 87.6 + sh, 6.1); g.quadraticCurveTo(85.1 + sh, 6.7, 82.6 + sh, 6.1); g.fill();
-        R(g, 83.8 + sh, 6.6, 2.6, 0.5, '#ffffff');
-      }
-      E(g, 80.4 + sh, 5.2, 0.8, 0.8, '#ffffff'); E(g, 80.1 + sh, 4.9, 0.3, 0.3, '#ffffff');
-      [[79.5, -0.5, 3.2], [82.5, -4, 3.4], [86.5, -4.6, 3.6], [90.2, -2.5, 3.2], [91.6, 1.8, 2.8], [79.4, 4.2, 2.6], [90.8, 6, 2.2]].forEach(function (c) {
-        E(g, c[0] + sh, c[1], c[2], c[2] * 0.95, '#f2c640'); E(g, c[0] - 0.6 + sh, c[1] - 0.7, c[2] * 0.5, c[2] * 0.4, '#ffe888');
-      });
     }
-    if (!turned) lei('smile');
+    function lei(mood) {
+      var an = mood === 'angry', i;
+      // lei di profilo, girata verso di lui: tratti eleganti da modella bionda
+      // capelli lisci e ondulati che scendono sulla schiena
+      g.fillStyle = '#d9a431'; g.beginPath(); g.moveTo(77 + sh, -1.6); g.bezierCurveTo(78 + sh, -7.5, 88 + sh, -7.5, 93 + sh, -2); g.bezierCurveTo(98 + sh, 3, 101 + sh, 8, 98 + sh, 13); g.bezierCurveTo(93 + sh, 11.5, 90 + sh, 13, 86 + sh, 11.5); g.bezierCurveTo(84 + sh, 9, 83 + sh, 6, 82.2 + sh, 3.5); g.lineTo(80.6 + sh, 0.2); g.closePath(); g.fill();
+      g.fillStyle = '#f0c445'; g.beginPath(); g.moveTo(77.6 + sh, -2); g.bezierCurveTo(79 + sh, -6.6, 87 + sh, -6.6, 91 + sh, -2.4); g.bezierCurveTo(88 + sh, -3.2, 84 + sh, -2.6, 80.4 + sh, -0.4); g.closePath(); g.fill();
+      g.lineWidth = 0.55; g.lineCap = 'round';
+      g.strokeStyle = 'rgba(255,240,170,0.9)'; g.beginPath(); g.moveTo(83 + sh, -5.2); g.bezierCurveTo(89 + sh, -5.4, 93 + sh, -1, 95 + sh, 5); g.moveTo(86 + sh, -3.8); g.bezierCurveTo(91 + sh, -2, 94 + sh, 3, 94.5 + sh, 9); g.stroke();
+      g.strokeStyle = 'rgba(176,124,30,0.9)'; g.beginPath(); g.moveTo(84 + sh, 3); g.bezierCurveTo(88 + sh, 5, 91 + sh, 9, 90 + sh, 12); g.moveTo(88 + sh, 1); g.bezierCurveTo(93 + sh, 4, 96 + sh, 8, 96.5 + sh, 12); g.stroke();
+      // collo e spalla
+      R(g, 79.2 + sh, 7.5, 3.2, 5, '#eec29c');
+      // viso di profilo (rivolto verso sinistra)
+      P(g, [80 + sh, -3.4, 77.2 + sh, -2.2, 76.2 + sh, -0.4, 76.3 + sh, 0.7, 76.7 + sh, 1.6, 74.9 + sh, 3.1, 75.8 + sh, 3.8, 75.5 + sh, 4.5, 75.9 + sh, 5.1, 75.5 + sh, 5.7, 75.9 + sh, 6.4, 75.7 + sh, 7.4, 77 + sh, 8.5, 79.4 + sh, 8.6, 82 + sh, 7, 83.4 + sh, 3, 82.4 + sh, -1.6], '#f7d2ac');
+      // ombra morbida sotto lo zigomo e sulla mascella
+      E(g, 79.2 + sh, 6.2, 2.6, 1.6, 'rgba(210,140,110,0.25)');
+      E(g, 78.6 + sh, 4.2, 1.3, 0.9, an ? 'rgba(255,80,90,0.5)' : 'rgba(255,120,135,0.4)');
+      // occhio con ciglia lunghe
+      E(g, 77.9 + sh, 1.7, 1, an ? 0.55 : 0.7, '#ffffff'); E(g, 77.5 + sh, 1.75, 0.5, 0.5, '#3a86d8'); E(g, 77.45 + sh, 1.75, 0.22, 0.22, '#10202e');
+      g.strokeStyle = '#2a1a10'; g.lineWidth = 0.4; g.beginPath(); g.moveTo(76.7 + sh, 1.5); g.quadraticCurveTo(77.9 + sh, an ? 0.9 : 0.7, 79 + sh, 1.4); g.moveTo(76.7 + sh, 1.4); g.lineTo(76.2 + sh, 0.8); g.stroke();
+      // sopracciglio
+      g.strokeStyle = '#a8761c'; g.lineWidth = 0.5; g.beginPath();
+      if (an) { g.moveTo(76.2 + sh, 0.6); g.lineTo(79.2 + sh, -0.9); } else { g.moveTo(76.4 + sh, -0.1); g.quadraticCurveTo(77.9 + sh, -0.9, 79.4 + sh, -0.2); }
+      g.stroke();
+      // labbra
+      if (an) {
+        P(g, [75.9 + sh, 4.6, 77.3 + sh, 4.9, 77.4 + sh, 5.5, 75.8 + sh, 5.4], '#e0336a'); P(g, [75.8 + sh, 5.6, 77.2 + sh, 5.7, 76.9 + sh, 6.5, 75.9 + sh, 6.3], '#c92358'); R(g, 76.1 + sh, 5.5, 1, 0.3, '#8a1230');
+      } else {
+        P(g, [75.9 + sh, 4.6, 77.5 + sh, 4.9, 77.9 + sh, 5.3, 75.8 + sh, 5.4], '#f0507f'); P(g, [75.8 + sh, 5.4, 77.8 + sh, 5.4, 77 + sh, 6.4, 75.9 + sh, 6.2], '#e0336a');
+      }
+      // orecchino di perla e ciocca sulla fronte
+      E(g, 82 + sh, 5, 0.7, 0.7, '#ffffff');
+      g.strokeStyle = '#f0c445'; g.lineWidth = 0.6; g.beginPath(); g.moveTo(79.6 + sh, -4); g.quadraticCurveTo(77.4 + sh, -2.4, 77.6 + sh, 0); g.stroke();
+    }
+    if (turned !== 'cheer') lei(turned ? 'angry' : 'calm');
     if (turned === 'cheer') {
       // lei felice: tutte e due le braccia in alto
       P(g, [74 + sh, 12, 66 + sh, -2, 69 + sh, -3, 78 + sh, 11], '#e8b088'); E(g, 67 + sh, -4, 2.6, 2.6, '#f0c09a');
@@ -104,7 +114,6 @@ var TR = window.TR = window.TR || {};
       });
     } else if (turned) {
       // lei si gira verso di lui e protesta: viso di profilo e braccio alzato
-      lei('angry');
       P(g, [74 + sh, 12, 64 + sh, 2, 67 + sh, 1, 77 + sh, 11], '#e8b088'); E(g, 65 + sh, 0, 2.5, 2.5, '#f0c09a');
     }
     // cofano posteriore
