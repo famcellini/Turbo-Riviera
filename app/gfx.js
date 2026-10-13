@@ -24,7 +24,7 @@ var TR = window.TR = window.TR || {};
 
   /* ================= AUTO DEL GIOCATORE (cabriolet rossa, vista da dietro) ================= */
   // sprite di lei disegnati da Cristian (pass.js), decodificati una volta sola
-  var herCache = {};
+  var herCache = {}, ANGRY_SHIFT = -7;
   function herSprite(k) {
     if (!TR.PASS || !TR.PASS[k]) return null;
     if (herCache[k]) return herCache[k];
@@ -146,7 +146,8 @@ var TR = window.TR = window.TR || {};
       }
       g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
       var spread = 36 * 0.2 / 2, pl = lx - PK.ax * PK.u, pt = 13 - PK.h * PK.u;   // distanziati del 20%
-      g.drawImage(pk[0], pl - spread, pt, PK.w * PK.u, PK.h * PK.u); g.drawImage(pk[1], pl + spread, pt, PK.w * PK.u, PK.h * PK.u);
+      var recoil = turned === true ? ANGRY_SHIFT : 0;   // arrabbiata: lui si sposta della larghezza del volante, poi torna al suo posto negli altri sprite
+      g.drawImage(pk[0], pl - spread + recoil, pt, PK.w * PK.u, PK.h * PK.u); g.drawImage(pk[1], pl + spread, pt, PK.w * PK.u, PK.h * PK.u);
     } else {
     R(g, 32 + sh, 10, 28, 9, '#2a4fd0'); R(g, 33 + sh, 10, 26, 2, '#5a7ae8'); R(g, 32 + sh, 17, 28, 2, '#1a2f9a');
     // lui: capelli castani che coprono la nuca e il collo (niente collo squadrato)
