@@ -5,7 +5,6 @@ curves and hills, traffic, a countdown timer and forks that let you choose your 
 Name, graphics and music are original (no Sega assets). Road signs show towns and
 provinces of the Fermo area (Marche, Italy).
 
-![Title](screenshots/title.png)
 ![Game](screenshots/game.png)
 
 ## Controls
