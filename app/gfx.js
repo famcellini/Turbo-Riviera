@@ -169,9 +169,9 @@ var TR = window.TR = window.TR || {};
       // poggiatesta grigi davanti ai due passeggeri (come nel riferimento di Cristian)
       [lx - 3.6 + 2.5, lx + (turned === 'cheer' ? 36 : turned === true ? 37 : 34) + 2.5].forEach(function (hx) {
         RR(g, hx - 9.5, 7, 19, 5.8, 2.6, '#47474f');
-        RR(g, hx - 8.7, 7.7, 17.4, 4.4, 2.1, '#b4b4be');
-        RR(g, hx - 7.6, 8.1, 15.2, 1.6, 0.8, '#e4e4ec');
-        R(g, hx - 6.8, 10.6, 13.6, 0.9, '#8c8c98');
+        RR(g, hx - 9.1, 7.35, 18.2, 5.1, 2.4, '#b4b4be');
+        RR(g, hx - 8, 7.8, 16, 1.6, 0.8, '#e4e4ec');
+        R(g, hx - 7.2, 10.8, 14.4, 0.9, '#8c8c98');
       });
     } else {
     R(g, 32 + sh, 10, 28, 9, '#2a4fd0'); R(g, 33 + sh, 10, 26, 2, '#5a7ae8'); R(g, 32 + sh, 17, 28, 2, '#1a2f9a');
@@ -221,8 +221,8 @@ var TR = window.TR = window.TR || {};
     RR(g, 24 + sh, 12, 80, 2, 1, '#ff4a40');
     // carrozzeria
     RP(g, BODY, BODYR, '#d8141a');
-    if (dir < 0) { P(g, [121, 21, 129, 29, 129, 51, 124, 51], '#8e0c0c'); for (i = 0; i < 4; i++) R(g, 124, 27 + i * 4, 5, 2, '#3a0606'); }
-    if (dir > 0) { P(g, [7, 21, -1, 29, -1, 51, 4, 51], '#8e0c0c'); for (i = 0; i < 4; i++) R(g, -1, 27 + i * 4, 5, 2, '#3a0606'); }
+    if (dir > 0) { RP(g, [121, 21, 129, 29, 129, 51, 124, 51], [2, 6, 3, 1.5], '#8e0c0c'); for (i = 0; i < 4; i++) RR(g, 124.4, 28 + i * 4, 4, 1.8, 0.9, '#3a0606'); }
+    if (dir < 0) { RP(g, [7, 21, -1, 29, -1, 51, 4, 51], [2, 6, 3, 1.5], '#8e0c0c'); for (i = 0; i < 4; i++) RR(g, -0.4, 28 + i * 4, 4, 1.8, 0.9, '#3a0606'); }
     RR(g, 10, 22, 108, 2, 1, '#ff5040');
     // griglia nera a lamelle con i fanali dietro
     RR(g, 8, 28, 112, 15, 5, '#121212');
