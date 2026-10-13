@@ -63,6 +63,21 @@ var TR = window.TR = window.TR || {};
     E(g, 66.2 + sh, 4.9, 0.9, 0.5, '#fbe0c8');
   }
 
+  // capelli corti visti da dietro: unica sagoma, tonda in alto e ristretta sulla nuca, ombreggiata dall'alto a sinistra
+  function pixHairBack(g, cx, pal, seed) {
+    var rnd = rng(seed), y, x, hw, u, v, l, t, ny;
+    for (y = -8; y <= 10; y++) {
+      if (y < 2) { v = (y + 0.5) / 8.5; hw = 8.6 * Math.sqrt(Math.max(0, 1 - v * v)); }
+      else if (y <= 5) { hw = 8.6; }
+      else { hw = 8.6 - (y - 5) * 0.62; }
+      for (x = -Math.floor(hw); x <= Math.floor(hw); x++) {
+        u = x / 8.6; ny = (y + 8) / 18;
+        l = -(u * 0.45 + ny * 0.55) + 0.25 + (rnd() - 0.5) * 0.5 - (Math.abs(u) > 0.8 ? 0.25 : 0);
+        t = l > 0.5 ? 3 : l > 0.05 ? 2 : l > -0.4 ? 1 : 0;
+        R(g, Math.round(cx + x), y, 1, 1, pal[t]);
+      }
+    }
+  }
   // capigliatura a pixel: ellisse con ciuffi, 4 toni sfumati dall'alto a sinistra
   function pixHair(g, cx, cy, rx, ry, pal, seed, flare) {
     var rnd = rng(seed), x, y, u, v, r, lim, l, t;
@@ -99,19 +114,9 @@ var TR = window.TR = window.TR || {};
     R(g, 32 + sh, 10, 28, 9, '#2a4fd0'); R(g, 33 + sh, 10, 26, 2, '#5a7ae8'); R(g, 32 + sh, 17, 28, 2, '#1a2f9a');
     // lui: capelli castani che coprono la nuca e il collo (niente collo squadrato)
     pixHair(g, lx, -0.5, 8.5, 8, ['#5a2e08', '#8a4e10', '#b06c16', '#d08a24'], 3, 0);
-    // lui: capelli lunghi fino a meta' schiena, lisci con ciocche, che coprono nuca, collo e spalle
-    R(g, lx - 3, 8, 6, 5, '#e8a878'); R(g, lx - 3, 8, 1, 5, '#c98a5c');
-    (function () {
-      var rn = rng(11), yy, xx, hw, tn, pal = ['#5a2e08', '#6a3a0c', '#8a4e10', '#b06c16'];
-      for (yy = 5; yy <= 9; yy++) {
-        hw = 8.0 + Math.min(yy - 5, 2) * 0.3;
-        for (xx = -Math.floor(hw); xx <= Math.floor(hw); xx++) {
-          tn = rn() * 0.18 + (((xx + 20) % 5 === 0) ? -0.12 : 0.18) + (xx < -2 ? 0.1 : -0.06) - (yy - 5) * 0.02;
-          R(g, lx + xx, yy, 1, 1, pal[tn > 0.55 ? 3 : tn > 0.3 ? 2 : tn > 0.05 ? 1 : 0]);
-        }
-      }
-    })();
-    pixHair(g, lx, -0.5, 8.5, 8, ['#5a2e08', '#8a4e10', '#b06c16', '#d08a24'], 3, 0);
+    // lui: collo e capelli castani in un'unica massa continua (calotta tonda che scende e si stringe sulla nuca)
+    R(g, lx - 3, 9, 6, 4, '#e8a878'); R(g, lx - 3, 9, 1, 4, '#c98a5c');
+    pixHairBack(g, lx, ['#5a2e08', '#8a4e10', '#b06c16', '#d08a24'], 3);
     R(g, 71 + sh, 10, 28, 9, '#f0b890'); R(g, 72 + sh, 12, 26, 7, '#b0206c'); R(g, 72 + sh, 12, 26, 2, '#d83a92');
     R(g, 84 + sh, 6, 8, 6, '#f0b890');
     var HER = herSprite(turned === 'cheer' ? 'u' : turned ? 'c' : 'n');
