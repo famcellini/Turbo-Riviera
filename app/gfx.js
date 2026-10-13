@@ -83,10 +83,11 @@ var TR = window.TR = window.TR || {};
     // lui: capelli castani che coprono la nuca e il collo (niente collo squadrato)
     pixHair(g, lx, -0.5, 8.5, 8, ['#5a2e08', '#8a4e10', '#b06c16', '#d08a24'], 3, 0);
     // lui: capelli lunghi fino a meta' schiena, lisci con ciocche, che coprono nuca, collo e spalle
+    R(g, lx - 3, 8, 6, 5, '#e8a878'); R(g, lx - 3, 8, 1, 5, '#c98a5c');
     (function () {
       var rn = rng(11), yy, xx, hw, tn, pal = ['#5a2e08', '#6a3a0c', '#8a4e10', '#b06c16'];
-      for (yy = 5; yy <= 11; yy++) {
-        hw = 8.2 + Math.min(yy - 5, 3) * 0.5;
+      for (yy = 5; yy <= 9; yy++) {
+        hw = 8.0 + Math.min(yy - 5, 2) * 0.3;
         for (xx = -Math.floor(hw); xx <= Math.floor(hw); xx++) {
           tn = rn() * 0.18 + (((xx + 20) % 5 === 0) ? -0.12 : 0.18) + (xx < -2 ? 0.1 : -0.06) - (yy - 5) * 0.02;
           R(g, lx + xx, yy, 1, 1, pal[tn > 0.55 ? 3 : tn > 0.3 ? 2 : tn > 0.05 ? 1 : 0]);
