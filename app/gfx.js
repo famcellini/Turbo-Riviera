@@ -76,15 +76,9 @@ var TR = window.TR = window.TR || {};
       // viso di profilo (rivolto verso sinistra)
       P(g, [80 + sh, -3.4, 77.2 + sh, -2.2, 76.2 + sh, -0.4, 76.3 + sh, 0.7, 76.7 + sh, 1.6, 74.9 + sh, 3.1, 75.8 + sh, 3.8, 75.5 + sh, 4.5, 75.9 + sh, 5.1, 75.5 + sh, 5.7, 75.9 + sh, 6.4, 75.7 + sh, 7.4, 77 + sh, 8.5, 79.4 + sh, 8.6, 82 + sh, 7, 83.4 + sh, 3, 82.4 + sh, -1.6], '#f7d2ac');
       // ombra morbida sotto lo zigomo e sulla mascella
-      E(g, 79.2 + sh, 6.2, 2.6, 1.6, 'rgba(210,140,110,0.25)');
-      E(g, 78.6 + sh, 4.2, 1.3, 0.9, an ? 'rgba(255,80,90,0.5)' : 'rgba(255,120,135,0.4)');
       // occhio con ciglia lunghe
-      E(g, 77.9 + sh, 1.7, 1, an ? 0.55 : 0.7, '#ffffff'); E(g, 77.5 + sh, 1.75, 0.5, 0.5, '#3a86d8'); E(g, 77.45 + sh, 1.75, 0.22, 0.22, '#10202e');
-      g.strokeStyle = '#2a1a10'; g.lineWidth = 0.4; g.beginPath(); g.moveTo(76.7 + sh, 1.5); g.quadraticCurveTo(77.9 + sh, an ? 0.9 : 0.7, 79 + sh, 1.4); g.moveTo(76.7 + sh, 1.4); g.lineTo(76.2 + sh, 0.8); g.stroke();
-      // sopracciglio
-      g.strokeStyle = '#a8761c'; g.lineWidth = 0.5; g.beginPath();
-      if (an) { g.moveTo(76.2 + sh, 0.6); g.lineTo(79.2 + sh, -0.9); } else { g.moveTo(76.4 + sh, -0.1); g.quadraticCurveTo(77.9 + sh, -0.9, 79.4 + sh, -0.2); }
-      g.stroke();
+      E(g, 77.9 + sh, 1.7, 1.7, an ? 1.05 : 1.2, '#ffffff'); E(g, 77.3 + sh, 1.75, 0.85, 0.85, '#3a86d8'); E(g, 77.25 + sh, 1.75, 0.38, 0.38, '#10202e'); E(g, 77 + sh, 1.4, 0.2, 0.2, '#ffffff');
+      g.strokeStyle = '#2a1a10'; g.lineWidth = 0.4; g.beginPath(); g.moveTo(76.2 + sh, 1.6); g.quadraticCurveTo(77.9 + sh, an ? 0.4 : 0.2, 79.6 + sh, 1.4); g.moveTo(76.3 + sh, 1.4); g.lineTo(75.7 + sh, 0.7); g.stroke();
       // labbra
       if (an) {
         P(g, [75.9 + sh, 4.6, 77.3 + sh, 4.9, 77.4 + sh, 5.5, 75.8 + sh, 5.4], '#e0336a'); P(g, [75.8 + sh, 5.6, 77.2 + sh, 5.7, 76.9 + sh, 6.5, 75.9 + sh, 6.3], '#c92358'); R(g, 76.1 + sh, 5.5, 1, 0.3, '#8a1230');
