@@ -145,8 +145,7 @@ var TR = window.TR = window.TR || {};
         herCache[pkey] = pk;
       }
       // accenno di poggiatesta dietro la testa di lui e di lei (si vede ai lati del collo)
-      var hrx = [lx, lx + (turned === 'cheer' ? 41 : turned === true ? 42 : 38) + (turned === true ? ANGRY_SHIFT * 0 : 0)];
-      if (turned === true) hrx[0] = lx + ANGRY_SHIFT;
+      var hrx = [lx - 3.6 + (turned === true ? ANGRY_SHIFT : 0), lx + (turned === 'cheer' ? 36 : turned === true ? 37 : 34)];
       hrx.forEach(function (hx) {
         RR(g, hx - 8.2, 0.5, 16.4, 14, 3.2, '#3a1210');
         RR(g, hx - 7.2, 1.2, 14.4, 3, 1.6, '#6c2a22');
